@@ -30,6 +30,13 @@ create table if not exists public.cms_assets (
   created_at timestamptz not null default now()
 );
 
+-- Public image overrides used by the website. Editors change these in /studio.
+create table if not exists public.site_media (
+  key text primary key check (key in ('hero_portrait', 'home_journey_arun', 'home_journey_krisham', 'home_journey_farbeena')),
+  image_url text not null,
+  updated_at timestamptz not null default now()
+);
+
 create table if not exists public.transformations (
   id uuid primary key default gen_random_uuid(),
   slug text unique not null check (slug ~ '^[a-z0-9]+(?:-[a-z0-9]+)*$'),
@@ -45,6 +52,7 @@ create table if not exists public.transformations (
 alter table public.profiles enable row level security;
 alter table public.trainers enable row level security;
 alter table public.cms_assets enable row level security;
+alter table public.site_media enable row level security;
 alter table public.transformations enable row level security;
 
 create or replace function public.is_cms_editor() returns boolean language sql stable security definer set search_path = public as $$
@@ -55,6 +63,8 @@ create policy "published trainers are public" on public.trainers for select usin
 create policy "editors manage trainers" on public.trainers for all using (public.is_cms_editor()) with check (public.is_cms_editor());
 create policy "editors read assets" on public.cms_assets for select using (public.is_cms_editor());
 create policy "editors manage assets" on public.cms_assets for all using (public.is_cms_editor()) with check (public.is_cms_editor());
+create policy "public can read website media" on public.site_media for select using (true);
+create policy "editors manage website media" on public.site_media for all using (public.is_cms_editor()) with check (public.is_cms_editor());
 create policy "published transformations are public" on public.transformations for select using (is_published or public.is_cms_editor());
 create policy "editors manage transformations" on public.transformations for all using (public.is_cms_editor()) with check (public.is_cms_editor());
 
