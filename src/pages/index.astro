@@ -37,9 +37,18 @@ const journeys = [
   { image: media.home_journey_krisham || krishamJourney.src, name: 'Krisham', title: 'Consistency, made visible.', detail: 'A stronger physique shaped by the routine behind it.' },
   { image: media.home_journey_farbeena || farbeenaJourney.src, name: 'Farbeena', title: 'Progress that changes daily life.', detail: 'A journey that puts strength, energy and confidence back in the picture.' },
 ];
+const faqs = [
+  { question: 'How does online coaching with FitWithNash work?', answer: 'You begin with a conversation about your goal, training history, schedule and access to equipment. From there, Avinash builds your training direction, nutrition habits and check-in rhythm around real life.' },
+  { question: 'Is this suitable if I am new to training?', answer: 'Yes. Coaching is built around your starting point. The goal is to make the basics clear, build confidence in the gym and create routines you can repeat.' },
+  { question: 'Do I need a gym membership?', answer: 'Not always. Your plan can be shaped around a commercial gym, a home setup or the equipment you currently have. That is clarified before your program begins.' },
+  { question: 'Does coaching include nutrition guidance?', answer: 'Yes. The approach focuses on practical food habits that support your goal and fit your lifestyle, rather than rigid rules that are difficult to sustain.' },
+  { question: 'How soon will I see results?', answer: 'Progress depends on your starting point, consistency, recovery and goal. The focus is on measurable improvements you can keep, not a rushed promise.' },
+];
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) };
 ---
 
 <Layout>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <main>
     <section class="hero" style={`--hero-gym:url(${heroGym.src})`}>
       <div class="hero-portrait"><div class="hero-portrait__frame"><img src={media.hero_portrait || avinashProfile.src} alt="Avinash Sharma, FitWithNash fitness coach" /></div><span>The real coach behind the work</span></div>
@@ -94,6 +103,11 @@ const journeys = [
         </div>
       </div>
       <Image class="method-image" src={coaching} alt="Avinash coaching a strength-training session" widths={[720, 1080, 1440]} sizes="(max-width: 760px) 100vw, 48vw" loading="lazy" />
+    </section>
+
+    <section class="section faq" aria-labelledby="faq-title">
+      <div><p class="eyebrow">Before you start</p><h2 id="faq-title" class="section-title">Clear answers.<br />A calmer first step.</h2><p>Fitness should not require guesswork. Here is what working with FitWithNash is designed to look like.</p></div>
+      <div class="faq-list">{faqs.map((faq) => <details><summary>{faq.question}<span>+</span></summary><p>{faq.answer}</p></details>)}</div>
     </section>
 
     <section id="journal" class="section journal">
