@@ -1,64 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-const title = 'Contact | FitWithNash';
-const description =
-  'Get in touch with FitWithNash for inquiries, coaching, or partnership opportunities.';
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-  </head>
-  <body class="min-h-screen bg-gray-100 antialiased">
-    <Layout>
-      <main class="py-12 px-4 max-w-2xl mx-auto">
-        <article class="prose max-w-none">
-          <h1 class="text-5xl font-bold mb-6">Contact Us</h1>
-          <p class="text-lg mb-6">
-            Have questions about our courses, want to book a session, or interested in a partnership? Fill out the form below and we'll get back to you shortly.
-          </p>
+<Layout title="Start your training | FitWithNash" description="Tell FitWithNash where you are starting and what strength means to you.">
+  <main class="contact-page">
+    <section class="section contact-grid">
+      <div>
+        <p class="eyebrow">Your next rep starts here</p>
+        <h1 class="display">Ready for a standard you can keep?</h1>
+        <p class="contact-intro">Tell us what you are working toward. We’ll point you to the right place to begin.</p>
+        <a class="instagram-link" href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Or message @fitwithnash on Instagram ↗</a>
+      </div>
+      <form class="lead-form" method="post" action="#" data-lead-form>
+        <label>Your name<input name="name" autocomplete="name" required placeholder="Name" /></label>
+        <label>Email address<input name="email" type="email" autocomplete="email" required placeholder="you@example.com" /></label>
+        <label>What are you working toward?<select name="goal"><option>Strength and confidence</option><option>Build muscle</option><option>Fat loss and habits</option><option>Coaching or collaboration</option></select></label>
+        <label>Anything else?<textarea name="message" rows="4" placeholder="Your starting point, training history, schedule…"></textarea></label>
+        <button class="button" type="submit">Send my note <span>→</span></button>
+        <p class="form-note">Your details are private. The form will connect to the CMS lead inbox when the backend is live.</p>
+      </form>
+    </section>
+  </main>
+</Layout>
 
-          <form class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div>
-              <label class="block text-sm font-medium mb-1">Name</label>
-              <input
-                type="text"
-                placeholder="Your name"
-                class="w-full rounded border p-2 focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium mb-1">Email</label>
-              <input
-                type="email"
-                placeholder="you@email.com"
-                class="w-full rounded border p-2 focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-            <div class="col-span-2">
-              <label class="block text-sm font-medium mb-1">Message</label>
-              <textarea
-                rows="4"
-                placeholder="Your message"
-                class="w-full rounded border p-2 focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-              ></textarea>
-            </div>
-            <button
-              type="submit"
-              class="mt-4 w-full rounded bg-primary px-4 py-2 text-white hover:bg-primary/90 transition-colour"
-            >
-              Send Message
-            </button>
-          </form>
-        </article>
-      </main>
-    </Layout>
-  </body>
-</html>
----
+<style>
+  .contact-page { min-height:100vh; padding-top:60px; background:radial-gradient(circle at 85% 0, #3d4823 0, transparent 29%),var(--ink); }
+  .contact-grid { display:grid; grid-template-columns:1fr .86fr; gap:clamp(35px,10vw,150px); align-items:start; }.contact-grid .display { margin-top:16px; font-size:clamp(3.2rem,7vw,7rem); }.contact-intro { max-width:470px; color:var(--muted); line-height:1.7; }.instagram-link { display:inline-block; margin-top:28px; color:var(--lime); border-bottom:1px solid var(--lime); }.lead-form { display:grid; gap:22px; padding:clamp(25px,4vw,48px); background:#20231e; }.lead-form label { display:grid; gap:9px; color:#d8d9d2; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; }.lead-form input,.lead-form select,.lead-form textarea { width:100%; padding:13px 0; color:var(--paper); background:transparent; border:0; border-bottom:1px solid var(--line); border-radius:0; font:16px Manrope,sans-serif; outline:none; }.lead-form select { color:#d8d9d2; }.lead-form option { color:var(--ink); }.lead-form input:focus,.lead-form textarea:focus { border-color:var(--lime); }.form-note { margin:0; color:var(--muted); font-size:11px; line-height:1.5; } @media(max-width:760px){.contact-grid{grid-template-columns:1fr;}}
+</style>

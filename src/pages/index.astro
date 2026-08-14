@@ -1,11 +1,75 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import hero from '../assets/images/fitwithnash-hero.png';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const programs = [
+  { label: '01 / Foundation', title: 'Build a body that lasts.', text: 'A progressive strength system for a powerful, capable baseline.', image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=1000&q=82' },
+  { label: '02 / Performance', title: 'Train with intent.', text: 'Structured programming for strength, muscle and athletic movement.', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1000&q=82' },
+  { label: '03 / Lifestyle', title: 'Make consistency normal.', text: 'Simple nutrition and habits that fit an ambitious real life.', image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1000&q=82' },
+];
+
+const posts = [
+  { category: 'Training notes', title: 'The training split that earns your consistency.', image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1000&q=82' },
+  { category: 'Nutrition', title: 'Stop restarting your nutrition every Monday.', image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1000&q=82' },
+  { category: 'Mindset', title: 'Your plan is only as good as your recovery.', image: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=1000&q=82' },
+];
 ---
 
 <Layout>
-	<Welcome />
+  <main>
+    <section class="hero">
+      <Image class="hero-image" src={hero} alt="A fitness coach training with a kettlebell in a modern gym" widths={[960, 1600, 2400]} sizes="100vw" priority />
+      <div class="hero-copy">
+        <p class="eyebrow">Evidence-led coaching / built for real life</p>
+        <h1 class="display">Strength isn’t a look.<br />It’s a <em>standard.</em></h1>
+        <p>Training, nutrition and accountability for people ready to feel strong in every room they walk into.</p>
+        <a class="button" href="/contact">Find your starting point <span>→</span></a>
+      </div>
+      <span class="hero-meta">FITWITHNASH / 01—26</span>
+    </section>
+
+    <section class="proof" aria-label="FitWithNash highlights">
+      <div><span>Not a quick fix</span><strong>Built to last.</strong></div>
+      <div><strong>01</strong><span>Clear training</span></div>
+      <div><strong>02</strong><span>Simple nutrition</span></div>
+      <div><strong>03</strong><span>Real accountability</span></div>
+    </section>
+
+    <section id="programs" class="section programs">
+      <p class="eyebrow">Ways to train</p>
+      <h2 class="section-title">A system for the work you’re actually ready to do.</h2>
+      <div class="program-grid">
+        {programs.map((program) => <article class="program-card" style={`background-image:url('${program.image}')`}><span>{program.label}</span><h3>{program.title}</h3><p>{program.text}</p></article>)}
+      </div>
+    </section>
+
+    <section id="method" class="section method">
+      <div class="method-copy">
+        <p class="eyebrow">The Nash method</p>
+        <h2 class="section-title">Less noise. Better reps. More belief.</h2>
+        <p>There’s no secret routine. There is a better way to show up: understand the why, execute the basics with quality, and build around a life you want to keep living.</p>
+        <div class="principles">
+          <div class="principle"><b>01</b><div><h3>Train the pattern</h3><p>Fundamental movement, progressive overload and enough recovery to adapt.</p></div></div>
+          <div class="principle"><b>02</b><div><h3>Fuel the person</h3><p>Nutrition that supports performance without turning food into a full-time job.</p></div></div>
+          <div class="principle"><b>03</b><div><h3>Build the identity</h3><p>Small, repeatable actions that make training part of who you are.</p></div></div>
+        </div>
+      </div>
+      <img class="method-image" src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=1100&q=85" alt="Athlete preparing to lift weights" loading="lazy" />
+    </section>
+
+    <section id="journal" class="section journal">
+      <p class="eyebrow">The journal</p>
+      <h2 class="section-title">Useful ideas for becoming harder to break.</h2>
+      <div class="journal-grid">
+        {posts.map((post) => <article class="post" style={`background-image:url('${post.image}')`}><span>{post.category}</span><h3>{post.title}</h3></article>)}
+      </div>
+    </section>
+
+    <section class="section instagram">
+      <p class="eyebrow">Daily training notes</p>
+      <h2>Follow the work.<br /><i>@fitwithnash</i></h2>
+      <a href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Visit Instagram ↗</a>
+    </section>
+  </main>
 </Layout>

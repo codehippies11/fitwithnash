@@ -1,33 +1,46 @@
-version: "3.9"
 services:
-  db:
-    image: postgres:15
-    restart: always
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: strapi
-      POSTGRES_USER: strapi
-      POSTGRES_PASSWORD: strapi123
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - pg_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   strapi:
     image: strapi/strapi:5.15.0
-    depends_on:
-      - db
-    environment:
-      DATABASE_HOST: db
-      DATABASE_PORT: 5432
-      DATABASE_DATABASE: strapi
-      DATABASE_USERNAME: strapi
-      DATABASE_PASSWORD: strapi123
-      DATABASE_SSL: "false"
-    ports:
-      - "1337:1337"
-    volumes:
-      - ./content-types.json:/usr/src/app/content-types.json:ro
     restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      HOST: 0.0.0.0
+      PORT: 1337
+      APP_KEYS: ${APP_KEYS}
+      API_TOKEN_SALT: ${API_TOKEN_SALT}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
+      JWT_SECRET: ${JWT_SECRET}
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${POSTGRES_DB}
+      DATABASE_USERNAME: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_SSL: "false"
+      PUBLIC_URL: ${PUBLIC_URL}
+    ports:
+      - "127.0.0.1:1337:1337"
+    volumes:
+      - strapi_uploads:/opt/app/public/uploads
 
 volumes:
-  pg_data:
+  postgres_data:
+  strapi_uploads:
