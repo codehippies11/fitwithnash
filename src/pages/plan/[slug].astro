@@ -1,0 +1,83 @@
+---
+import { getSEO } from '~/lib/seo';
+import type { InferGetStaticParamsType } from 'astro';
+
+export const getStaticPaths = async () => {
+  const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/plans`, {
+    headers: { Accept: 'application/json' },
+  });
+  const plans = await res.json();
+  return plans.map((p: any) => ({
+    params: { slug: p.slug },
+  }));
+};
+
+export async function getStaticMetadata({
+  params,
+}: InferGetStaticParamsType<{ params: { slug: string } }>) {
+  const slug = params.slug;
+  const planRes = await fetch(
+    `${import.meta.env.PUBLIC_API_URL}/plans/${slug}`
+  );
+  const plan = await planRes.json();
+
+  const seo = getSEO(
+    plan.metaTitle,
+    plan.metaDesc,
+    plan.image?.formats?.large?.thumbnailUrl
+  );
+
+  return {
+    title: seo.title,
+    description: seo.description,
+    openGraph: {
+      title: seo.title,
+      description: seo.description,
+      images: [{ url: seo.image }],
+    },
+    twitter: {
+      title: seo.title,
+      description: seo.description,
+      images: [{ url: seo.image }],
+      card: 'summary_large_image',
+    },
+  };
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body class="min-h-screen bg-gray-100 antialiased">
+    <Layout>
+      <main class="py-12 px-4 max-w-3xl mx-auto">
+        <article>
+          <h1 class="text-4xl font-bold mb-4">{plan.name}</h1>
+          <img
+            src={plan.image?.formats?.large?.thumbnailUrl}
+            alt={plan.name}
+            class="w-full h-48 object-cover rounded mb-6"
+          />
+          <div class="prose max-w-none">
+            <p>{plan.excerpt || 'No description available.'}</p>
+            <ul class="mt-4">
+              {#each plan.features as |feature|}
+                <li>{feature}</li>
+              {/each}
+            </ul>
+          </div>
+          <div class="mt-8">
+            <p class="font-medium">Price: {plan.price} {plan.currency || 'INR'}</p>
+          </div>
+        </article>
+      </main>
+    </Layout>
+  </body>
+</html>
+---

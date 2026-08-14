@@ -1,0 +1,69 @@
+---
+import { getSEO } from '~/lib/seo';
+import type { Metadata } from 'astro';
+
+export const getMetadata: () => Metadata = () => {
+  return getSEO(
+    'Contact',
+    'Get in touch with FitWithNash for inquiries, coaching, or partnership opportunities.',
+    undefined
+  );
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body class="min-h-screen bg-gray-100 antialiased">
+    <Layout>
+      <main class="py-12 px-4 max-w-2xl mx-auto">
+        <article class="prose max-w-none">
+          <h1 class="text-5xl font-bold mb-6">Contact Us</h1>
+          <p class="text-lg mb-6">
+            Have questions about our courses, want to book a session, or interested in a partnership? Fill out the form below and we'll get back to you shortly.
+          </p>
+
+          <form class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <label class="block text-sm font-medium mb-1">Name</label>
+              <input
+                type="text"
+                placeholder="Your name"
+                class="w-full rounded border p-2 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Email</label>
+              <input
+                type="email"
+                placeholder="you@email.com"
+                class="w-full rounded border p-2 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+            <div class="col-span-2">
+              <label class="block text-sm font-medium mb-1">Message</label>
+              <textarea
+                rows="4"
+                placeholder="Your message"
+                class="w-full rounded border p-2 focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              class="mt-4 w-full rounded bg-primary px-4 py-2 text-white hover:bg-primary/90 transition-colour"
+            >
+              Send Message
+            </button>
+          </form>
+        </article>
+      </main>
+    </Layout>
+  </body>
+</html>
+---
