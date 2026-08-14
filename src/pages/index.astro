@@ -8,6 +8,14 @@ import arunJourney from '../assets/images/journeys/arun-journey.png';
 import krishamJourney from '../assets/images/journeys/krisham-journey.png';
 import farbeenaJourney from '../assets/images/journeys/farbeena-journey.png';
 
+const base = import.meta.env.PUBLIC_SUPABASE_URL;
+const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+let media: Record<string, string> = {};
+if (base && key) {
+  const response = await fetch(`${base}/rest/v1/site_media?select=key,image_url`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+  if (response.ok) media = Object.fromEntries((await response.json()).map((item: { key: string; image_url: string }) => [item.key, item.image_url]));
+}
+
 const programs = [
   { label: '01 / Foundation', title: 'Build a body that lasts.', text: 'A progressive strength system for a powerful, capable baseline.', image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=1000&q=82' },
   { label: '02 / Performance', title: 'Train with intent.', text: 'Structured programming for strength, muscle and athletic movement.', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1000&q=82' },
@@ -21,16 +29,16 @@ const posts = [
 ];
 
 const journeys = [
-  { image: arunJourney, name: 'Arun', title: 'A standard built through phases.', detail: 'Fat loss, maintenance and muscle gain—built through patient work.' },
-  { image: krishamJourney, name: 'Krisham', title: 'Consistency, made visible.', detail: 'A stronger physique shaped by the routine behind it.' },
-  { image: farbeenaJourney, name: 'Farbeena', title: 'Progress that changes daily life.', detail: 'A journey that puts strength, energy and confidence back in the picture.' },
+  { image: media.home_journey_arun || arunJourney.src, name: 'Arun', title: 'A standard built through phases.', detail: 'Fat loss, maintenance and muscle gain—built through patient work.' },
+  { image: media.home_journey_krisham || krishamJourney.src, name: 'Krisham', title: 'Consistency, made visible.', detail: 'A stronger physique shaped by the routine behind it.' },
+  { image: media.home_journey_farbeena || farbeenaJourney.src, name: 'Farbeena', title: 'Progress that changes daily life.', detail: 'A journey that puts strength, energy and confidence back in the picture.' },
 ];
 ---
 
 <Layout>
   <main>
     <section class="hero" style={`--hero-gym:url(${heroGym.src})`}>
-      <div class="hero-portrait"><div class="hero-portrait__frame"><Image src={avinashProfile} alt="Avinash Sharma, FitWithNash fitness coach" widths={[160, 320]} sizes="(max-width: 760px) 150px, 230px" priority /></div><span>The real coach behind the work</span></div>
+      <div class="hero-portrait"><div class="hero-portrait__frame"><img src={media.hero_portrait || avinashProfile.src} alt="Avinash Sharma, FitWithNash fitness coach" /></div><span>The real coach behind the work</span></div>
       <div class="hero-copy">
         <p class="eyebrow">Evidence-led coaching / built for real life</p>
         <h1 class="display">Strength isn’t a look.<br />It’s a <em>standard.</em></h1>
@@ -62,7 +70,7 @@ const journeys = [
 
     <section class="section journey-feature" id="journeys">
       <div class="journey-feature__intro"><p class="eyebrow">The journey / Real people, real work</p><h2 class="section-title">The photo is the proof.<br />The <em>becoming</em> is the win.</h2><p>No miracle promises. Just a better relationship with training, food and the commitments you make to yourself—built one ordinary day at a time.</p><a class="button" href="/transformations">See every journey <span>→</span></a></div>
-      <div class="journey-feature__stories">{journeys.map((journey, index) => <article class="journey-feature__card"><div class="journey-feature__image"><Image src={journey.image} alt={`${journey.name}'s authentic FitWithNash before-and-after journey`} loading="lazy" /><span>Original paired photo</span></div><p class="eyebrow">0{index + 1} / {journey.name}</p><h3>{journey.title}</h3><p>{journey.detail}</p></article>)}</div>
+      <div class="journey-feature__stories">{journeys.map((journey, index) => <article class="journey-feature__card"><div class="journey-feature__image"><img src={journey.image} alt={`${journey.name}'s authentic FitWithNash before-and-after journey`} loading="lazy" /><span>Original paired photo</span></div><p class="eyebrow">0{index + 1} / {journey.name}</p><h3>{journey.title}</h3><p>{journey.detail}</p></article>)}</div>
       <p class="journey-feature__note">Each card uses its original paired client photograph. Background, face and body have not been AI-altered. Individual results vary.</p>
     </section>
 
