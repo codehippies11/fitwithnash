@@ -1,10 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import journeyOne from '../assets/images/instagram/85b49baef4491832-editorial.png';
-import journeyTwo from '../assets/images/instagram/bc756d5e1be5d9f8.jpg';
-import journeyThree from '../assets/images/instagram/3ee4ca7f752ed54b.jpg';
-import journeyFour from '../assets/images/instagram/b9bc2ea88b38098e.jpg';
+import transformationJourney from '../assets/images/instagram/fe49d0a755944497.jpg';
 export const prerender = false;
 const base = import.meta.env.PUBLIC_SUPABASE_URL;
 const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
@@ -13,18 +10,13 @@ if (base && key) {
   const response = await fetch(`${base}/rest/v1/transformations?is_published=eq.true&select=*&order=created_at.desc`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
   stories = await response.json();
 }
-const highlights = [
-  { image: journeyOne, label: 'Start where you are / editorial treatment', title: 'Consistency becomes visible.' },
-  { image: journeyTwo, label: 'Build the basics', title: 'Strength is learned, not wished for.' },
-  { image: journeyThree, label: 'Stay in the work', title: 'Better habits change more than a photo.' },
-  { image: journeyFour, label: 'Own your progress', title: 'The real result is trusting yourself.' },
-];
+const highlights = [{ image: transformationJourney, label: 'Authentic paired journey', title: 'The before and after belong to the same story.' }];
 ---
 <Layout title="Transformation journeys | FitWithNash" description="Real FitWithNash coaching journeys built on strength, nutrition and sustainable habits.">
   <main class="transformations">
     <section class="journey-hero section"><p class="eyebrow">Client experiences</p><h1 class="display">The before is a moment.<br />The <em>becoming</em> is the story.</h1><p>These are not miracle promises. They are the visible result of better training, repeatable nutrition and someone deciding that they deserve to feel strong.</p><a class="button" href="/contact">Start your own story <span>→</span></a></section>
     <section class="journey-grid section" aria-label="FitWithNash client journeys">
-      {stories.length ? stories.map((story) => <article class="cms-story"><div class="story-images">{story.before_image_url && <img src={story.before_image_url} alt={`${story.client_name} before their coaching journey`} />}{story.after_image_url && <img src={story.after_image_url} alt={`${story.client_name} during their coaching journey`} />}</div><p class="eyebrow">{story.client_name}</p><h2>{story.title}</h2><p>{story.story}</p></article>) : highlights.map((story, index) => <article class="journey-card"><div class="journey-image"><Image src={story.image} alt="FitWithNash coaching journey" loading="lazy" /><span>{String(index + 1).padStart(2, '0')}</span></div><p class="eyebrow">{story.label}</p><h2>{story.title}</h2><p>Shared from the FitWithNash community. Every journey starts with a conversation about your life, your goal and the standard you want to hold.</p></article>)}
+      {stories.length ? stories.map((story) => <article class="cms-story"><div class="story-images">{story.before_image_url && <img src={story.before_image_url} alt={`${story.client_name} before their coaching journey`} />}{story.after_image_url && <img src={story.after_image_url} alt={`${story.client_name} during their coaching journey`} />}</div><p class="eyebrow">{story.client_name}</p><h2>{story.title}</h2><p>{story.story}</p></article>) : highlights.map((story, index) => <article class="journey-card"><div class="journey-image"><Image src={story.image} alt="Authentic FitWithNash client before-and-after transformation shared in one Instagram post" loading="lazy" /><span>{String(index + 1).padStart(2, '0')}</span></div><p class="eyebrow">{story.label}</p><h2>{story.title}</h2><p>This original paired photo is shared as one complete client journey. The goal is not a quick fix—it is progress built through training, nutrition and consistency.</p></article>)}
     </section>
     <section class="journey-cta section"><p class="eyebrow">Your turn</p><h2>There is no perfect time to start. There is a first honest step.</h2><p>Tell Avinash what you want to change. You’ll get clarity on the right way to begin—not another recycled plan.</p><div><a class="button" href="https://wa.me/918360669905?text=Hi%20Avinash%2C%20I%20want%20to%20start%20my%20fitness%20journey." target="_blank" rel="noreferrer">Message on WhatsApp <span>→</span></a><a class="text-link" href="/contact">Or send a detailed enquiry ↗</a></div></section>
   </main>
