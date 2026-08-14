@@ -30,9 +30,22 @@ create table if not exists public.cms_assets (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.transformations (
+  id uuid primary key default gen_random_uuid(),
+  slug text unique not null check (slug ~ '^[a-z0-9]+(?:-[a-z0-9]+)*$'),
+  client_name text not null,
+  title text not null,
+  story text not null,
+  before_image_url text,
+  after_image_url text,
+  is_published boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
 alter table public.profiles enable row level security;
 alter table public.trainers enable row level security;
 alter table public.cms_assets enable row level security;
+alter table public.transformations enable row level security;
 
 create or replace function public.is_cms_editor() returns boolean language sql stable security definer set search_path = public as $$
   select exists (select 1 from public.profiles where id = auth.uid() and role in ('admin', 'editor'));
@@ -42,6 +55,8 @@ create policy "published trainers are public" on public.trainers for select usin
 create policy "editors manage trainers" on public.trainers for all using (public.is_cms_editor()) with check (public.is_cms_editor());
 create policy "editors read assets" on public.cms_assets for select using (public.is_cms_editor());
 create policy "editors manage assets" on public.cms_assets for all using (public.is_cms_editor()) with check (public.is_cms_editor());
+create policy "published transformations are public" on public.transformations for select using (is_published or public.is_cms_editor());
+create policy "editors manage transformations" on public.transformations for all using (public.is_cms_editor()) with check (public.is_cms_editor());
 
 insert into storage.buckets (id, name, public) values ('cms-images', 'cms-images', true) on conflict (id) do nothing;
 create policy "public can view CMS images" on storage.objects for select using (bucket_id = 'cms-images');

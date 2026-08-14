@@ -10,7 +10,7 @@ const {
   title = 'FitWithNash | Strength, built for real life.',
   description = 'Practical training, sustainable nutrition, and a stronger version of you with FitWithNash.',
 } = Astro.props;
-const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, '');
+const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, '') || '918360669905';
 ---
 
 <!doctype html>
