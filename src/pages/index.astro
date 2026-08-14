@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import hero from '../assets/images/fitwithnash-hero.png';
 import coaching from '../assets/images/avinash-coaching.png';
-import resultOne from '../assets/images/instagram/85b49baef4491832.jpg';
+import resultOne from '../assets/images/instagram/85b49baef4491832-editorial.png';
 import resultTwo from '../assets/images/instagram/bc756d5e1be5d9f8.jpg';
 import resultThree from '../assets/images/instagram/3ee4ca7f752ed54b.jpg';
 
@@ -53,7 +53,15 @@ const posts = [
       <div class="offer-list"><article><b>1:1 COACHING</b><h3>Your training, reviewed.</h3><p>Personal programming, clear feedback and a plan that adapts when work, travel or life gets loud.</p></article><article><b>PROGRAMS</b><h3>A proven place to start.</h3><p>Structured blocks for people who want direction without pretending fitness is their only priority.</p></article><article><b>FORM & MINDSET</b><h3>Build confidence under the bar.</h3><p>Learn the movements, understand your effort, and stop second-guessing every session.</p></article><a class="button dark" href="/contact">Talk to Nash <span>→</span></a></div>
     </section>
 
-    <section class="section results-preview"><div><p class="eyebrow">The Results</p><h2 class="section-title">This isn’t about chasing a perfect body. It’s about becoming proud of the way you show up.</h2><p>Every story starts with a different goal: strength, confidence, energy, or simply getting back in control. The standard is progress you can actually live with.</p><a class="button" href="/transformations">See the journeys <span>→</span></a></div><div class="results-images"><Image src={resultOne} alt="FitWithNash transformation result" loading="lazy" /><Image src={resultTwo} alt="FitWithNash client result" loading="lazy" /><Image src={resultThree} alt="FitWithNash coaching transformation" loading="lazy" /></div></section>
+    <section class="section journey-feature" id="journeys">
+      <div class="journey-feature__intro"><p class="eyebrow">The journey / Real people, real work</p><h2 class="section-title">The photo is the proof.<br />The <em>becoming</em> is the win.</h2><p>No miracle promises. Just a better relationship with training, food and the commitments you make to yourself—built one ordinary day at a time.</p><a class="button" href="/transformations">See every journey <span>→</span></a></div>
+      <div class="journey-feature__stories">
+        <article class="journey-feature__lead"><Image src={resultOne} alt="FitWithNash community member in an editorial journey portrait" loading="lazy" /><div><span>01 / Start</span><h3>Show up before you feel ready.</h3></div></article>
+        <article class="journey-feature__side"><Image src={resultTwo} alt="FitWithNash client progress shared on Instagram" loading="lazy" /><div><span>02 / Build</span><h3>Make the basics non-negotiable.</h3></div></article>
+        <article class="journey-feature__side"><Image src={resultThree} alt="FitWithNash coaching journey shared on Instagram" loading="lazy" /><div><span>03 / Own it</span><h3>Become someone you can rely on.</h3></div></article>
+      </div>
+      <p class="journey-feature__note">Editorial image treatment is used for presentation only. Individual results vary; the work behind them is always personal.</p>
+    </section>
 
     <section id="method" class="section method">
       <div class="method-copy">
