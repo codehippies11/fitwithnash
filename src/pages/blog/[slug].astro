@@ -1,79 +1,38 @@
 ---
-import { getSEO } from '~/lib/seo';
-import type { InferGetStaticParamsType } from 'astro';
+import Layout from '../../layouts/Layout.astro';
 
 export const getStaticPaths = async () => {
-  const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/blog-posts`, {
-    headers: { Accept: 'application/json' },
-  });
+  const apiUrl = import.meta.env.PUBLIC_API_URL;
+  if (!apiUrl) {
+    throw new Error('PUBLIC_API_URL must be set to build blog pages.');
+  }
+
+  const res = await fetch(`${apiUrl}/blog-posts`, { headers: { Accept: 'application/json' } });
+  if (!res.ok) throw new Error(`Unable to load blog posts: ${res.status}`);
+
   const posts = await res.json();
-  return posts.map((p: any) => ({
-    params: { slug: p.slug },
+  return Promise.all(posts.map(async ({ slug }: { slug: string }) => {
+    const postRes = await fetch(`${apiUrl}/blog-posts/${slug}`);
+    if (!postRes.ok) throw new Error(`Unable to load blog post ${slug}: ${postRes.status}`);
+    return { params: { slug }, props: { post: await postRes.json() } };
   }));
 };
 
-export async function getStaticMetadata({
-  params,
-}: InferGetStaticParamsType<{ params: { slug: string } }>) {
-  const slug = params.slug;
-  const postRes = await fetch(
-    `${import.meta.env.PUBLIC_API_URL}/blog-posts/${slug}`
-  );
-  const post = await postRes.json();
-
-  const seo = getSEO(
-    post.metaTitle,
-    post.metaDesc,
-    post.image?.formats?.large?.thumbnailUrl
-  );
-
-  return {
-    title: seo.title,
-    description: seo.description,
-    openGraph: {
-      title: seo.title,
-      description: seo.description,
-      images: [{ url: seo.image }],
-    },
-    twitter: {
-      title: seo.title,
-      description: seo.description,
-      images: [{ url: seo.image }],
-      card: 'summary_large_image',
-    },
-  };
-}
+const { post } = Astro.props;
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-  </head>
-  <body class="min-h-screen bg-gray-100 antialiased">
-    <Layout>
-      <main class="py-12 px-4 max-w-2xl mx-auto">
-        <article>
-          <h1 class="text-4xl font-bold mb-4">{post.title}</h1>
-          <img
-            src={post.image?.formats?.large?.thumbnailUrl}
-            alt={post.title}
-            class="w-full h-48 object-cover rounded mb-6"
-          />
-          <div class="prose max-w-none">
-            <p>{post.excerpt}</p>
-            <div dangerouslySetInnerHTML={{ __html: post.body }} />
-          </div>
-          <footer class="mt-8 text-sm text-gray-600">
-            Posted on {new Date(post.publishDate).toLocaleDateString()}
-          </footer>
-        </article>
-      </main>
-    </Layout>
-  </body>
-</html>
----
+<Layout>
+  <main class="py-12 px-4 max-w-2xl mx-auto">
+    <article>
+      <h1 class="text-4xl font-bold mb-4">{post.title}</h1>
+      {post.image?.formats?.large?.thumbnailUrl && <img src={post.image.formats.large.thumbnailUrl} alt={post.title} class="w-full h-48 object-cover rounded mb-6" />}
+      <div class="prose max-w-none">
+        <p>{post.excerpt}</p>
+        <Fragment set:html={post.body} />
+      </div>
+      <footer class="mt-8 text-sm text-gray-600">
+        Posted on {new Date(post.publishDate).toLocaleDateString()}
+      </footer>
+    </article>
+  </main>
+</Layout>

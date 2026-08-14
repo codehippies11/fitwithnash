@@ -1,92 +1,61 @@
 ---
-import { getSEO } from '~/lib/seo';
-import type { InferGetStaticParamsType } from 'astro';
+import Layout from '../../layouts/Layout.astro';
 
 export const getStaticPaths = async () => {
-  // In production, fetch from Strapi API
-  const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/instructors`, {
+  const apiUrl = import.meta.env.PUBLIC_API_URL;
+  if (!apiUrl) {
+    throw new Error('PUBLIC_API_URL must be set to build instructor pages.');
+  }
+
+  const res = await fetch(`${apiUrl}/instructors`, {
     headers: { Accept: 'application/json' },
   });
+  if (!res.ok) throw new Error(`Unable to load instructors: ${res.status}`);
+
   const instructors = await res.json();
-  return instructors.map((i: any) => ({
-    params: { slug: i.slug },
+  return Promise.all(instructors.map(async ({ slug }: { slug: string }) => {
+    const instructorRes = await fetch(`${apiUrl}/instructors/${slug}`);
+    if (!instructorRes.ok) throw new Error(`Unable to load instructor ${slug}: ${instructorRes.status}`);
+    return { params: { slug }, props: { instructor: await instructorRes.json() } };
   }));
 };
 
-export async function getStaticMetadata({
-  params,
-}: InferGetStaticParamsType<{ params: { slug: string } }>) {
-  const slug = params.slug;
-  // Fetch instructor details from Strapi (replace with real GraphQL client)
-  const instructorRes = await fetch(
-    `${import.meta.env.PUBLIC_API_URL}/instructors/${slug}`
-  );
-  const instructor = await instructorRes.json();
-
-  const seo = getSEO(
-    instructor.metaTitle,
-    instructor.metaDesc,
-    instructor.image?.formats?.large?.thumbnailUrl
-  );
-
-  return {
-    title: seo.title,
-    description: seo.description,
-    openGraph: {
-      title: seo.title,
-      description: seo.description,
-      images: [{ url: seo.image }],
-    },
-    twitter: {
-      title: seo.title,
-      description: seo.description,
-      images: [{ url: seo.image }],
-      card: 'summary_large_image',
-    },
-  };
-}
+const { instructor } = Astro.props;
+const title = instructor.metaTitle || instructor.fullName || 'Instructor';
+const description = instructor.metaDesc || instructor.bio || '';
+const socialLinks = [
+  ['Instagram', instructor.social?.instagram, 'text-blue-600'],
+  ['YouTube', instructor.social?.youtube, 'text-red-600'],
+  ['LinkedIn', instructor.social?.linkedin, 'text-blue-500'],
+].filter(([, link]) => link?.url);
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    {/* Open Graph & Twitter cards injected by getStaticMetadata */}
-  </head>
-  <body class="min-h-screen bg-gray-100 antialiased">
-    <Layout>
-      <main class="py-12 px-4 max-w-4xl mx-auto">
-        <article>
-          <h1 class="text-4xl font-bold mb-4">{instructor.fullName}</h1>
-          <img
-            src={instructor.image?.formats?.large?.thumbnailUrl}
-            alt={instructor.fullName}
-            class="w-full h-auto rounded mb-6"
-          />
-          <div class="prose max-w-none">
-            <p>{instructor.bio || 'No biography available.'}</p>
-          </div>
-          <div class="mt-8">
-            <h2 class="text-2xl font-semibold">Social Links</h2>
-            <ul class="list-disc pl-5">
-              {#if (instructor.social.instagram)}
-                <li><a href={instructor.social.instagram.url} class="text-blue-600 hover:underline" target="_blank">Instagram</a></li>
-              {/if}
-              {#if (instructor.social.youtube)}
-                <li><a href={instructor.social.youtube.url} class="text-red-600 hover:underline" target="_blank">YouTube</a></li>
-              {/if}
-              {#if (instructor.social.linkedin)}
-                <li><a href={instructor.social.linkedin.url} class="text-blue-500 hover:underline" target="_blank">LinkedIn</a></li>
-              {/if}
-            </ul>
-          </div>
-        </article>
-      </main>
-    </Layout>
-  </body>
-</html>
----
+<Layout>
+  <main class="py-12 px-4 max-w-4xl mx-auto">
+    <article>
+      <h1 class="text-4xl font-bold mb-4">{instructor.fullName}</h1>
+      {instructor.image?.formats?.large?.thumbnailUrl && (
+        <img
+          src={instructor.image.formats.large.thumbnailUrl}
+          alt={instructor.fullName}
+          class="w-full h-auto rounded mb-6"
+        />
+      )}
+      <div class="prose max-w-none">
+        <p>{instructor.bio || 'No biography available.'}</p>
+      </div>
+      {socialLinks.length > 0 && (
+        <div class="mt-8">
+          <h2 class="text-2xl font-semibold">Social Links</h2>
+          <ul class="list-disc pl-5">
+            {socialLinks.map(([name, link, colorClass]) => (
+              <li>
+                <a href={link.url} class={`${colorClass} hover:underline`} target="_blank" rel="noreferrer">{name}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </article>
+  </main>
+</Layout>

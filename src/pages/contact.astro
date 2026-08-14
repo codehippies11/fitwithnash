@@ -1,14 +1,9 @@
 ---
-import { getSEO } from '~/lib/seo';
-import type { Metadata } from 'astro';
+import Layout from '../layouts/Layout.astro';
 
-export const getMetadata: () => Metadata = () => {
-  return getSEO(
-    'Contact',
-    'Get in touch with FitWithNash for inquiries, coaching, or partnership opportunities.',
-    undefined
-  );
-};
+const title = 'Contact | FitWithNash';
+const description =
+  'Get in touch with FitWithNash for inquiries, coaching, or partnership opportunities.';
 ---
 
 <!DOCTYPE html>
