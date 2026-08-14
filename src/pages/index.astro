@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import hero from '../assets/images/fitwithnash-hero.png';
+import coaching from '../assets/images/avinash-coaching.png';
 import resultOne from '../assets/images/instagram/85b49baef4491832.jpg';
 import resultTwo from '../assets/images/instagram/bc756d5e1be5d9f8.jpg';
 import resultThree from '../assets/images/instagram/3ee4ca7f752ed54b.jpg';
@@ -65,7 +66,7 @@ const posts = [
           <div class="principle"><b>03</b><div><h3>Build the identity</h3><p>Small, repeatable actions that make training part of who you are.</p></div></div>
         </div>
       </div>
-      <img class="method-image" src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=1100&q=85" alt="Athlete preparing to lift weights" loading="lazy" />
+      <Image class="method-image" src={coaching} alt="Avinash coaching a strength-training session" widths={[720, 1080, 1440]} sizes="(max-width: 760px) 100vw, 48vw" loading="lazy" />
     </section>
 
     <section id="journal" class="section journal">
