@@ -28,6 +28,15 @@ Inside of your Astro project, you'll see the following folders and files:
 
 To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
 
+## CMS configuration
+
+The frontend deploys without a CMS; dynamic blog, plan, and instructor pages are generated when a CMS is configured.
+
+- `PUBLIC_API_URL`: public base URL of the CMS API, without a trailing resource path (for example, `https://cms.example.com/api`).
+- `CMS_API_TOKEN` (optional): server-side bearer token used only while Vercel builds static pages. Do not prefix this key with `PUBLIC_`.
+
+The CMS must expose `GET /blog-posts`, `GET /plans`, and `GET /instructors`, plus `GET /{resource}/{slug}` detail endpoints. After setting or changing either variable in Vercel, redeploy the site to regenerate the static pages.
+
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:
