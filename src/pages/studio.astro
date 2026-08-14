@@ -12,7 +12,7 @@ const websiteMedia = [
   { key: 'home_journey_farbeena', name: 'Farbeena journey', image: farbeenaJourney },
 ];
 ---
-<Layout title="FitWithNash Studio" bare>
+<Layout title="FitWithNash Studio" bare noindex>
   <main class="studio">
     {url && key ? <><section id="login-view" class="login-view"><p class="eyebrow">FitWithNash / private CMS</p><h1>Content studio</h1><p>Sign in to manage the live website.</p><form id="login"><label>CMS ID or email<input name="email" type="text" autocomplete="username" required /></label><label>Password<div class="password-field"><input name="password" type="password" autocomplete="current-password" required /><button id="toggle-password" type="button" aria-label="Show password">Show</button></div></label><button class="button">Sign in <span>→</span></button></form></section>
       <section id="editor" hidden>
