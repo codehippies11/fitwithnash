@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import avinashProfile from '../assets/images/avinash-profile-real.png';
+import heroGym from '../assets/images/hero-gym-empty.png';
 import coaching from '../assets/images/avinash-coaching.png';
 import arunJourney from '../assets/images/journeys/arun-journey.png';
 import krishamJourney from '../assets/images/journeys/krisham-journey.png';
@@ -28,7 +29,7 @@ const journeys = [
 
 <Layout>
   <main>
-    <section class="hero">
+    <section class="hero" style={`--hero-gym:url(${heroGym.src})`}>
       <div class="hero-portrait"><Image src={avinashProfile} alt="Avinash Sharma, FitWithNash fitness coach" widths={[160, 320]} sizes="(max-width: 760px) 160px, 300px" priority /><span>The real coach behind the work</span></div>
       <div class="hero-copy">
         <p class="eyebrow">Evidence-led coaching / built for real life</p>
