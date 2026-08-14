@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 
+export const prerender = true;
+
 export const getStaticPaths = async () => {
   const apiUrl = import.meta.env.PUBLIC_API_URL;
   if (!apiUrl) {

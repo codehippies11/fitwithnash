@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+const url = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
+---
+<Layout title="FitWithNash Studio">
+  <main class="studio section">
+    <p class="eyebrow">Private CMS</p><h1 class="section-title">Trainer studio</h1>
+    {url && key ? <><form id="login"><input type="email" placeholder="Email" required /><input type="password" placeholder="Password" required /><button class="button">Sign in</button></form><form id="trainer" hidden><input name="full_name" placeholder="Trainer name" required /><input name="slug" placeholder="trainer-slug" required /><input name="headline" placeholder="Headline" /><textarea name="bio" placeholder="Bio"></textarea><input name="instagram_url" placeholder="Instagram URL" /><input name="image" type="file" accept="image/*" /><label><input name="published" type="checkbox" /> Publish this trainer</label><button class="button">Save trainer</button></form><p id="status"></p></> : <p>Configure <code>PUBLIC_SUPABASE_URL</code> and <code>PUBLIC_SUPABASE_ANON_KEY</code> in Vercel, then redeploy.</p>}
+  </main>
+</Layout>
+<script define:vars={{ url, key }}>
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  if (url && key) {
+    const supabase = createClient(url, key); const login = document.querySelector('#login'); const trainer = document.querySelector('#trainer'); const status = document.querySelector('#status');
+    login?.addEventListener('submit', async (event) => { event.preventDefault(); const fields = new FormData(login); const { error } = await supabase.auth.signInWithPassword({ email: fields.get('email'), password: fields.get('password') }); if (error) status.textContent = error.message; else { login.hidden = true; trainer.hidden = false; status.textContent = 'Signed in. Create a trainer and publish when ready.'; } });
+    trainer?.addEventListener('submit', async (event) => { event.preventDefault(); const data = new FormData(trainer); let avatar_url = null; const file = data.get('image'); if (file instanceof File && file.size) { const path = `${crypto.randomUUID()}-${file.name}`; const uploaded = await supabase.storage.from('cms-images').upload(path, file); if (uploaded.error) return status.textContent = uploaded.error.message; avatar_url = supabase.storage.from('cms-images').getPublicUrl(path).data.publicUrl; } const { error } = await supabase.from('trainers').insert({ full_name:data.get('full_name'), slug:data.get('slug'), headline:data.get('headline'), bio:data.get('bio'), instagram_url:data.get('instagram_url'), avatar_url, is_published:data.get('published') === 'on' }); status.textContent = error ? error.message : 'Trainer saved. Their page is live at /instructor/' + data.get('slug'); if (!error) trainer.reset(); });
+  }
+</script>
+<style>.studio{min-height:100vh;padding-top:150px}.studio form{display:grid;max-width:560px;gap:14px;margin:34px 0}.studio input,.studio textarea{padding:14px;background:#20231e;color:var(--paper);border:1px solid var(--line);font:inherit}.studio label{font-size:13px}.studio code{color:var(--lime)}</style>

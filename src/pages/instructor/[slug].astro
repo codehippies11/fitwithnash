@@ -1,67 +1,18 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-
-export const getStaticPaths = async () => {
-  const apiUrl = import.meta.env.PUBLIC_API_URL;
-  if (!apiUrl) {
-    return [];
-  }
-  const headers = {
-    Accept: 'application/json',
-    ...(import.meta.env.CMS_API_TOKEN
-      ? { Authorization: `Bearer ${import.meta.env.CMS_API_TOKEN}` }
-      : {}),
-  };
-
-  const res = await fetch(`${apiUrl}/instructors`, {
-    headers,
-  });
-  if (!res.ok) throw new Error(`Unable to load instructors: ${res.status}`);
-
-  const instructors = await res.json();
-  return Promise.all(instructors.map(async ({ slug }: { slug: string }) => {
-    const instructorRes = await fetch(`${apiUrl}/instructors/${slug}`, { headers });
-    if (!instructorRes.ok) throw new Error(`Unable to load instructor ${slug}: ${instructorRes.status}`);
-    return { params: { slug }, props: { instructor: await instructorRes.json() } };
-  }));
-};
-
-const { instructor } = Astro.props;
-const title = instructor.metaTitle || instructor.fullName || 'Instructor';
-const description = instructor.metaDesc || instructor.bio || '';
-const socialLinks = [
-  ['Instagram', instructor.social?.instagram, 'text-blue-600'],
-  ['YouTube', instructor.social?.youtube, 'text-red-600'],
-  ['LinkedIn', instructor.social?.linkedin, 'text-blue-500'],
-].filter(([, link]) => link?.url);
+export const prerender = false;
+const { slug } = Astro.params;
+const base = import.meta.env.PUBLIC_SUPABASE_URL;
+const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+let trainer: any = null;
+if (base && key && slug) {
+  const res = await fetch(`${base}/rest/v1/trainers?slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&select=*`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+  trainer = (await res.json())[0] || null;
+}
 ---
-
-<Layout>
-  <main class="py-12 px-4 max-w-4xl mx-auto">
-    <article>
-      <h1 class="text-4xl font-bold mb-4">{instructor.fullName}</h1>
-      {instructor.image?.formats?.large?.thumbnailUrl && (
-        <img
-          src={instructor.image.formats.large.thumbnailUrl}
-          alt={instructor.fullName}
-          class="w-full h-auto rounded mb-6"
-        />
-      )}
-      <div class="prose max-w-none">
-        <p>{instructor.bio || 'No biography available.'}</p>
-      </div>
-      {socialLinks.length > 0 && (
-        <div class="mt-8">
-          <h2 class="text-2xl font-semibold">Social Links</h2>
-          <ul class="list-disc pl-5">
-            {socialLinks.map(([name, link, colorClass]) => (
-              <li>
-                <a href={link.url} class={`${colorClass} hover:underline`} target="_blank" rel="noreferrer">{name}</a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </article>
+<Layout title={trainer ? `${trainer.full_name} | FitWithNash` : 'Trainer | FitWithNash'} description={trainer?.meta_description || trainer?.bio || 'Meet the FitWithNash coaching team.'}>
+  <main class="trainer-page section">
+    {trainer ? <article><img src={trainer.avatar_url || 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=1200&q=85'} alt={trainer.full_name} /><div><p class="eyebrow">FitWithNash coach</p><h1 class="display">{trainer.full_name}</h1><p class="headline">{trainer.headline}</p><p>{trainer.bio}</p>{trainer.instagram_url && <a class="button" href={trainer.instagram_url}>Follow on Instagram ↗</a>}</div></article> : <section><p class="eyebrow">Not found</p><h1 class="section-title">This trainer isn’t published yet.</h1><a class="button" href="/">Back home</a></section>}
   </main>
 </Layout>
+<style>.trainer-page{padding-top:150px}.trainer-page article{display:grid;grid-template-columns:.85fr 1fr;gap:clamp(30px,8vw,120px);align-items:center}.trainer-page img{aspect-ratio:4/5;width:100%;object-fit:cover}.headline{color:var(--lime);font-size:20px}.trainer-page article p:not(.eyebrow):not(.headline){max-width:560px;color:var(--muted);line-height:1.8}@media(max-width:760px){.trainer-page article{grid-template-columns:1fr}}</style>
