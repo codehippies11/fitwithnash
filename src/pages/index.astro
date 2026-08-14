@@ -11,16 +11,20 @@ import farbeenaJourney from '../assets/images/journeys/farbeena-journey.png';
 const base = import.meta.env.PUBLIC_SUPABASE_URL;
 const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 let media: Record<string, string> = {};
+let cmsPrograms: any[] = [];
 if (base && key) {
   const response = await fetch(`${base}/rest/v1/site_media?select=key,image_url`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
   if (response.ok) media = Object.fromEntries((await response.json()).map((item: { key: string; image_url: string }) => [item.key, item.image_url]));
+  const programsResponse = await fetch(`${base}/rest/v1/programs?is_published=eq.true&select=*&order=sort_order.asc,created_at.asc`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+  if (programsResponse.ok) cmsPrograms = await programsResponse.json();
 }
 
-const programs = [
-  { label: '01 / Foundation', title: 'Build a body that lasts.', text: 'A progressive strength system for a powerful, capable baseline.', image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=1000&q=82' },
-  { label: '02 / Performance', title: 'Train with intent.', text: 'Structured programming for strength, muscle and athletic movement.', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1000&q=82' },
-  { label: '03 / Lifestyle', title: 'Make consistency normal.', text: 'Simple nutrition and habits that fit an ambitious real life.', image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1000&q=82' },
+const placeholderPrograms = [
+  { label: '01 / Online coaching', title: 'The Personal Standard.', description: 'A fully personalised training, nutrition and accountability system for ambitious people who want a coach in their corner.', price: 'From ₹4,999 / month', image_url: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=1000&q=82' },
+  { label: '02 / Transformation', title: '12 Weeks, Built Properly.', description: 'A focused transformation block with progressive programming, weekly check-ins and habits you can actually keep.', price: 'From ₹12,999 / 12 weeks', image_url: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1000&q=82' },
+  { label: '03 / Foundation', title: 'Start Strong.', description: 'A practical entry plan for training, food and recovery—built to turn uncertainty into a routine you trust.', price: 'From ₹2,499', image_url: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1000&q=82' },
 ];
+const programs = cmsPrograms.length ? cmsPrograms : placeholderPrograms;
 
 const posts = [
   { category: 'Training notes', title: 'The training split that earns your consistency.', image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1000&q=82' },
@@ -59,7 +63,7 @@ const journeys = [
       <p class="eyebrow">Ways to train</p>
       <h2 class="section-title">A system for the work you’re actually ready to do.</h2>
       <div class="program-grid">
-        {programs.map((program) => <article class="program-card" style={`background-image:url('${program.image}')`}><span>{program.label}</span><h3>{program.title}</h3><p>{program.text}</p></article>)}
+        {programs.map((program) => <article class="program-card" style={`background-image:url('${program.image_url}')`}><span>{program.label}</span><h3>{program.title}</h3><p>{program.description}</p><strong class="program-price">{program.price}</strong><a href="/contact">Ask about this program ↗</a></article>)}
       </div>
     </section>
 
