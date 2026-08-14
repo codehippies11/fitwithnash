@@ -10,6 +10,7 @@ const {
   title = 'FitWithNash | Strength, built for real life.',
   description = 'Practical training, sustainable nutrition, and a stronger version of you with FitWithNash.',
 } = Astro.props;
+const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, '');
 ---
 
 <!doctype html>
@@ -40,6 +41,10 @@ const {
       <a class="header-cta" href="/contact">Start here <span aria-hidden="true">↗</span></a>
     </header>
     <slot />
+    <aside class="social-float" aria-label="Quick contact">
+      <a class="social-float__link social-float__instagram" href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer" aria-label="Message FitWithNash on Instagram"><span aria-hidden="true">◎</span><b>Instagram</b></a>
+      {whatsappNumber && <a class="social-float__link social-float__whatsapp" href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hi Nash, I would like to know more about coaching.')}`} target="_blank" rel="noreferrer" aria-label="Message FitWithNash on WhatsApp"><span aria-hidden="true">◔</span><b>WhatsApp</b></a>}
+    </aside>
     <footer class="site-footer">
       <div><a class="brand" href="/"><span>FIT</span>WITHNASH</a><p>Strength, built for real life.</p></div>
       <div class="footer-links"><a href="#programs">Programs</a><a href="/contact">Contact</a><a href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Instagram ↗</a></div>
