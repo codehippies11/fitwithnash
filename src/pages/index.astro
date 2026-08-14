@@ -2,6 +2,9 @@
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import hero from '../assets/images/fitwithnash-hero.png';
+import resultOne from '../assets/images/instagram/85b49baef4491832.jpg';
+import resultTwo from '../assets/images/instagram/bc756d5e1be5d9f8.jpg';
+import resultThree from '../assets/images/instagram/3ee4ca7f752ed54b.jpg';
 
 const programs = [
   { label: '01 / Foundation', title: 'Build a body that lasts.', text: 'A progressive strength system for a powerful, capable baseline.', image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=1000&q=82' },
@@ -48,6 +51,8 @@ const posts = [
       <div><p class="eyebrow">Coaching that meets you where you are</p><h2 class="section-title">You don’t need another plan saved to your phone. You need a coach who notices.</h2></div>
       <div class="offer-list"><article><b>1:1 COACHING</b><h3>Your training, reviewed.</h3><p>Personal programming, clear feedback and a plan that adapts when work, travel or life gets loud.</p></article><article><b>PROGRAMS</b><h3>A proven place to start.</h3><p>Structured blocks for people who want direction without pretending fitness is their only priority.</p></article><article><b>FORM & MINDSET</b><h3>Build confidence under the bar.</h3><p>Learn the movements, understand your effort, and stop second-guessing every session.</p></article><a class="button dark" href="/contact">Talk to Nash <span>→</span></a></div>
     </section>
+
+    <section class="section results-preview"><div><p class="eyebrow">The Results</p><h2 class="section-title">This isn’t about chasing a perfect body. It’s about becoming proud of the way you show up.</h2><p>Every story starts with a different goal: strength, confidence, energy, or simply getting back in control. The standard is progress you can actually live with.</p><a class="button" href="/transformations">See the journeys <span>→</span></a></div><div class="results-images"><Image src={resultOne} alt="FitWithNash transformation result" loading="lazy" /><Image src={resultTwo} alt="FitWithNash client result" loading="lazy" /><Image src={resultThree} alt="FitWithNash coaching transformation" loading="lazy" /></div></section>
 
     <section id="method" class="section method">
       <div class="method-copy">
