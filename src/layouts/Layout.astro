@@ -5,14 +5,24 @@ interface Props {
   title?: string;
   description?: string;
   bare?: boolean;
+  noindex?: boolean;
 }
 
 const {
-  title = 'FitWithNash | Strength, built for real life.',
-  description = 'Practical training, sustainable nutrition, and a stronger version of you with FitWithNash.',
+  title = 'FitWithNash | Personal Fitness Coaching in India',
+  description = 'Personalised online fitness coaching, strength training and sustainable nutrition guidance for real life with FitWithNash.',
   bare = false,
+  noindex = false,
 } = Astro.props;
 const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, '') || '918360669905';
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://fitwithnash-gamma.vercel.app';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const socialImage = new URL('/favicon.svg', siteUrl).href;
+const organizationSchema = {
+  '@context': 'https://schema.org', '@type': 'ProfessionalService', name: 'FitWithNash', url: siteUrl,
+  description, areaServed: 'India', sameAs: ['https://www.instagram.com/fitwithnash/'],
+  contactPoint: { '@type': 'ContactPoint', telephone: `+${whatsappNumber}`, contactType: 'customer service', availableLanguage: ['English', 'Hindi'] },
+};
 ---
 
 <!doctype html>
@@ -21,24 +31,34 @@ const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, ''
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
     <meta name="theme-color" content="#10110f" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-    <link rel="canonical" href={Astro.url.href} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="en-IN" href={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:site_name" content="FitWithNash" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
     <title>{title}</title>
   </head>
   <body>
     {!bare && <header class="site-header">
       <a class="brand" href="/" aria-label="FitWithNash home"><span>FIT</span>WITHNASH</a>
       <nav aria-label="Primary navigation">
-        <a href="#programs">Programs</a>
-        <a href="#method">The method</a>
-        <a href="#journal">Journal</a>
+        <a href="/#programs">Programs</a>
+        <a href="/#method">The method</a>
+        <a href="/#journeys">Journeys</a>
       </nav>
       <a class="header-cta" href="/contact">Start here <span aria-hidden="true">↗</span></a>
     </header>}
@@ -49,7 +69,7 @@ const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, ''
     </aside>}
     {!bare && <footer class="site-footer">
       <div><a class="brand" href="/"><span>FIT</span>WITHNASH</a><p>Strength, built for real life.</p></div>
-      <div class="footer-links"><a href="#programs">Programs</a><a href="/contact">Contact</a><a href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Instagram ↗</a></div>
+      <div class="footer-links"><a href="/#programs">Programs</a><a href="/transformations">Journeys</a><a href="/contact">Contact</a><a href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Instagram ↗</a></div>
       <small>© {new Date().getFullYear()} FitWithNash. Train responsibly.</small>
     </footer>}
   </body>
