@@ -14,9 +14,9 @@ export const getSEO = (
   desc?: string,
   img?: string
 ): SeoData => {
-  const defaultTitle = 'FitWithNash – Fitness Courses & Certification';
+  const defaultTitle = 'FitWithNash | Online Fitness Coaching in India';
   const defaultDesc =
-    'India’s leading platform for personal trainer certification, courses, and fitness education. Join thousands of certified professionals.';
+    'Personalised online fitness coaching, strength training and sustainable nutrition guidance by FitWithNash.';
   const defaultImg = '/favicon.svg';
 
   return {
