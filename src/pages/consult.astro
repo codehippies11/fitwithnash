@@ -12,14 +12,17 @@ const base = import.meta.env.PUBLIC_SUPABASE_URL;
 const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 let media: Record<string, string> = {};
 let cmsPrograms: any[] = [];
+let cmsTestimonials: any[] = [];
 if (base && key) {
   const headers = { apikey: key, Authorization: `Bearer ${key}` };
-  const [mediaResponse, programsResponse] = await Promise.all([
+  const [mediaResponse, programsResponse, testimonialsResponse] = await Promise.all([
     fetch(`${base}/rest/v1/site_media?select=key,image_url`, { headers }),
     fetch(`${base}/rest/v1/programs?is_published=eq.true&select=*&order=sort_order.asc,created_at.asc`, { headers }),
+    fetch(`${base}/rest/v1/testimonials?is_published=eq.true&select=*&order=sort_order.asc,created_at.asc`, { headers }),
   ]);
   if (mediaResponse.ok) media = Object.fromEntries((await mediaResponse.json()).map((item: { key: string; image_url: string }) => [item.key, item.image_url]));
   if (programsResponse.ok) cmsPrograms = await programsResponse.json();
+  if (testimonialsResponse.ok) cmsTestimonials = await testimonialsResponse.json();
 }
 const portrait = media.consult_coach_portrait || media.hero_portrait || avinashProfile.src;
 const journeys = [
@@ -27,11 +30,12 @@ const journeys = [
   { image: media.consult_journey_krisham || media.home_journey_krisham || krishamJourney.src, name: 'Krisham', result: 'Consistency and a stronger routine, made visible.' },
   { image: media.consult_journey_farbeena || media.home_journey_farbeena || farbeenaJourney.src, name: 'Farbeena', result: 'Strength, energy and confidence back in the picture.' },
 ];
-const feedbackStories = [
+const fallbackFeedbackStories = [
   { image: krishamFeedback.src, name: 'Krisham Malhotra', label: 'Client testimonial' },
   { image: ishanaFeedback.src, name: 'Ishana', label: 'Client feedback' },
   { image: ankitaFeedback.src, name: 'Ankita Takkar', label: 'Client testimonial' },
 ];
+const feedbackStories = cmsTestimonials.length ? cmsTestimonials.map((item) => ({ image: item.image_url, name: item.client_name, label: item.quote })) : fallbackFeedbackStories;
 const packages = cmsPrograms.length ? cmsPrograms : [
   { label: 'Personal coaching', title: 'The Personal Standard.', description: 'Personalised training, practical nutrition and regular accountability around your real life.', price: 'Ask Avinash for the right fit' },
   { label: 'Focused transformation', title: '12 Weeks, Built Properly.', description: 'A focused block to build momentum with a structure you can understand and repeat.', price: 'Ask Avinash for the right fit' },
@@ -87,7 +91,7 @@ const consultSchema = {
 
       <section class="feedback-proof section">
         <div class="feedback-proof__intro"><p class="kicker">— In their own words</p><h2>The kind of support<br />people <em>feel.</em></h2><p>Proof is not only a photo. It is the confidence to ask questions, the support to keep going and a plan that can adapt when life does.</p></div>
-        <div class="feedback-proof__grid">{feedbackStories.map((story) => <article><div class="feedback-proof__image"><img src={story.image} alt={`${story.label} from ${story.name}`} loading="lazy" /></div><p>{story.label} / {story.name}</p></article>)}</div>
+        <div class="feedback-proof__grid">{feedbackStories.map((story) => <article>{story.image && <div class="feedback-proof__image"><img src={story.image} alt={`Client testimonial from ${story.name}`} loading="lazy" /></div>}<p>{story.label} / {story.name}</p></article>)}</div>
       </section>
 
       <section class="decision section">
