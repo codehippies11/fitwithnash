@@ -97,7 +97,7 @@ const consultSchema = {
 
       <section class="coach section">
         <div class="coach-image"><img src={portrait} alt="Avinash Sharma" /></div>
-        <div><p class="kicker">— Meet your coach</p><h2>Hey, I’m <em>Avinash.</em></h2><p class="role">FitWithNash strength & lifestyle coach</p><p>Most people do not need a more extreme plan. They need an intelligent one: training that meets them where they are, food habits they can actually repeat, and someone who helps them stop restarting.</p><p>My coaching is designed for people who want to feel capable in the gym and confident outside it—not just chase a temporary result.</p><a class="text-link" href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Follow the work on Instagram ↗</a></div>
+        <div><p class="kicker">— Meet your coach</p><h2>Hey, I’m <em class="coach-name">Avinash.</em></h2><p class="role">FitWithNash strength & lifestyle coach</p><p>Most people do not need a more extreme plan. They need an intelligent one: training that meets them where they are, food habits they can actually repeat, and someone who helps them stop restarting.</p><p>My coaching is designed for people who want to feel capable in the gym and confident outside it—not just chase a temporary result.</p><a class="text-link" href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Follow the work on Instagram ↗</a></div>
       </section>
 
       <section class="method section">
@@ -142,6 +142,7 @@ const consultSchema = {
 </style>
 
 <style>
+  .coach-name { display:inline-block; padding-left:.08em; margin-left:-.08em; }
   .proof-lead { max-width:610px; margin:0; color:#55594f; line-height:1.75; }
   .story-grid article { overflow:hidden; }
   .story-grid article div span { color:#607619; font:700 10px "DM Mono",monospace; letter-spacing:.08em; text-transform:uppercase; }
