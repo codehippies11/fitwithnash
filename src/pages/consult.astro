@@ -1,0 +1,87 @@
+---
+import avinashProfile from '../assets/images/avinash-profile-real.png';
+import arunJourney from '../assets/images/journeys/arun-journey.png';
+import krishamJourney from '../assets/images/journeys/krisham-journey.png';
+import farbeenaJourney from '../assets/images/journeys/farbeena-journey.png';
+
+const whatsapp = 'https://wa.me/918360669905?text=Hi%20Avinash%2C%20I%20would%20like%20to%20book%20a%20FitWithNash%20coaching%20clarity%20call.';
+const stories = [
+  { image: arunJourney, title: 'From starting again to training with intent.', text: 'A focused, repeatable system can change both how you look and how you show up.' },
+  { image: krishamJourney, title: 'Consistency made visible.', text: 'The work becomes easier when training has a clear place in your actual week.' },
+  { image: farbeenaJourney, title: 'Confidence built one decision at a time.', text: 'Practical coaching can make strength, energy and self-trust feel possible again.' },
+];
+const steps = [
+  ['01', 'Clarity & assessment', 'We start with your goal, schedule, training history and the constraints your real life brings.'],
+  ['02', 'Your personal system', 'You receive training direction, practical nutrition habits and a progression you understand.'],
+  ['03', 'Accountability that adapts', 'Weekly check-ins keep the plan honest as work, travel and life change around you.'],
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FitWithNash Consultation | Personal Fitness Coaching</title>
+    <meta name="description" content="Book a FitWithNash coaching clarity call. Personalised training, practical nutrition and accountability for ambitious people with real schedules." />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://consult.fitwithnash.com/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <main>
+      <section class="hero section">
+        <a class="brand" href="https://www.fitwithnash.com/">FIT<span>WITH</span>NASH</a>
+        <div class="coach-ring"><img src={avinashProfile.src} alt="Avinash Sharma, FitWithNash coach" /></div>
+        <p class="kicker">Private online coaching / built for real life</p>
+        <h1>Build a stronger body<br />without putting your <em>life</em> on pause.</h1>
+        <p class="hero-copy">I help ambitious professionals build strength, lose excess body fat and create a routine they can keep—even with demanding workdays, travel and family commitments.</p>
+        <a class="cta" href={whatsapp} target="_blank" rel="noreferrer">Book your coaching clarity call <span>→</span></a>
+        <p class="micro">A focused conversation. No pressure. Start with clarity.</p>
+      </section>
+
+      <section class="proof section">
+        <p class="kicker">— The proof</p>
+        <h2>Real people. Real work.<br /><em>Real change.</em></h2>
+        <div class="story-grid">{stories.map((story) => <article><img src={story.image.src} alt={story.title} loading="lazy" /><div><h3>{story.title}</h3><p>{story.text}</p></div></article>)}</div>
+        <p class="proof-note">These are real FitWithNash client journeys. Individual results vary.</p>
+        <a class="cta light" href={whatsapp} target="_blank" rel="noreferrer">Talk through your starting point <span>→</span></a>
+      </section>
+
+      <section class="coach section">
+        <div class="coach-image"><img src={avinashProfile.src} alt="Avinash Sharma" /></div>
+        <div><p class="kicker">— Meet your coach</p><h2>Hey, I’m <em>Avinash.</em></h2><p class="role">FitWithNash strength & lifestyle coach</p><p>Most people do not need a more extreme plan. They need an intelligent one: training that meets them where they are, food habits they can actually repeat, and someone who helps them stop restarting.</p><p>My coaching is designed for people who want to feel capable in the gym and confident outside it—not just chase a temporary result.</p><a class="text-link" href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Follow the work on Instagram ↗</a></div>
+      </section>
+
+      <section class="method section">
+        <p class="kicker">— The framework</p><h2>The <em>Nash Method</em></h2><p class="method-intro">A practical coaching framework that builds a result your schedule can support.</p>
+        <div class="phase-grid">
+          <article><b>01</b><h3>Foundation</h3><p>We establish your baseline: movement, routine, recovery and a starting point you can own.</p></article>
+          <article><b>02</b><h3>Strength</h3><p>Progressive training builds confidence, capability and a physique shaped by quality work.</p></article>
+          <article><b>03</b><h3>Nutrition</h3><p>Simple, flexible nutrition habits support your goal without turning food into another full-time job.</p></article>
+          <article><b>04</b><h3>Integration</h3><p>We adapt the plan around travel, long workdays and the routines that make results last.</p></article>
+          <article><b>05</b><h3>Accountability</h3><p>Regular check-ins turn good intentions into measurable actions and honest progress.</p></article>
+        </div>
+      </section>
+
+      <section class="how section">
+        <div><p class="kicker">How 1:1 coaching works</p><h2>Three steps to a body you can <em>trust.</em></h2></div>
+        <div class="steps">{steps.map(([number, title, text]) => <article><b>{number}</b><h3>{title}</h3><p>{text}</p></article>)}</div>
+        <a class="cta" href={whatsapp} target="_blank" rel="noreferrer">Book your clarity call <span>→</span></a>
+      </section>
+
+      <section class="fit section">
+        <div><p class="kicker">Who this is for</p><h2>This is not another generic program.</h2><p>It is a personal system for people ready to build strength around the life they already lead.</p></div>
+        <div class="fit-grid"><article><h3>This is for you if:</h3><ul><li>You want a clear fitness direction instead of saving more random workouts.</li><li>You want to get stronger, leaner and more confident without extreme rules.</li><li>You have a busy schedule and need coaching that adapts to it.</li><li>You are ready to show up consistently, not perfectly.</li></ul></article><article><h3>This is not for you if:</h3><ul><li>You are looking for overnight results or a crash diet.</li><li>You want a plan without the responsibility to follow it.</li><li>You want to train like someone else instead of around your own life.</li></ul></article></div>
+      </section>
+
+      <section class="final section"><p class="kicker">Your next chapter</p><h2>A stronger standard<br />starts with one <em>honest</em> conversation.</h2><p>Tell Avinash where you are now and where you want to be. You will leave with more clarity on whether FitWithNash coaching is the right fit.</p><a class="cta" href={whatsapp} target="_blank" rel="noreferrer">Start on WhatsApp <span>→</span></a><small>Results depend on individual effort, consistency and circumstances. No specific outcome is guaranteed.</small></section>
+    </main>
+    <a class="mobile-cta" href={whatsapp} target="_blank" rel="noreferrer">Talk to Avinash on WhatsApp <span>→</span></a>
+  </body>
+</html>
+
+<style>
+  :root{--ink:#11130f;--lime:#d9ff45;--paper:#f3f1e9;--muted:#a9ada2;--coral:#eb5e4f}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);font-family:Manrope,sans-serif;color:var(--paper)}.section{padding:clamp(72px,10vw,150px) clamp(20px,8vw,130px)}.kicker{margin:0;color:var(--lime);font:700 11px "DM Mono",monospace;letter-spacing:.1em;text-transform:uppercase}.brand{position:absolute;top:30px;left:clamp(20px,8vw,130px);color:#fff;font-weight:800;letter-spacing:-.07em;text-decoration:none}.brand span{color:var(--lime)}.hero{position:relative;min-height:100svh;display:grid;justify-items:center;align-content:center;text-align:center;background:radial-gradient(circle at 50% 23%,#2c3520,transparent 22%),var(--ink)}.coach-ring{width:clamp(110px,12vw,165px);aspect-ratio:1;overflow:hidden;margin:26px 0 23px;border:2px solid var(--coral);border-radius:50%;background:#343b2b}.coach-ring img{width:100%;height:100%;object-fit:cover;transform:scale(1.32) translateY(4%);transform-origin:50% 38%}.hero h1,.proof h2,.coach h2,.method h2,.how h2,.fit h2,.final h2{max-width:1100px;margin:17px 0;font:700 clamp(3rem,7vw,7.5rem)/.92 Manrope,sans-serif;letter-spacing:-.075em}.hero h1 em,.proof h2 em,.coach h2 em,.how h2 em,.final h2 em{color:var(--coral);font-style:normal}.hero-copy{max-width:760px;margin:0;color:#c7c9c1;font-size:clamp(15px,1.5vw,19px);line-height:1.7}.cta{display:inline-flex;align-items:center;justify-content:center;gap:22px;margin-top:29px;padding:17px 23px;background:var(--lime);color:var(--ink);font-size:12px;font-weight:800;letter-spacing:.03em;text-decoration:none;text-transform:uppercase;transition:transform .2s ease}.cta:hover{transform:translateY(-3px)}.micro{color:var(--muted);font-size:11px}.proof{background:var(--paper);color:var(--ink)}.proof .kicker{color:#657c13}.proof h2{max-width:760px;font-family:"Playfair Display",serif;font-weight:600;letter-spacing:-.055em}.proof h2 em{color:#61770f}.story-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}.story-grid article{background:#e6e4da}.story-grid img{display:block;width:100%;aspect-ratio:35/36;object-fit:contain;background:#252820}.story-grid div{padding:18px}.story-grid h3{margin:0;font:600 1.35rem/1.1 "Playfair Display",serif}.story-grid p,.proof-note{margin:10px 0 0;color:#55594f;font-size:13px;line-height:1.6}.proof-note{margin-top:24px}.light{background:var(--ink);color:#fff}.coach{display:grid;grid-template-columns:.75fr 1.25fr;gap:clamp(40px,10vw,160px);align-items:center;background:#191c16}.coach-image{aspect-ratio:4/5;overflow:hidden;background:#30372b}.coach-image img{width:100%;height:100%;object-fit:cover;transform:scale(1.18) translateY(3%);transform-origin:50% 35%}.coach h2,.method h2,.how h2,.fit h2,.final h2{font-family:"Playfair Display",serif;font-weight:600;letter-spacing:-.055em}.role{color:var(--lime);font-weight:800}.coach p:not(.kicker):not(.role){max-width:640px;color:#c3c6be;line-height:1.8}.text-link{color:var(--lime);font-size:13px;font-weight:800;text-decoration:none;border-bottom:1px solid var(--lime)}.method{background:#d9ff45;color:var(--ink)}.method .kicker{color:#61770f}.method h2 em{font-style:italic}.method-intro{max-width:580px;line-height:1.7}.phase-grid{display:grid;grid-template-columns:repeat(5,1fr);margin-top:55px;border-top:1px solid rgba(17,19,15,.3)}.phase-grid article{min-height:255px;padding:22px;border-right:1px solid rgba(17,19,15,.3)}.phase-grid article:first-child{border-left:1px solid rgba(17,19,15,.3)}.phase-grid b,.steps b{color:#567100;font:700 12px "DM Mono",monospace}.phase-grid h3,.steps h3{font:600 1.55rem/1 "Playfair Display",serif}.phase-grid p,.steps p{font-size:13px;line-height:1.65}.how{background:#f5f3eb;color:var(--ink)}.how .kicker,.fit .kicker{color:#687a22}.how{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(38px,8vw,130px)}.how .cta{grid-column:1/-1;justify-self:start}.steps{display:grid;gap:28px}.steps article{display:grid;grid-template-columns:50px 1fr;column-gap:18px;padding-bottom:22px;border-bottom:1px solid #c6c7bc}.steps b{grid-row:span 2}.steps h3{margin:0}.steps p{grid-column:2;margin:6px 0 0;color:#565a50}.fit{background:#151714}.fit>div:first-child{max-width:750px}.fit>div:first-child>p:not(.kicker){color:#c1c3ba;line-height:1.7}.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:38px}.fit-grid article{padding:30px;background:#22261e}.fit-grid article:last-child{background:#2a2020}.fit-grid h3{margin:0;font:600 1.8rem "Playfair Display",serif}.fit-grid ul{display:grid;gap:14px;padding:0;list-style:none;color:#ced0c8;font-size:14px;line-height:1.55}.fit-grid li{padding-left:18px;position:relative}.fit-grid li:before{content:'+';position:absolute;left:0;color:var(--lime)}.final{text-align:center;background:radial-gradient(circle at 50% 0,#354521,transparent 34%),var(--ink)}.final h2{margin-inline:auto}.final p:not(.kicker){max-width:610px;margin:0 auto;color:#c7c9c1;line-height:1.75}.final small{display:block;max-width:700px;margin:35px auto 0;color:#858981;font-size:10px;line-height:1.5}.mobile-cta{display:none}@media(max-width:800px){body{padding-bottom:68px}.section{padding:78px 20px}.hero h1{font-size:clamp(2.9rem,12vw,4.8rem)}.story-grid,.coach,.how,.fit-grid{grid-template-columns:1fr}.story-grid{gap:25px}.phase-grid{grid-template-columns:1fr 1fr}.phase-grid article{min-height:auto;border-bottom:1px solid rgba(17,19,15,.3)}.phase-grid article:first-child{border-left:0}.phase-grid article:nth-child(odd){border-left:1px solid rgba(17,19,15,.3)}.coach-image{max-width:440px}.how .cta{justify-self:stretch}.cta{width:100%}.mobile-cta{position:fixed;z-index:30;right:12px;bottom:12px;left:12px;display:flex;align-items:center;justify-content:center;gap:18px;padding:17px;background:var(--lime);color:var(--ink);box-shadow:0 12px 32px rgba(0,0,0,.35);font-size:12px;font-weight:800;letter-spacing:.03em;text-decoration:none;text-transform:uppercase}}
+</style>
