@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "consult.fitwithnash.com" }],
+      "destination": "/consult"
+    }
+  ]
+}
