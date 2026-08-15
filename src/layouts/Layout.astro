@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import avinashProfile from '../assets/images/avinash-profile-real.png';
 
 interface Props {
   title?: string;
@@ -17,7 +18,7 @@ const {
 const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, '') || '918360669905';
 const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://fitwithnash-gamma.vercel.app';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
-const socialImage = new URL('/favicon.svg', siteUrl).href;
+const socialImage = new URL(avinashProfile.src, siteUrl).href;
 const organizationSchema = {
   '@context': 'https://schema.org', '@type': 'ProfessionalService', name: 'FitWithNash', url: siteUrl,
   description, areaServed: 'India', sameAs: ['https://www.instagram.com/fitwithnash/'],
@@ -33,7 +34,8 @@ const organizationSchema = {
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex,nofollow" />}
     <meta name="theme-color" content="#10110f" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href={avinashProfile.src} />
+    <link rel="apple-touch-icon" href={avinashProfile.src} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
