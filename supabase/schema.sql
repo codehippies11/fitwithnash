@@ -63,12 +63,24 @@ create table if not exists public.transformations (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.testimonials (
+  id uuid primary key default gen_random_uuid(),
+  client_name text not null,
+  quote text not null,
+  image_url text,
+  sort_order integer not null default 0,
+  is_published boolean not null default false,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 alter table public.profiles enable row level security;
 alter table public.trainers enable row level security;
 alter table public.cms_assets enable row level security;
 alter table public.site_media enable row level security;
 alter table public.programs enable row level security;
 alter table public.transformations enable row level security;
+alter table public.testimonials enable row level security;
 
 create or replace function public.is_cms_editor() returns boolean language sql stable security definer set search_path = public as $$
   select exists (select 1 from public.profiles where id = auth.uid() and role in ('admin', 'editor'));
@@ -84,6 +96,8 @@ create policy "published programs are public" on public.programs for select usin
 create policy "editors manage programs" on public.programs for all using (public.is_cms_editor()) with check (public.is_cms_editor());
 create policy "published transformations are public" on public.transformations for select using (is_published or public.is_cms_editor());
 create policy "editors manage transformations" on public.transformations for all using (public.is_cms_editor()) with check (public.is_cms_editor());
+create policy "published testimonials are public" on public.testimonials for select using (is_published or public.is_cms_editor());
+create policy "editors manage testimonials" on public.testimonials for all using (public.is_cms_editor()) with check (public.is_cms_editor());
 
 insert into storage.buckets (id, name, public) values ('cms-images', 'cms-images', true) on conflict (id) do nothing;
 create policy "public can view CMS images" on storage.objects for select using (bucket_id = 'cms-images');
