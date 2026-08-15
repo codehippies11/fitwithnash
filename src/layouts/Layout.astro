@@ -23,7 +23,7 @@ const organizationSchema = {
   '@context': 'https://schema.org', '@graph': [
     { '@type': 'ProfessionalService', '@id': `${siteUrl}/#business`, name: 'FitWithNash', url: siteUrl, image: socialImage, description, areaServed: { '@type': 'Country', name: 'India' }, sameAs: ['https://www.instagram.com/fitwithnash/'], contactPoint: { '@type': 'ContactPoint', telephone: `+${whatsappNumber}`, contactType: 'customer service', availableLanguage: ['English', 'Hindi'] }, knowsAbout: ['Online fitness coaching', 'Strength training', 'Fitness nutrition guidance', 'Lifestyle accountability'] },
     { '@type': 'Person', '@id': `${siteUrl}/#avinash`, name: 'Avinash Sharma', jobTitle: 'Fitness Coach', worksFor: { '@id': `${siteUrl}/#business` }, image: socialImage, sameAs: ['https://www.instagram.com/fitwithnash/'], knowsAbout: ['Strength training', 'Online fitness coaching', 'Sustainable nutrition habits'] },
-    { '@type': 'WebSite', '@id': `${siteUrl}/#website`, url: siteUrl, name: 'FitWithNash', publisher: { '@id': `${siteUrl}/#business` }, inLanguage: 'en-IN' },
+    { '@type': 'WebSite', '@id': `${siteUrl}/#website`, url: siteUrl, name: 'FitWithNash', publisher: { '@id': `${siteUrl}/#business` }, inLanguage: 'en-IN', hasPart: { '@type': 'WebPage', name: 'FitWithNash Consultation', url: 'https://consult.fitwithnash.com/' } },
   ],
 };
 ---
@@ -63,6 +63,7 @@ const organizationSchema = {
         <a href="/#programs">Programs</a>
         <a href="/#method">The method</a>
         <a href="/#journeys">Journeys</a>
+        <a href="https://consult.fitwithnash.com/">Consultation</a>
       </nav>
       <a class="header-cta" href="/contact">Start here <span aria-hidden="true">↗</span></a>
     </header>}
@@ -73,7 +74,7 @@ const organizationSchema = {
     </aside>}
     {!bare && <footer class="site-footer">
       <div><a class="brand" href="/"><span>FIT</span>WITHNASH</a><p>Strength, built for real life.</p></div>
-      <div class="footer-links"><a href="/#programs">Programs</a><a href="/transformations">Journeys</a><a href="/contact">Contact</a><a href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Instagram ↗</a></div>
+      <div class="footer-links"><a href="/#programs">Programs</a><a href="/transformations">Journeys</a><a href="https://consult.fitwithnash.com/">Consultation</a><a href="/contact">Contact</a><a href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Instagram ↗</a></div>
       <small>© {new Date().getFullYear()} FitWithNash. Train responsibly.</small>
     </footer>}
   </body>
