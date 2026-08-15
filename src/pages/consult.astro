@@ -33,6 +33,13 @@ const steps = [
   ['02', 'Your personal system', 'You receive training direction, practical nutrition habits and a progression you understand.'],
   ['03', 'Accountability that adapts', 'Weekly check-ins keep the plan honest as work, travel and life change around you.'],
 ];
+const consultSchema = {
+  '@context': 'https://schema.org', '@graph': [
+    { '@type': 'WebPage', '@id': 'https://consult.fitwithnash.com/#webpage', url: 'https://consult.fitwithnash.com/', name: 'FitWithNash Consultation | Personal Fitness Coaching', description: 'Book a FitWithNash coaching clarity call for personalised training, practical nutrition and accountability.', inLanguage: 'en-IN', about: { '@id': 'https://www.fitwithnash.com/#business' }, mainEntity: { '@id': 'https://consult.fitwithnash.com/#service' } },
+    { '@type': 'Service', '@id': 'https://consult.fitwithnash.com/#service', name: 'FitWithNash Online Fitness Coaching', serviceType: 'Online fitness coaching', provider: { '@id': 'https://www.fitwithnash.com/#business' }, areaServed: { '@type': 'Country', name: 'India' }, audience: { '@type': 'Audience', audienceType: 'Adults seeking personalised fitness coaching' }, offers: { '@type': 'OfferCatalog', name: 'FitWithNash coaching offers', itemListElement: packages.map((item, position) => ({ '@type': 'Offer', position: position + 1, name: item.title, description: item.description, url: 'https://consult.fitwithnash.com/' })) } },
+    { '@type': 'Person', '@id': 'https://www.fitwithnash.com/#avinash', name: 'Avinash Sharma', jobTitle: 'Fitness Coach', sameAs: ['https://www.instagram.com/fitwithnash/'] },
+  ],
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -48,6 +55,7 @@ const steps = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+    <script type="application/ld+json" set:html={JSON.stringify(consultSchema)} />
   </head>
   <body>
     <main>
