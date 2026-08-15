@@ -16,13 +16,15 @@ const {
   noindex = false,
 } = Astro.props;
 const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, '') || '918360669905';
-const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://fitwithnash-gamma.vercel.app';
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://www.fitwithnash.com';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 const socialImage = new URL(avinashProfile.src, siteUrl).href;
 const organizationSchema = {
-  '@context': 'https://schema.org', '@type': 'ProfessionalService', name: 'FitWithNash', url: siteUrl,
-  description, areaServed: 'India', sameAs: ['https://www.instagram.com/fitwithnash/'],
-  contactPoint: { '@type': 'ContactPoint', telephone: `+${whatsappNumber}`, contactType: 'customer service', availableLanguage: ['English', 'Hindi'] },
+  '@context': 'https://schema.org', '@graph': [
+    { '@type': 'ProfessionalService', '@id': `${siteUrl}/#business`, name: 'FitWithNash', url: siteUrl, image: socialImage, description, areaServed: { '@type': 'Country', name: 'India' }, sameAs: ['https://www.instagram.com/fitwithnash/'], contactPoint: { '@type': 'ContactPoint', telephone: `+${whatsappNumber}`, contactType: 'customer service', availableLanguage: ['English', 'Hindi'] }, knowsAbout: ['Online fitness coaching', 'Strength training', 'Fitness nutrition guidance', 'Lifestyle accountability'] },
+    { '@type': 'Person', '@id': `${siteUrl}/#avinash`, name: 'Avinash Sharma', jobTitle: 'Fitness Coach', worksFor: { '@id': `${siteUrl}/#business` }, image: socialImage, sameAs: ['https://www.instagram.com/fitwithnash/'], knowsAbout: ['Strength training', 'Online fitness coaching', 'Sustainable nutrition habits'] },
+    { '@type': 'WebSite', '@id': `${siteUrl}/#website`, url: siteUrl, name: 'FitWithNash', publisher: { '@id': `${siteUrl}/#business` }, inLanguage: 'en-IN' },
+  ],
 };
 ---
 
