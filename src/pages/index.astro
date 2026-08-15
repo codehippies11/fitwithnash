@@ -37,6 +37,20 @@ const journeys = [
   { image: media.home_journey_krisham || krishamJourney.src, name: 'Krisham', title: 'Consistency, made visible.', detail: 'A stronger physique shaped by the routine behind it.' },
   { image: media.home_journey_farbeena || farbeenaJourney.src, name: 'Farbeena', title: 'Progress that changes daily life.', detail: 'A journey that puts strength, energy and confidence back in the picture.' },
 ];
+const feedbackHighlight = 'https://www.instagram.com/stories/highlights/17854669326457503/';
+const resultsHighlight = 'https://www.instagram.com/stories/highlights/18177786253254700/';
+const clientVoices = [
+  { name: 'Krisham M.', theme: 'Direction that compounds', text: 'Clear guidance and regular support made it easier to keep improving, one day at a time.' },
+  { name: 'Ankita T.', theme: 'A plan that fits', text: 'Training and nutrition felt practical because they worked around a demanding routine.' },
+  { name: 'Bhavya J.', theme: 'A coach in your corner', text: 'A patient, encouraging approach made the process feel easier to understand and stick with.' },
+  { name: 'Mitali', theme: 'Support when it matters', text: 'Questions were welcomed, and the next step was always clear.' },
+  { name: 'Rhinusmita K.', theme: 'Consistency with context', text: 'Guidance adapted to real life instead of expecting real life to disappear.' },
+];
+const resultSnapshots = [
+  { result: '105 kg → 82 kg', timeframe: '24 weeks', context: 'Results highlight · age 48' },
+  { result: '143 kg → 119 kg', timeframe: '12 weeks in', context: 'Results highlight · midpoint update' },
+  { result: '75 kg → 68.3 kg', timeframe: '8 weeks', context: 'Results highlight · client journey' },
+];
 const faqs = [
   { question: 'How does online coaching with FitWithNash work?', answer: 'You begin with a conversation about your goal, training history, schedule and access to equipment. From there, Avinash builds your training direction, nutrition habits and check-in rhythm around real life.' },
   { question: 'Is this suitable if I am new to training?', answer: 'Yes. Coaching is built around your starting point. The goal is to make the basics clear, build confidence in the gym and create routines you can repeat.' },
@@ -57,6 +71,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
         <h1 class="display">Strength isn’t a look.<br />It’s a <em>standard.</em></h1>
         <p>Training, nutrition and accountability for people ready to feel strong in every room they walk into.</p>
         <a class="button" href="/contact">Find your starting point <span>→</span></a>
+        <a class="hero-proof-link" href="#client-proof">See real client proof <span>↓</span></a>
       </div>
       <span class="hero-meta">FITWITHNASH / 01—26</span>
     </section>
@@ -85,6 +100,15 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
       <div class="journey-feature__intro"><p class="eyebrow">The journey / Real people, real work</p><h2 class="section-title">The photo is the proof.<br />The <em>becoming</em> is the win.</h2><p>No miracle promises. Just a better relationship with training, food and the commitments you make to yourself—built one ordinary day at a time.</p><a class="button" href="/transformations">See every journey <span>→</span></a></div>
       <div class="journey-feature__stories">{journeys.map((journey, index) => <article class="journey-feature__card"><div class="journey-feature__image"><img src={journey.image} alt={`${journey.name}'s authentic FitWithNash before-and-after journey`} loading="lazy" /><span>Original paired photo</span></div><p class="eyebrow">0{index + 1} / {journey.name}</p><h3>{journey.title}</h3><p>{journey.detail}</p></article>)}</div>
       <p class="journey-feature__note">Each card uses its original paired client photograph. Background, face and body have not been AI-altered. Individual results vary.</p>
+    </section>
+
+    <section id="client-proof" class="section client-proof">
+      <div class="client-proof__intro"><div><p class="eyebrow">The FitWithNash proof wall</p><h2 class="section-title">Real change is<br /><em>never generic.</em></h2></div><p>Every result begins with a real schedule, a real starting point and a coach who knows how to make the next decision simpler. These are original client journeys and feedback themes shared through FitWithNash.</p></div>
+      <div class="result-proof">{resultSnapshots.map((item) => <article><strong>{item.result}</strong><b>{item.timeframe}</b><p>{item.context}</p></article>)}</div>
+      <div class="client-proof__feedback">{clientVoices.map((item, index) => <article><span>0{index + 1} / {item.name}</span><h3>{item.theme}</h3><p>{item.text}</p><small>Adapted from the FitWithNash Feedbacks highlight</small></article>)}</div>
+      <div class="proof-actions"><a class="button dark" href={feedbackHighlight} target="_blank" rel="noreferrer">Read client feedback <span>↗</span></a><a class="proof-link" href={resultsHighlight} target="_blank" rel="noreferrer">See the full results highlight ↗</a></div>
+      <p class="client-proof__note">Original paired journey photos are shown above. Feedback themes and outcome examples are shared with permission through FitWithNash Instagram highlights. Individual results vary.</p>
+      <p class="medium-featured">Featured in <a href="https://medium.com/@djdeepakjoshi6/why-most-fitness-plans-fail-in-week-three-and-what-to-build-instead-dda1164d1fa4?postPublishedType=initial" target="_blank" rel="noreferrer">Medium: Why most fitness plans fail in week three ↗</a></p>
     </section>
 
     <section class="consult-prompt section">
