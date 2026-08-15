@@ -118,7 +118,7 @@ const consultSchema = {
 
       <section class="how section">
         <div><p class="kicker">How 1:1 coaching works</p><h2>Three steps to a body you can <em>trust.</em></h2></div>
-        <div class="steps">{steps.map(([number, title, text]) => <article><b>{number}</b><h3>{title}</h3><p>{text}</p></article>)}</div>
+        <div class="steps">{steps.map(([number, title, text]) => <article><b>{number}</b><h3 class={title === 'Accountability that adapts' ? 'accountability-title' : ''}>{title}</h3><p>{text}</p></article>)}</div>
         <a class="cta" href={whatsapp} target="_blank" rel="noreferrer">Book your clarity call <span>→</span></a>
       </section>
 
