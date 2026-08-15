@@ -77,7 +77,7 @@ const consultSchema = {
         <p class="kicker">Private online coaching / built for real life</p>
         <h1>Build a stronger body<br />without putting your <em>life</em> on pause.</h1>
         <p class="hero-copy">I help ambitious professionals build strength, lose excess body fat and create a routine they can keep—even with demanding workdays, travel and family commitments.</p>
-        <a class="cta" href={whatsapp} target="_blank" rel="noreferrer">Book your coaching clarity call <span>→</span></a>
+        <a class="cta cta--book" href={whatsapp} target="_blank" rel="noreferrer">Book your coaching clarity call <span>→</span></a>
         <p class="micro">A focused conversation. No pressure. Start with clarity.</p>
       </section>
 
@@ -105,7 +105,7 @@ const consultSchema = {
       </section>
 
       <section class="method section">
-        <p class="kicker">— The framework</p><h2>The <em>Avinash Method</em></h2><p class="method-intro">A practical coaching framework that builds a result your schedule can support.</p>
+        <p class="kicker">— The framework</p><h2>The <em class="method-name">Avinash Method</em></h2><p class="method-intro">A practical coaching framework that builds a result your schedule can support.</p>
         <div class="phase-grid">
           <article><b>01</b><h3>Foundation</h3><p>We establish your baseline: movement, routine, recovery and a starting point you can own.</p></article>
           <article><b>02</b><h3>Strength</h3><p>Progressive training builds confidence, capability and a physique shaped by quality work.</p></article>
@@ -123,7 +123,7 @@ const consultSchema = {
       <section class="how section">
         <div><p class="kicker">How 1:1 coaching works</p><h2>Three steps to a body you can <em>trust.</em></h2></div>
         <div class="steps">{steps.map(([number, title, text]) => <article><b>{number}</b><h3 class={title === 'Accountability that adapts' ? 'accountability-title' : ''}>{title}</h3><p>{text}</p></article>)}</div>
-        <a class="cta" href={whatsapp} target="_blank" rel="noreferrer">Book your clarity call <span>→</span></a>
+        <a class="cta cta--book" href={whatsapp} target="_blank" rel="noreferrer">Book your clarity call <span>→</span></a>
       </section>
 
       <section class="fit section">
@@ -146,8 +146,12 @@ const consultSchema = {
 </style>
 
 <style>
-  .coach-name { display:inline-block; padding-left:.08em; margin-left:-.08em; }
-  .accountability-title { display:inline-block; padding-left:.08em; margin-left:-.08em; }
+  /* Playfair's capital A has a left overhang. Keep a positive inset so it can never be clipped at any viewport. */
+  .coach-name,.method-name,.accountability-title { display:inline-block; padding-inline-start:.12em; margin-inline-start:0; }
+  .cta--book { position:relative; overflow:hidden; isolation:isolate; box-shadow:0 0 0 1px rgba(217,255,69,.2),0 14px 32px rgba(0,0,0,.2); }
+  .cta--book::after { position:absolute; inset:-20% -65%; z-index:0; background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.38) 50%,transparent 60%); content:''; pointer-events:none; transform:translateX(-58%); animation:book-cta-shine 5.8s ease-in-out infinite; }
+  @keyframes book-cta-shine { 0%,58%,100% { transform:translateX(-58%); opacity:0; } 66% { opacity:1; } 82% { transform:translateX(58%); opacity:0; } }
+  @media (prefers-reduced-motion: reduce) { .cta--book::after { animation:none; } }
   .proof-lead { max-width:610px; margin:0; color:#55594f; line-height:1.75; }
   .story-grid article { overflow:hidden; }
   .story-grid article div span { color:#607619; font:700 10px "DM Mono",monospace; letter-spacing:.08em; text-transform:uppercase; }
