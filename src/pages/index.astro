@@ -47,7 +47,7 @@ const faqs = [
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) };
 ---
 
-<Layout>
+<Layout title="FitWithNash | Online Fitness Coach & Personal Training" description="Work with Avinash at FitWithNash for personalised online fitness coaching, strength training, practical nutrition and sustainable accountability in India.">
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <main>
     <section class="hero" style={`--hero-gym:url(${heroGym.src})`}>
