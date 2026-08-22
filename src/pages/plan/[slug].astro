@@ -25,9 +25,10 @@ export const getStaticPaths = async () => {
 };
 
 const { plan } = Astro.props;
+const planDescription = plan.excerpt || `Explore the ${plan.name} coaching plan from FitWithNash.`;
 ---
 
-<Layout>
+<Layout title={`${plan.name} | FitWithNash Coaching`} description={planDescription}>
   <main class="py-12 px-4 max-w-3xl mx-auto">
     <article>
       <h1 class="text-4xl font-bold mb-4">{plan.name}</h1>
