@@ -10,7 +10,7 @@ if (base && key && slug) {
   trainer = (await res.json())[0] || null;
 }
 ---
-<Layout title={trainer ? `${trainer.full_name} | FitWithNash` : 'Trainer | FitWithNash'} description={trainer?.meta_description || trainer?.bio || 'Meet the FitWithNash coaching team.'}>
+<Layout title={trainer ? `${trainer.full_name} | FitWithNash` : 'Trainer | FitWithNash'} description={trainer?.meta_description || trainer?.bio || 'Meet the FitWithNash coaching team.'} noindex={!trainer}>
   <main class="trainer-page section">
     {trainer ? <article><img src={trainer.avatar_url || 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=1200&q=85'} alt={trainer.full_name} /><div><p class="eyebrow">FitWithNash coach</p><h1 class="display">{trainer.full_name}</h1><p class="headline">{trainer.headline}</p><p>{trainer.bio}</p>{trainer.instagram_url && <a class="button" href={trainer.instagram_url}>Follow on Instagram ↗</a>}</div></article> : <section><p class="eyebrow">Not found</p><h1 class="section-title">This trainer isn’t published yet.</h1><a class="button" href="/">Back home</a></section>}
   </main>
