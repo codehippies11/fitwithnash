@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import avinashProfile from '../assets/images/avinash-profile-real.png';
+import fitwithnashMark from '../assets/brand/fitwithnash-mark.png';
 
 interface Props {
   title?: string;
@@ -58,7 +59,7 @@ const organizationSchema = {
   </head>
   <body>
     {!bare && <header class="site-header">
-      <a class="brand" href="/" aria-label="FitWithNash home">FIT<span>WITH</span>NASH</a>
+      <a class="brand" href="/" aria-label="FitWithNash home"><img src={fitwithnashMark.src} alt="" /><span>FitWithNash<sup>™</sup></span></a>
       <nav aria-label="Primary navigation">
         <a href="/#programs">Programs</a>
         <a href="/#method">The method</a>
@@ -73,7 +74,7 @@ const organizationSchema = {
       <a class="social-float__link social-float__whatsapp" href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hi Avinash, I would like to know more about coaching.')}`} target="_blank" rel="noreferrer" aria-label="Message FitWithNash on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.8a8.3 8.3 0 0 1-12.2 7.3L3.5 20.5l1.4-4.6A8.3 8.3 0 1 1 20.5 11.8Z"/><path d="M8.5 7.8c.2-.4.4-.4.7-.4h.6c.2 0 .4.1.5.4l.7 1.7c.1.3.1.5 0 .7l-.5.6c-.1.2-.2.3 0 .5.5.9 1.3 1.6 2.2 2.1.2.1.3.1.5 0l.7-.8c.2-.2.4-.2.6-.1l1.7.8c.3.1.4.3.4.5 0 .7-.4 1.4-.8 1.6-.5.2-1.3.3-2.5-.2-1-.4-2.2-1.3-3.1-2.4-.8-.9-1.6-2.2-1.6-3.7 0-.8.4-1.5.8-1.7Z" class="fill"/></svg><b>WhatsApp</b></a>
     </aside>}
     {!bare && <footer class="site-footer">
-      <div><a class="brand" href="/">FIT<span>WITH</span>NASH</a><p>Strength, built for real life.</p></div>
+      <div><a class="brand" href="/" aria-label="FitWithNash home"><img src={fitwithnashMark.src} alt="" /><span>FitWithNash<sup>™</sup></span></a><p>Strength, built for real life.</p></div>
       <div class="footer-links"><a href="/#programs">Programs</a><a href="/transformations">Journeys</a><a href="https://consult.fitwithnash.com/">Consultation</a><a href="/contact">Contact</a><a href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Instagram ↗</a></div>
       <small>© {new Date().getFullYear()} FitWithNash. Train responsibly.</small>
     </footer>}
