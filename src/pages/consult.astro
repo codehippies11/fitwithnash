@@ -42,16 +42,20 @@ const steps = [
   ['03', 'Accountability that adapts', 'Weekly check-ins keep the plan honest as work, travel and life change around you.'],
 ];
 const consultationFaqs = [
+  ['Who is Avinash Sharma at FitWithNash?', 'Avinash Sharma is the fitness coach behind FitWithNash. He works with adults who want a more considered approach to strength training, body-composition goals, nutrition habits and accountability.'],
   ['What does FitWithNash 1:1 fitness coaching include?', 'Each coaching relationship starts with your goals, training history, schedule and food preferences. You receive personalised training direction, practical nutrition guidance and regular accountability.'],
   ['Can I work with an online fitness coach while travelling or working long hours?', 'Yes. FitWithNash coaching is designed around real workdays, travel and family commitments, with a plan that adapts as your schedule changes.'],
   ['Is this coaching for weight loss or muscle building?', 'The coaching can support sustainable fat loss, strength, muscle building and healthier routines. Your plan is built around your starting point and priorities rather than a generic template.'],
+  ['Does FitWithNash provide nutrition guidance?', 'Yes. Nutrition guidance focuses on repeatable food choices, sufficient protein, meal structure and context—not extreme restriction. Medical nutrition therapy and treatment of health conditions should remain with an appropriately qualified clinician.'],
+  ['Who is online fitness coaching best suited for?', 'It is most useful for adults who value a clear plan, honest feedback and a coach who can adjust training around a real calendar. It is not a substitute for medical assessment, diagnosis or treatment.'],
 ];
 const consultSchema = {
   '@context': 'https://schema.org', '@graph': [
-    { '@type': 'WebPage', '@id': 'https://consult.fitwithnash.com/#webpage', url: 'https://consult.fitwithnash.com/', name: 'Online Fitness Coach & Weight-Loss Consultation | FitWithNash', description: 'Book a FitWithNash coaching clarity call for personalised fitness training, practical nutrition guidance and accountability.', inLanguage: 'en-IN', about: { '@id': 'https://www.fitwithnash.com/#business' }, mainEntity: { '@id': 'https://consult.fitwithnash.com/#service' } },
-    { '@type': 'ProfessionalService', '@id': 'https://www.fitwithnash.com/#business', name: 'FitWithNash', url: 'https://www.fitwithnash.com/', logo: 'https://consult.fitwithnash.com/favicon.svg', description: 'Personalised online fitness coaching, practical nutrition guidance and accountability with Avinash Sharma.', sameAs: ['https://www.instagram.com/fitwithnash/'] },
-    { '@type': 'Service', '@id': 'https://consult.fitwithnash.com/#service', name: 'FitWithNash Online Fitness Coaching', serviceType: 'Online fitness coaching and nutrition guidance', provider: { '@id': 'https://www.fitwithnash.com/#business' }, areaServed: [{ '@type': 'Country', name: 'India' }, { '@type': 'Place', name: 'Online' }], audience: { '@type': 'Audience', audienceType: 'Adults seeking personalised fitness coaching, sustainable weight loss or muscle building' }, offers: { '@type': 'OfferCatalog', name: 'FitWithNash coaching offers', itemListElement: packages.map((item, position) => ({ '@type': 'Offer', position: position + 1, name: item.title, description: item.description, url: 'https://consult.fitwithnash.com/' })) } },
-    { '@type': 'Person', '@id': 'https://www.fitwithnash.com/#avinash', name: 'Avinash Sharma', jobTitle: 'Fitness Coach', worksFor: { '@id': 'https://www.fitwithnash.com/#business' }, sameAs: ['https://www.instagram.com/fitwithnash/'] },
+    { '@type': 'WebSite', '@id': 'https://consult.fitwithnash.com/#website', url: 'https://consult.fitwithnash.com/', name: 'FitWithNash', inLanguage: 'en-IN', publisher: { '@id': 'https://consult.fitwithnash.com/#business' } },
+    { '@type': 'WebPage', '@id': 'https://consult.fitwithnash.com/#webpage', url: 'https://consult.fitwithnash.com/', name: 'Avinash Sharma | Online Fitness Coach | FitWithNash', description: 'Personal fitness coaching with Avinash Sharma: strength training, practical nutrition guidance and accountability for adults with demanding schedules.', inLanguage: 'en-IN', isPartOf: { '@id': 'https://consult.fitwithnash.com/#website' }, about: [{ '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, { '@id': 'https://consult.fitwithnash.com/#service' }], mainEntity: { '@id': 'https://consult.fitwithnash.com/#service' } },
+    { '@type': 'ProfessionalService', '@id': 'https://consult.fitwithnash.com/#business', name: 'FitWithNash', url: 'https://consult.fitwithnash.com/', logo: 'https://consult.fitwithnash.com/favicon.svg', image: portrait, description: 'Personalised online fitness coaching, practical nutrition guidance and accountability with Avinash Sharma.', founder: { '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, sameAs: ['https://www.instagram.com/fitwithnash/'] },
+    { '@type': 'Service', '@id': 'https://consult.fitwithnash.com/#service', name: 'FitWithNash Online Fitness Coaching', serviceType: 'Personal training, strength coaching and practical nutrition guidance', provider: { '@id': 'https://consult.fitwithnash.com/#business' }, areaServed: [{ '@type': 'Country', name: 'India' }, { '@type': 'Place', name: 'Online' }], audience: { '@type': 'Audience', audienceType: 'Adults seeking personalised fitness coaching, sustainable weight loss or muscle building' }, offers: { '@type': 'OfferCatalog', name: 'FitWithNash coaching offers', itemListElement: packages.map((item, position) => ({ '@type': 'Offer', position: position + 1, name: item.title, description: item.description, url: 'https://consult.fitwithnash.com/' })) } },
+    { '@type': 'Person', '@id': 'https://consult.fitwithnash.com/#avinash-sharma', name: 'Avinash Sharma', url: 'https://consult.fitwithnash.com/#avinash-sharma', image: portrait, jobTitle: 'Online Fitness Coach', description: 'Avinash Sharma is the fitness coach behind FitWithNash, providing personalised strength training, practical nutrition guidance and accountability.', worksFor: { '@id': 'https://consult.fitwithnash.com/#business' }, knowsAbout: ['Strength training', 'Online personal training', 'Fitness coaching', 'Sustainable weight management', 'Practical nutrition habits', 'Accountability coaching'], sameAs: ['https://www.instagram.com/fitwithnash/'] },
     { '@type': 'FAQPage', '@id': 'https://consult.fitwithnash.com/#faq', mainEntity: consultationFaqs.map(([question, answer]) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })) },
   ],
 };
@@ -61,9 +65,10 @@ const consultSchema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Online Fitness Coach & Weight-Loss Consultation | FitWithNash</title>
-    <meta name="description" content="Work with Avinash Sharma at FitWithNash: personalised online fitness coaching, practical nutrition guidance and accountability for sustainable weight loss, strength and muscle building." />
-    <meta name="keywords" content="online fitness coach, personal fitness coaching, weight loss coach, fitness consultation, nutrition guidance, muscle building coach, FitWithNash, Avinash Sharma" />
+    <title>Avinash Sharma | Online Fitness Coach & Personal Training | FitWithNash</title>
+    <meta name="description" content="Avinash Sharma at FitWithNash provides personalised online fitness coaching, strength training, practical nutrition guidance and accountability for adults with demanding schedules." />
+    <meta name="keywords" content="Avinash Sharma fitness coach, Avinash Sharma online fitness coach, FitWithNash, online personal training, strength coach, weight loss coaching, practical nutrition guidance, fitness consultation" />
+    <meta name="author" content="Avinash Sharma, FitWithNash" />
     <meta name="robots" content="index,follow" />
     <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <meta name="theme-color" content="#f03212" />
@@ -72,13 +77,13 @@ const consultSchema = {
     <link rel="canonical" href="https://consult.fitwithnash.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="FitWithNash" />
-    <meta property="og:title" content="Online Fitness Coach & Weight-Loss Consultation | FitWithNash" />
-    <meta property="og:description" content="Personalised online fitness coaching, practical nutrition guidance and accountability with Avinash Sharma." />
+    <meta property="og:title" content="Avinash Sharma | Online Fitness Coach | FitWithNash" />
+    <meta property="og:description" content="Personalised strength training, practical nutrition guidance and direct accountability with Avinash Sharma." />
     <meta property="og:url" content="https://consult.fitwithnash.com/" />
     <meta property="og:image" content={portrait} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="FitWithNash | Personal Fitness Coaching" />
-    <meta name="twitter:description" content="Personalised online fitness coaching, practical nutrition guidance and accountability." />
+    <meta name="twitter:title" content="Avinash Sharma | FitWithNash" />
+    <meta name="twitter:description" content="Personal fitness coaching for strength, sustainable body-composition goals and practical routines." />
     <meta name="twitter:image" content={portrait} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -127,6 +132,17 @@ const consultSchema = {
       <section class="coach section">
         <div class="coach-image"><img src={portrait} alt="Avinash Sharma" /></div>
         <div><p class="kicker">— Meet your coach</p><h2>Hey, I’m <em class="coach-name">Avinash.</em></h2><p class="role">FitWithNash strength & lifestyle coach</p><p>Most people do not need a more extreme plan. They need an intelligent one: training that meets them where they are, food habits they can actually repeat, and someone who helps them stop restarting.</p><p>My coaching is designed for people who want to feel capable in the gym and confident outside it—not just chase a temporary result.</p><a class="text-link" href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Follow the work on Instagram ↗</a></div>
+      </section>
+
+      <section class="coach-profile section" id="avinash-sharma" aria-labelledby="avinash-profile-title">
+        <div><p class="kicker">— About Avinash Sharma</p><h2 id="avinash-profile-title">Personal coaching,<br />with clinical <em>discipline.</em></h2></div>
+        <div class="coach-profile__copy"><p>Avinash Sharma is the coach behind FitWithNash. His work is for adults who prefer a reasoned plan over fitness theatre: progressive training, food habits that can survive a busy week, and regular review before small setbacks become a complete restart.</p><p>The standard is deliberately practical. The programme begins with the person in front of it—their training history, schedule, food preferences, recovery and priorities—then adjusts as that life changes.</p></div>
+        <div class="coach-profile__topics" aria-label="FitWithNash coaching areas">
+          <article id="online-fitness-coaching"><span>01</span><h3>Online fitness coaching</h3><p>Clear training direction and regular review for people who need their plan to travel well, work around real deadlines and remain intelligible outside the gym.</p></article>
+          <article id="strength-training"><span>02</span><h3>Strength & body composition</h3><p>Progressive resistance training, measured against useful markers: performance, consistency, confidence and a physique built through patient work.</p></article>
+          <article id="nutrition-guidance"><span>03</span><h3>Practical nutrition guidance</h3><p>Simple meal structure, protein awareness and flexible food choices—without presenting restriction as expertise or routine as punishment.</p></article>
+        </div>
+        <p class="coach-profile__note">Fitness coaching supports habits and training decisions. For injury, pregnancy, eating concerns or a medical condition, seek advice from an appropriately qualified healthcare professional.</p>
       </section>
 
       <section class="method section">
@@ -368,6 +384,22 @@ const consultSchema = {
   @media(max-width:1100px) { .phase-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
   @media(max-width:800px) { .phase-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }.phase-grid article,.phase-grid article:first-child { min-height:228px; }.phase-grid .accountability-phase { grid-column:auto; } }
   @media(max-width:560px) { .phase-grid { grid-template-columns:1fr; margin-top:34px; }.phase-grid article,.phase-grid article:first-child { min-height:0; padding:25px; }.phase-grid h3 { font-size:1.72rem; } }
+</style>
+
+<style>
+  .coach-profile { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:clamp(32px,7vw,118px); background:#f7f1e7; color:#241d19; }
+  .coach-profile .kicker { color:#6d332c; }
+  .coach-profile h2 { max-width:640px; margin:15px 0 0; font:600 clamp(3rem,5.5vw,6.1rem)/.91 "Cormorant Garamond",Georgia,serif; letter-spacing:-.06em; }
+  .coach-profile h2 em { color:#6d332c; font-style:normal; }
+  .coach-profile__copy { display:grid; align-content:end; gap:16px; }
+  .coach-profile__copy p { max-width:580px; margin:0; color:#594d45; font-size:15px; line-height:1.8; }
+  .coach-profile__topics { display:grid; grid-column:1/-1; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:8px; }
+  .coach-profile__topics article { min-height:245px; padding:27px; border-top:1px solid rgba(91,38,35,.4); background:linear-gradient(145deg,rgba(169,129,79,.12),rgba(255,255,255,.34)); }
+  .coach-profile__topics span { color:#a35428; font:700 10px "DM Mono",monospace; letter-spacing:.1em; }
+  .coach-profile__topics h3 { max-width:260px; margin:38px 0 11px; color:#2e211c; font:600 clamp(1.55rem,2.15vw,2.05rem)/.98 "Cormorant Garamond",Georgia,serif; letter-spacing:-.04em; }
+  .coach-profile__topics p { margin:0; color:#62544a; font-size:13px; line-height:1.72; }
+  .coach-profile__note { grid-column:1/-1; max-width:800px; margin:10px 0 0; color:#75675b; font-size:11px; line-height:1.65; }
+  @media(max-width:800px) { .coach-profile,.coach-profile__topics { grid-template-columns:1fr; }.coach-profile__topics { gap:10px; }.coach-profile__topics article { min-height:0; padding:24px; }.coach-profile__topics h3 { margin-top:27px; } }
 </style>
 
 <style>
