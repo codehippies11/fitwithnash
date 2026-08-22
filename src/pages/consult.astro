@@ -3,7 +3,7 @@ import avinashProfile from '../assets/images/avinash-profile-real.png';
 import arunJourney from '../assets/images/journeys/arun-journey.png';
 import krishamJourney from '../assets/images/journeys/krisham-journey.png';
 import farbeenaJourney from '../assets/images/journeys/farbeena-journey.png';
-import fitwithnashMark from '../assets/brand/fit-with-nash-private-club.svg';
+import fitwithnashMark from '../assets/brand/fit-with-nash-header.svg';
 import TestimonialWall from '../components/TestimonialWall.astro';
 import { verifiedTestimonials } from '../data/verifiedTestimonials';
 
@@ -172,8 +172,8 @@ const consultSchema = {
     .hero { min-height:700px; padding-top:124px; padding-bottom:96px; align-content:start; }
     .hero h1 { font-size:clamp(2.8rem,14vw,4.15rem); line-height:.94; }
     .hero-copy { font-size:15px; line-height:1.65; }
-    .hero-wordmark { top:22px; left:50%; font-size:13px; letter-spacing:.09em; transform:translateX(-50%); }
-    .brand-logo { top:8px; right:10px; width:52px; height:52px; }
+    .hero-wordmark { top:22px; left:50%; font-size:16px; letter-spacing:.1em; transform:translateX(-50%); }
+    .brand-logo { top:8px; right:auto; left:10px; width:52px; height:52px; }
     .coach-ring { margin:10px 0 20px; }
     .hero-actions { gap:3px; }
     .hero-signals { gap:6px; }
@@ -200,9 +200,9 @@ const consultSchema = {
   @media (max-width:360px) {
     .section { padding-inline:14px; }
     .hero { min-height:660px; padding-top:110px; }
-    .hero-wordmark { top:20px; left:50%; font-size:11px; letter-spacing:.07em; transform:translateX(-50%); }
+    .hero-wordmark { top:20px; left:50%; font-size:12px; letter-spacing:.075em; transform:translateX(-50%); }
     .hero-wordmark span { margin-inline:.05em; letter-spacing:.1em; }
-    .brand-logo { top:7px; right:7px; width:42px; height:42px; }
+    .brand-logo { top:7px; right:auto; left:7px; width:42px; height:42px; }
     .hero-signals span { font-size:7px; }
     .mobile-cta { right:8px; bottom:8px; left:8px; padding:15px 9px; font-size:10px; }
   }
@@ -214,12 +214,12 @@ const consultSchema = {
 </style>
 
 <style>
-  .brand-logo { position:absolute; z-index:4; top:14px; right:clamp(14px,3vw,46px); display:flex; width:clamp(70px,6vw,88px); height:clamp(70px,6vw,88px); align-items:center; justify-content:center; border-radius:50%; background:rgba(27,22,19,.62); box-shadow:0 18px 45px rgba(0,0,0,.35),0 0 0 7px rgba(184,147,97,.1); backdrop-filter:blur(10px); transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s ease; }
-  .hero-wordmark { position:absolute; z-index:4; top:clamp(20px,2.4vw,34px); left:50%; color:#f5efe5; font:600 clamp(18px,2vw,28px)/1 "Cormorant Garamond",Didot,"Bodoni MT",serif; letter-spacing:.16em; text-decoration:none; transform:translateX(-50%); white-space:nowrap; }.hero-wordmark span { margin:0 .16em; color:#d4b47e; font-size:.52em; letter-spacing:.28em; vertical-align:middle; }
+  .brand-logo { position:absolute; z-index:4; top:14px; right:auto; left:clamp(14px,3vw,46px); display:flex; width:clamp(70px,6vw,88px); height:clamp(70px,6vw,88px); align-items:center; justify-content:center; border-radius:50%; background:transparent; box-shadow:none; transition:transform .35s cubic-bezier(.22,1,.36,1),filter .35s ease; }
+  .hero-wordmark { position:absolute; z-index:4; top:clamp(20px,2.4vw,34px); left:50%; color:#f5efe5; font:600 clamp(24px,2.8vw,40px)/1 "Cormorant Garamond",Didot,"Bodoni MT",serif; letter-spacing:.16em; text-decoration:none; transform:translateX(-50%); white-space:nowrap; }.hero-wordmark span { margin:0 .16em; color:#d4b47e; font-size:.52em; letter-spacing:.28em; vertical-align:middle; }
   .brand-logo img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(0,0,0,.3)); }
   .brand-logo span { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
-  .brand-logo:hover { box-shadow:0 22px 54px rgba(0,0,0,.45),0 0 0 11px rgba(217,255,69,.16); transform:scale(1.06) rotate(-3deg); }
-  @media(max-width:800px) { .brand-logo { top:9px; right:12px; width:56px; height:56px; box-shadow:0 10px 28px rgba(0,0,0,.28),0 0 0 5px rgba(184,147,97,.08); }.hero-wordmark { top:22px; left:50%; font-size:14px; letter-spacing:.1em; transform:translateX(-50%); }.hero-wordmark span { margin:0 .08em; letter-spacing:.17em; }.brand-logo:hover { transform:scale(1.04) rotate(-3deg); } }
+  .brand-logo:hover { filter:drop-shadow(0 12px 20px rgba(0,0,0,.28)); transform:scale(1.06) rotate(-3deg); }
+  @media(max-width:800px) { .brand-logo { top:9px; right:auto; left:12px; width:56px; height:56px; box-shadow:none; }.hero-wordmark { top:22px; left:50%; font-size:18px; letter-spacing:.1em; transform:translateX(-50%); }.hero-wordmark span { margin:0 .08em; letter-spacing:.17em; }.brand-logo:hover { transform:scale(1.04) rotate(-3deg); } }
 </style>
 
 <style>
@@ -298,7 +298,7 @@ const consultSchema = {
   .hero-copy { color:#ded5c7; max-width:675px; }.micro { color:#b6aa9c; }.hero-signals span { border-color:rgba(212,180,126,.4); color:#e6ddd1; background:rgba(255,255,255,.045); }
   .cta { border:1px solid #b89361; background:#b89361; color:#201b18; box-shadow:none; }.cta:hover { background:#d4b47e; transform:translateY(-3px); }
   .cta--book { box-shadow:0 0 0 1px rgba(184,147,97,.5),0 13px 27px rgba(0,0,0,.2); }.cta--book::after { background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.45) 50%,transparent 60%); }
-  .brand-logo { border-color:rgba(184,147,97,.6); background:rgba(27,22,19,.76); box-shadow:0 18px 45px rgba(0,0,0,.38),0 0 0 8px rgba(184,147,97,.09); }
+  .brand-logo { background:transparent; box-shadow:none; }
   .proof { background:var(--maison-paper); color:var(--maison-ink); }.proof .kicker,.proof h2 em { color:var(--maison-wine); }.story-grid article { background:#e6dacb; }.story-grid div span { color:var(--maison-wine); }.light { border-color:#342720; background:#342720; color:#f5efe5; }
   .feedback-proof { background:linear-gradient(135deg,#241d19,#3b2922); }.feedback-proof h2 em,.feedback-proof__signals b { color:#d4b47e; }.feedback-proof__signals span { border-color:rgba(212,180,126,.34); }.feedback-proof .proof-wall { --wall-accent:#b89361; --wall-paper:#f8f1e6; --wall-ink:#241d19; --wall-muted:#776b5d; }
   .decision { background:#36251f; }.decision-grid { border-color:rgba(226,208,185,.3); }.decision-grid article { border-color:rgba(226,208,185,.3); }.decision-grid b { color:#d4b47e; }
