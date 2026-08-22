@@ -308,7 +308,8 @@ const consultSchema = {
   .brand-logo img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(0,0,0,.3)); }
   .brand-logo span { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
   .brand-logo:hover { filter:drop-shadow(0 12px 20px rgba(0,0,0,.28)); transform:scale(1.06) rotate(-3deg); }
-  @media(max-width:800px) { .brand-logo { top:5px; right:auto; left:9px; width:72px; height:72px; box-shadow:none; }.hero-wordmark { --wordmark-x:-50%; top:25px; right:auto; left:calc(50% - 9px); font-size:clamp(27px,7.4vw,38px); letter-spacing:.12em; transform:translateX(var(--wordmark-x)); }.hero-wordmark span { margin:0 .08em; letter-spacing:.18em; }.brand-logo:hover { transform:scale(1.04) rotate(-3deg); } }
+  @media(max-width:800px) { .brand-logo { top:5px; right:auto; left:9px; width:72px; height:72px; box-shadow:none; }.hero-wordmark { --wordmark-x:0%; top:24px; right:13px; left:auto; font-size:clamp(21px,6.45vw,34px); letter-spacing:.105em; transform:translateX(var(--wordmark-x)); text-align:right; }.hero-wordmark span { margin:0 .07em; letter-spacing:.16em; }.brand-logo:hover { transform:scale(1.04) rotate(-3deg); } }
+  @media(max-width:390px) { .brand-logo { width:62px; height:62px; }.hero-wordmark { top:22px; right:10px; font-size:clamp(18px,6.1vw,24px); letter-spacing:.085em; }.hero-wordmark span { margin:0 .05em; letter-spacing:.13em; } }
 </style>
 
 <style>
