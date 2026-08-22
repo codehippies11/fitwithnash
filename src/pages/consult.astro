@@ -104,11 +104,11 @@ const consultSchema = {
       <section class="method section">
         <p class="kicker">— The framework</p><h2>The <em class="method-name">Avinash Method</em></h2><p class="method-intro">A practical coaching framework that builds a result your schedule can support.</p>
         <div class="phase-grid">
-          <article><b>01</b><h3>Foundation</h3><p>We establish your baseline: movement, routine, recovery and a starting point you can own.</p></article>
-          <article><b>02</b><h3>Strength</h3><p>Progressive training builds confidence, capability and a physique shaped by quality work.</p></article>
-          <article><b>03</b><h3>Nutrition</h3><p>Simple, flexible nutrition habits support your goal without turning food into another full-time job.</p></article>
-          <article><b>04</b><h3>Integration</h3><p>We adapt the plan around travel, long workdays and the routines that make results last.</p></article>
-          <article class="accountability-phase"><b>05</b><h3 class="accountability-title">Accountability</h3><p>Regular check-ins turn good intentions into measurable actions and honest progress.</p></article>
+          <article><h3>Foundation</h3><p>We establish your baseline: movement, routine, recovery and a starting point you can own.</p></article>
+          <article><h3>Strength</h3><p>Progressive training builds confidence, capability and a physique shaped by quality work.</p></article>
+          <article><h3>Nutrition</h3><p>Simple, flexible nutrition habits support your goal without turning food into another full-time job.</p></article>
+          <article><h3>Integration</h3><p>We adapt the plan around travel, long workdays and the routines that make results last.</p></article>
+          <article class="accountability-phase"><h3 class="accountability-title">Accountability</h3><p>Regular check-ins turn good intentions into measurable actions and honest progress.</p></article>
         </div>
       </section>
 
@@ -144,6 +144,10 @@ const consultSchema = {
 
 <style>
   /* Playfair's capital A has a left overhang. Keep a positive inset so it can never be clipped at any viewport. */
+  .brand { display:inline-flex; align-items:center; padding-bottom:7px; font:800 18px/.9 Manrope,sans-serif; letter-spacing:-.095em; }
+  .brand span { display:inline-block; margin:0 .07em; color:var(--lime); letter-spacing:-.06em; }
+  .brand::after { position:absolute; right:0; bottom:0; left:0; height:2px; content:''; background:linear-gradient(90deg,var(--lime) 0 31%,rgba(217,255,69,.18) 31%); transform-origin:left; transition:transform .25s ease; }
+  .brand:hover::after { transform:scaleX(.62); }
   .coach-name,.method-name,.accountability-title { display:inline-block; padding-inline-start:.12em; margin-inline-start:0; }
   .cta--book { position:relative; overflow:hidden; isolation:isolate; box-shadow:0 0 0 1px rgba(217,255,69,.2),0 14px 32px rgba(0,0,0,.2); }
   .cta--book::after { position:absolute; inset:-20% -65%; z-index:0; background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.38) 50%,transparent 60%); content:''; pointer-events:none; transform:translateX(-58%); animation:book-cta-shine 5.8s ease-in-out infinite; }
