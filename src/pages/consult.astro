@@ -43,20 +43,20 @@ const steps = [
   ['03', 'Accountability that adapts', 'Weekly check-ins keep the plan honest as work, travel and life change around you.'],
 ];
 const consultationFaqs = [
-  ['Who is Avinash Sharma at FitWithNash?', 'Avinash Sharma is the fitness coach behind FitWithNash. He works with adults who want a more considered approach to strength training, body-composition goals, nutrition habits and accountability.'],
+  ['Who is Avinash Sharma at FitWithNash?', 'Avinash Sharma is the internationally trained dietitian, nutritionist and body-transformation coach behind FitWithNash. His nutrition studies span Canada and Texas, and his work brings practical, culturally familiar food habits into personalised coaching for modern Indian life.'],
   ['What does FitWithNash 1:1 fitness coaching include?', 'Each coaching relationship starts with your goals, training history, schedule and food preferences. You receive personalised training direction, practical nutrition guidance and regular accountability.'],
   ['Can I work with an online fitness coach while travelling or working long hours?', 'Yes. FitWithNash coaching is designed around real workdays, travel and family commitments, with a plan that adapts as your schedule changes.'],
   ['Is this coaching for weight loss or muscle building?', 'The coaching can support sustainable fat loss, strength, muscle building and healthier routines. Your plan is built around your starting point and priorities rather than a generic template.'],
-  ['Does FitWithNash provide nutrition guidance?', 'Yes. Nutrition guidance focuses on repeatable food choices, sufficient protein, meal structure and context—not extreme restriction. Medical nutrition therapy and treatment of health conditions should remain with an appropriately qualified clinician.'],
+  ['Does FitWithNash provide dietitian and nutritionist guidance?', 'Yes. Avinash provides personalised nutrition guidance that focuses on repeatable food choices, sufficient protein, meal structure and flexible eating—not extreme restriction or a plan that leaves you constantly craving food. Diagnosis, prescription changes and urgent medical concerns should still be managed with the appropriate treating clinician.'],
   ['Who is online fitness coaching best suited for?', 'It is most useful for adults who value a clear plan, honest feedback and a coach who can adjust training around a real calendar. It is not a substitute for medical assessment, diagnosis or treatment.'],
 ];
 const consultSchema = {
   '@context': 'https://schema.org', '@graph': [
     { '@type': 'WebSite', '@id': 'https://consult.fitwithnash.com/#website', url: 'https://consult.fitwithnash.com/', name: 'FitWithNash', inLanguage: 'en-IN', publisher: { '@id': 'https://consult.fitwithnash.com/#business' } },
-    { '@type': 'WebPage', '@id': 'https://consult.fitwithnash.com/#webpage', url: 'https://consult.fitwithnash.com/', name: 'Avinash Sharma | Online Fitness Coach | FitWithNash', description: 'Personal fitness coaching with Avinash Sharma: strength training, practical nutrition guidance and accountability for adults with demanding schedules.', inLanguage: 'en-IN', isPartOf: { '@id': 'https://consult.fitwithnash.com/#website' }, about: [{ '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, { '@id': 'https://consult.fitwithnash.com/#service' }], mainEntity: { '@id': 'https://consult.fitwithnash.com/#service' } },
-    { '@type': 'ProfessionalService', '@id': 'https://consult.fitwithnash.com/#business', name: 'FitWithNash', alternateName: 'Fit With Nash', url: 'https://consult.fitwithnash.com/', logo: 'https://consult.fitwithnash.com/favicon.svg', image: portraitUrl, description: 'Personalised online fitness coaching, practical nutrition guidance and accountability with Avinash Sharma.', founder: { '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, sameAs: ['https://www.instagram.com/fitwithnash/'] },
-    { '@type': 'Service', '@id': 'https://consult.fitwithnash.com/#service', name: 'FitWithNash Online Fitness Coaching', serviceType: 'Personal training, strength coaching and practical nutrition guidance', provider: { '@id': 'https://consult.fitwithnash.com/#business' }, areaServed: [{ '@type': 'Country', name: 'India' }, { '@type': 'Place', name: 'Online' }], audience: { '@type': 'Audience', audienceType: 'Adults seeking personalised fitness coaching, sustainable weight loss or muscle building' }, offers: { '@type': 'OfferCatalog', name: 'FitWithNash coaching offers', itemListElement: packages.map((item, position) => ({ '@type': 'Offer', position: position + 1, name: item.title, description: item.description, url: 'https://consult.fitwithnash.com/' })) } },
-    { '@type': 'Person', '@id': 'https://consult.fitwithnash.com/#avinash-sharma', name: 'Avinash Sharma', url: 'https://consult.fitwithnash.com/#avinash-sharma', image: portraitUrl, jobTitle: 'Online Fitness Coach', description: 'Avinash Sharma is the fitness coach behind FitWithNash, providing personalised strength training, practical nutrition guidance and accountability.', worksFor: { '@id': 'https://consult.fitwithnash.com/#business' }, knowsAbout: ['Strength training', 'Online personal training', 'Fitness coaching', 'Sustainable weight management', 'Practical nutrition habits', 'Accountability coaching'], sameAs: ['https://www.instagram.com/fitwithnash/'] },
+    { '@type': 'WebPage', '@id': 'https://consult.fitwithnash.com/#webpage', url: 'https://consult.fitwithnash.com/', name: 'Avinash Sharma | Dietitian, Nutritionist & Fitness Coach | FitWithNash', description: 'Consult Avinash Sharma, internationally trained dietitian, nutritionist and body-transformation coach at FitWithNash for personalised fitness and nutrition guidance.', inLanguage: 'en-IN', isPartOf: { '@id': 'https://consult.fitwithnash.com/#website' }, about: [{ '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, { '@id': 'https://consult.fitwithnash.com/#service' }], mainEntity: { '@id': 'https://consult.fitwithnash.com/#service' } },
+    { '@type': 'ProfessionalService', '@id': 'https://consult.fitwithnash.com/#business', name: 'FitWithNash', alternateName: 'Fit With Nash', url: 'https://consult.fitwithnash.com/', logo: 'https://consult.fitwithnash.com/favicon.svg', image: portraitUrl, description: 'Personalised online dietitian, nutrition and body-transformation coaching with Avinash Sharma.', founder: { '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, sameAs: ['https://www.instagram.com/fitwithnash/'] },
+    { '@type': 'Service', '@id': 'https://consult.fitwithnash.com/#service', name: 'FitWithNash Dietitian, Nutrition & Body Transformation Coaching', serviceType: 'Dietitian-led nutrition guidance, personal training, strength coaching and body transformation coaching', provider: { '@id': 'https://consult.fitwithnash.com/#business' }, areaServed: [{ '@type': 'Country', name: 'India' }, { '@type': 'Place', name: 'Online' }], audience: { '@type': 'Audience', audienceType: 'Adults seeking personalised nutrition, fitness coaching, sustainable weight loss or muscle building' }, offers: { '@type': 'OfferCatalog', name: 'FitWithNash coaching offers', itemListElement: packages.map((item, position) => ({ '@type': 'Offer', position: position + 1, name: item.title, description: item.description, url: 'https://consult.fitwithnash.com/' })) } },
+    { '@type': 'Person', '@id': 'https://consult.fitwithnash.com/#avinash-sharma', name: 'Avinash Sharma', url: 'https://consult.fitwithnash.com/#avinash-sharma', image: portraitUrl, jobTitle: 'Dietitian, Nutritionist & Body Transformation Coach', description: 'Avinash Sharma is the internationally trained dietitian, nutritionist and body-transformation coach behind FitWithNash. His nutrition studies span Canada and Texas.', worksFor: { '@id': 'https://consult.fitwithnash.com/#business' }, knowsAbout: ['Dietetics', 'Nutrition guidance', 'Strength training', 'Online personal training', 'Body transformation coaching', 'Sustainable weight management', 'Practical nutrition habits', 'Accountability coaching'], sameAs: ['https://www.instagram.com/fitwithnash/'] },
     { '@type': 'FAQPage', '@id': 'https://consult.fitwithnash.com/#faq', mainEntity: consultationFaqs.map(([question, answer]) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })) },
   ],
 };
@@ -66,9 +66,9 @@ const consultSchema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Avinash Sharma | Online Fitness Coach & Personal Training | FitWithNash</title>
-    <meta name="description" content="Avinash Sharma at FitWithNash provides personalised online fitness coaching, strength training, practical nutrition guidance and accountability for adults with demanding schedules." />
-    <meta name="keywords" content="Avinash Sharma fitness coach, Avinash Sharma online fitness coach, FitWithNash, online personal training, strength coach, weight loss coaching, practical nutrition guidance, fitness consultation" />
+    <title>Avinash Sharma | Dietitian, Nutritionist & Fitness Coach | FitWithNash</title>
+    <meta name="description" content="Consult Avinash Sharma, internationally trained dietitian, nutritionist and body-transformation coach at FitWithNash for personalised nutrition, fitness and sustainable weight-loss guidance." />
+    <meta name="keywords" content="Avinash Sharma dietitian, Avinash Sharma nutritionist, Avinash Sharma fitness coach, FitWithNash, online dietitian India, online nutritionist, body transformation coach, weight loss nutrition guidance, online personal training" />
     <meta name="author" content="Avinash Sharma, FitWithNash" />
     <meta name="robots" content="index,follow" />
     <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
@@ -78,13 +78,13 @@ const consultSchema = {
     <link rel="canonical" href="https://consult.fitwithnash.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="FitWithNash" />
-    <meta property="og:title" content="Avinash Sharma | Online Fitness Coach | FitWithNash" />
-    <meta property="og:description" content="Personalised strength training, practical nutrition guidance and direct accountability with Avinash Sharma." />
+    <meta property="og:title" content="Avinash Sharma | Dietitian, Nutritionist & Fitness Coach" />
+    <meta property="og:description" content="Personalised nutrition, strength training and body-transformation coaching with Avinash Sharma at FitWithNash." />
     <meta property="og:url" content="https://consult.fitwithnash.com/" />
     <meta property="og:image" content={portrait} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Avinash Sharma | FitWithNash" />
-    <meta name="twitter:description" content="Personal fitness coaching for strength, sustainable body-composition goals and practical routines." />
+    <meta name="twitter:title" content="Avinash Sharma | Dietitian, Nutritionist & Fitness Coach" />
+    <meta name="twitter:description" content="Personalised dietitian, nutrition and body-transformation coaching at FitWithNash." />
     <meta name="twitter:image" content={portrait} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -97,7 +97,7 @@ const consultSchema = {
         <a class="hero-wordmark" href="https://www.fitwithnash.com/" aria-label="FitWithNash home">FIT<span>WITH</span>NASH</a>
         <a class="brand-logo" href="https://www.fitwithnash.com/" aria-label="FitWithNash home"><img src={fitwithnashMark.src} alt="" /><span>FitWithNash</span></a>
         <div class="coach-ring"><img src={portrait} alt="Avinash Sharma, FitWithNash coach" /></div>
-        <p class="kicker">Private 1:1 coaching / limited client roster</p>
+        <p class="kicker">Internationally trained dietitian & nutritionist / private 1:1 coaching</p>
         <h1>Build a stronger body<br />without putting your <em>life</em> on pause.</h1>
         <p class="hero-copy">I help ambitious professionals build strength, lose excess body fat and create a routine they can keep—even with demanding workdays, travel and family commitments.</p>
         <div class="hero-actions"><a class="cta cta--book" href={whatsapp} target="_blank" rel="noreferrer">Request a private clarity call <span>→</span></a><a class="hero-proof-link" href="#proof"><span>↓</span> See real client proof</a></div>
@@ -132,16 +132,16 @@ const consultSchema = {
 
       <section class="coach section">
         <div class="coach-image"><img src={portrait} alt="Avinash Sharma" /></div>
-        <div><p class="kicker">— Meet your coach</p><h2>Hey, I’m <em class="coach-name">Avinash.</em></h2><p class="role">FitWithNash strength & lifestyle coach</p><p>Most people do not need a more extreme plan. They need an intelligent one: training that meets them where they are, food habits they can actually repeat, and someone who helps them stop restarting.</p><p>My coaching is designed for people who want to feel capable in the gym and confident outside it—not just chase a temporary result.</p><a class="text-link" href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Follow the work on Instagram ↗</a></div>
+        <div><p class="kicker">— Meet your dietitian & coach</p><h2>Hey, I’m <em class="coach-name">Avinash.</em></h2><p class="role">FitWithNash dietitian, nutritionist & body-transformation coach</p><p>My nutrition studies span Canada and Texas. Today, my work is focused on changing everyday Indian food habits without making food, family meals or a busy schedule feel like the enemy.</p><p>Most people do not need a more extreme plan. They need an intelligent one: training that meets them where they are, food habits they can actually repeat, and someone who helps them stop restarting.</p><a class="text-link" href="https://www.instagram.com/fitwithnash/" target="_blank" rel="noreferrer">Follow the work on Instagram ↗</a></div>
       </section>
 
       <section class="coach-profile section" id="avinash-sharma" aria-labelledby="avinash-profile-title">
-        <div><p class="kicker">— About Avinash Sharma</p><h2 id="avinash-profile-title">Personal coaching,<br />with clinical <em>discipline.</em></h2></div>
-        <div class="coach-profile__copy"><p>Avinash Sharma is the coach behind FitWithNash. His work is for adults who prefer a reasoned plan over fitness theatre: progressive training, food habits that can survive a busy week, and regular review before small setbacks become a complete restart.</p><p>The standard is deliberately practical. The programme begins with the person in front of it—their training history, schedule, food preferences, recovery and priorities—then adjusts as that life changes.</p></div>
+        <div><p class="kicker">— About Avinash Sharma</p><h2 id="avinash-profile-title">Nutrition-led coaching,<br />with practical <em>discipline.</em></h2></div>
+        <div class="coach-profile__copy"><p>Avinash Sharma is the internationally trained dietitian, nutritionist and coach behind FitWithNash. His work is for adults who prefer a reasoned plan over fitness theatre: progressive training, food habits that can survive a busy week, and regular review before small setbacks become a complete restart.</p><p>His nutrition education spans Canada and Texas; his current mission is making healthier daily Indian habits realistic, culturally familiar and sustainable. The programme begins with the person in front of it—their training history, schedule, food preferences, recovery and priorities—then adjusts as that life changes.</p></div>
         <div class="coach-profile__topics" aria-label="FitWithNash coaching areas">
           <article id="online-fitness-coaching"><span>01</span><h3>Online fitness coaching</h3><p>Clear training direction and regular review for people who need their plan to travel well, work around real deadlines and remain intelligible outside the gym.</p></article>
           <article id="strength-training"><span>02</span><h3>Strength & body composition</h3><p>Progressive resistance training, measured against useful markers: performance, consistency, confidence and a physique built through patient work.</p></article>
-          <article id="nutrition-guidance"><span>03</span><h3>Practical nutrition guidance</h3><p>Simple meal structure, protein awareness and flexible food choices—without presenting restriction as expertise or routine as punishment.</p></article>
+          <article id="nutrition-guidance"><span>03</span><h3>Dietitian-led nutrition guidance</h3><p>Simple meal structure, protein awareness and flexible food choices—without presenting restriction as expertise or routine as punishment.</p></article>
         </div>
         <p class="coach-profile__note">Fitness coaching supports habits and training decisions. For injury, pregnancy, eating concerns or a medical condition, seek advice from an appropriately qualified healthcare professional.</p>
       </section>
@@ -418,4 +418,3 @@ const consultSchema = {
   @media(max-width:390px) { .private-call-float { bottom:136px; min-height:47px; padding-inline:12px; font-size:8px; }.private-call-float__spark { font-size:14px; }.private-call-float strong { font-size:16px; } }
   @media(prefers-reduced-motion:reduce) { .private-call-float::before,.private-call-float::after,.private-call-float__spark { animation:none; } }
 </style>
-
