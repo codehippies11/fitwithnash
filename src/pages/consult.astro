@@ -53,8 +53,8 @@ const consultationFaqs = [
 const consultSchema = {
   '@context': 'https://schema.org', '@graph': [
     { '@type': 'WebSite', '@id': 'https://consult.fitwithnash.com/#website', url: 'https://consult.fitwithnash.com/', name: 'FitWithNash', inLanguage: 'en-IN', publisher: { '@id': 'https://consult.fitwithnash.com/#business' } },
-    { '@type': 'WebPage', '@id': 'https://consult.fitwithnash.com/#webpage', url: 'https://consult.fitwithnash.com/', name: 'Avinash Sharma | Dietitian, Nutritionist & Fitness Coach | FitWithNash', description: 'Consult Avinash Sharma, internationally trained dietitian, nutritionist and body-transformation coach at FitWithNash for personalised fitness and nutrition guidance.', inLanguage: 'en-IN', isPartOf: { '@id': 'https://consult.fitwithnash.com/#website' }, about: [{ '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, { '@id': 'https://consult.fitwithnash.com/#service' }], mainEntity: { '@id': 'https://consult.fitwithnash.com/#service' } },
-    { '@type': 'ProfessionalService', '@id': 'https://consult.fitwithnash.com/#business', name: 'FitWithNash', alternateName: 'Fit With Nash', url: 'https://consult.fitwithnash.com/', logo: 'https://consult.fitwithnash.com/favicon.svg', image: portraitUrl, description: 'Personalised online dietitian, nutrition and body-transformation coaching with Avinash Sharma.', founder: { '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, sameAs: ['https://www.instagram.com/fitwithnash/'] },
+    { '@type': 'WebPage', '@id': 'https://consult.fitwithnash.com/#webpage', url: 'https://consult.fitwithnash.com/', name: 'Avinash Sharma | Private Dietitian & Nutritionist | FitWithNash', description: 'Private, personalised nutrition and body-composition coaching with Avinash Sharma for professionals seeking precise guidance, familiar food and durable results.', inLanguage: 'en-IN', isPartOf: { '@id': 'https://consult.fitwithnash.com/#website' }, about: [{ '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, { '@id': 'https://consult.fitwithnash.com/#service' }], mainEntity: { '@id': 'https://consult.fitwithnash.com/#service' } },
+    { '@type': 'ProfessionalService', '@id': 'https://consult.fitwithnash.com/#business', name: 'FitWithNash', alternateName: 'Fit With Nash', url: 'https://consult.fitwithnash.com/', logo: 'https://consult.fitwithnash.com/favicon.svg', image: portraitUrl, description: 'Private online dietitian, nutrition and body-composition coaching with Avinash Sharma, designed around real schedules, food preferences and long-term standards.', founder: { '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, sameAs: ['https://www.instagram.com/fitwithnash/'] },
     { '@type': 'Service', '@id': 'https://consult.fitwithnash.com/#service', name: 'FitWithNash Dietitian, Nutrition & Body Transformation Coaching', serviceType: 'Dietitian-led nutrition guidance, personal training, strength coaching and body transformation coaching', provider: { '@id': 'https://consult.fitwithnash.com/#business' }, areaServed: [{ '@type': 'Country', name: 'India' }, { '@type': 'Place', name: 'Online' }], audience: { '@type': 'Audience', audienceType: 'Adults seeking personalised nutrition, fitness coaching, sustainable weight loss or muscle building' }, offers: { '@type': 'OfferCatalog', name: 'FitWithNash coaching offers', itemListElement: packages.map((item, position) => ({ '@type': 'Offer', position: position + 1, name: item.title, description: item.description, url: 'https://consult.fitwithnash.com/' })) } },
     { '@type': 'Person', '@id': 'https://consult.fitwithnash.com/#avinash-sharma', name: 'Avinash Sharma', url: 'https://consult.fitwithnash.com/#avinash-sharma', image: portraitUrl, jobTitle: 'Dietitian, Nutritionist & Body Transformation Coach', description: 'Avinash Sharma is the internationally trained dietitian, nutritionist and body-transformation coach behind FitWithNash. His nutrition studies span Canada and Texas.', worksFor: { '@id': 'https://consult.fitwithnash.com/#business' }, knowsAbout: ['Dietetics', 'Nutrition guidance', 'Strength training', 'Online personal training', 'Body transformation coaching', 'Sustainable weight management', 'Practical nutrition habits', 'Accountability coaching'], sameAs: ['https://www.instagram.com/fitwithnash/'] },
     { '@type': 'FAQPage', '@id': 'https://consult.fitwithnash.com/#faq', mainEntity: consultationFaqs.map(([question, answer]) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })) },
@@ -66,25 +66,26 @@ const consultSchema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Avinash Sharma | Dietitian, Nutritionist & Fitness Coach | FitWithNash</title>
-    <meta name="description" content="Consult Avinash Sharma, internationally trained dietitian, nutritionist and body-transformation coach at FitWithNash for personalised nutrition, fitness and sustainable weight-loss guidance." />
+    <title>Avinash Sharma | Private Dietitian & Nutritionist | FitWithNash</title>
+    <meta name="description" content="Private nutrition and body-composition coaching for professionals who value precise guidance, familiar food and a standard they can sustain. Consult Avinash Sharma." />
     <meta name="keywords" content="Avinash Sharma dietitian, Avinash Sharma nutritionist, Avinash Sharma fitness coach, FitWithNash, online dietitian India, online nutritionist, body transformation coach, weight loss nutrition guidance, online personal training" />
     <meta name="author" content="Avinash Sharma, FitWithNash" />
     <meta name="robots" content="index,follow" />
     <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <meta name="theme-color" content="#f03212" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
+    <link rel="shortcut icon" href="/favicon.svg" />
     <link rel="apple-touch-icon" href={avinashProfile.src} />
     <link rel="canonical" href="https://consult.fitwithnash.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="FitWithNash" />
-    <meta property="og:title" content="Avinash Sharma | Dietitian, Nutritionist & Fitness Coach" />
-    <meta property="og:description" content="Personalised nutrition, strength training and body-transformation coaching with Avinash Sharma at FitWithNash." />
+    <meta property="og:title" content="Avinash Sharma | Private Dietitian & Nutritionist" />
+    <meta property="og:description" content="Private nutrition and body-composition coaching built around real schedules, familiar food and durable standards." />
     <meta property="og:url" content="https://consult.fitwithnash.com/" />
     <meta property="og:image" content={portrait} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Avinash Sharma | Dietitian, Nutritionist & Fitness Coach" />
-    <meta name="twitter:description" content="Personalised dietitian, nutrition and body-transformation coaching at FitWithNash." />
+    <meta name="twitter:title" content="Avinash Sharma | Private Dietitian & Nutritionist" />
+    <meta name="twitter:description" content="Private nutrition and body-composition coaching built around real schedules, familiar food and durable standards." />
     <meta name="twitter:image" content={portrait} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
