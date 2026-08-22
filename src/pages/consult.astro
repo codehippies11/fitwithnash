@@ -41,11 +41,18 @@ const steps = [
   ['02', 'Your personal system', 'You receive training direction, practical nutrition habits and a progression you understand.'],
   ['03', 'Accountability that adapts', 'Weekly check-ins keep the plan honest as work, travel and life change around you.'],
 ];
+const consultationFaqs = [
+  ['What does FitWithNash 1:1 fitness coaching include?', 'Each coaching relationship starts with your goals, training history, schedule and food preferences. You receive personalised training direction, practical nutrition guidance and regular accountability.'],
+  ['Can I work with an online fitness coach while travelling or working long hours?', 'Yes. FitWithNash coaching is designed around real workdays, travel and family commitments, with a plan that adapts as your schedule changes.'],
+  ['Is this coaching for weight loss or muscle building?', 'The coaching can support sustainable fat loss, strength, muscle building and healthier routines. Your plan is built around your starting point and priorities rather than a generic template.'],
+];
 const consultSchema = {
   '@context': 'https://schema.org', '@graph': [
-    { '@type': 'WebPage', '@id': 'https://consult.fitwithnash.com/#webpage', url: 'https://consult.fitwithnash.com/', name: 'FitWithNash Consultation | Personal Fitness Coaching', description: 'Book a FitWithNash coaching clarity call for personalised training, practical nutrition and accountability.', inLanguage: 'en-IN', about: { '@id': 'https://www.fitwithnash.com/#business' }, mainEntity: { '@id': 'https://consult.fitwithnash.com/#service' } },
-    { '@type': 'Service', '@id': 'https://consult.fitwithnash.com/#service', name: 'FitWithNash Online Fitness Coaching', serviceType: 'Online fitness coaching', provider: { '@id': 'https://www.fitwithnash.com/#business' }, areaServed: { '@type': 'Country', name: 'India' }, audience: { '@type': 'Audience', audienceType: 'Adults seeking personalised fitness coaching' }, offers: { '@type': 'OfferCatalog', name: 'FitWithNash coaching offers', itemListElement: packages.map((item, position) => ({ '@type': 'Offer', position: position + 1, name: item.title, description: item.description, url: 'https://consult.fitwithnash.com/' })) } },
-    { '@type': 'Person', '@id': 'https://www.fitwithnash.com/#avinash', name: 'Avinash Sharma', jobTitle: 'Fitness Coach', sameAs: ['https://www.instagram.com/fitwithnash/'] },
+    { '@type': 'WebPage', '@id': 'https://consult.fitwithnash.com/#webpage', url: 'https://consult.fitwithnash.com/', name: 'Online Fitness Coach & Weight-Loss Consultation | FitWithNash', description: 'Book a FitWithNash coaching clarity call for personalised fitness training, practical nutrition guidance and accountability.', inLanguage: 'en-IN', about: { '@id': 'https://www.fitwithnash.com/#business' }, mainEntity: { '@id': 'https://consult.fitwithnash.com/#service' } },
+    { '@type': 'ProfessionalService', '@id': 'https://www.fitwithnash.com/#business', name: 'FitWithNash', url: 'https://www.fitwithnash.com/', logo: 'https://consult.fitwithnash.com/favicon.svg', description: 'Personalised online fitness coaching, practical nutrition guidance and accountability with Avinash Sharma.', sameAs: ['https://www.instagram.com/fitwithnash/'] },
+    { '@type': 'Service', '@id': 'https://consult.fitwithnash.com/#service', name: 'FitWithNash Online Fitness Coaching', serviceType: 'Online fitness coaching and nutrition guidance', provider: { '@id': 'https://www.fitwithnash.com/#business' }, areaServed: [{ '@type': 'Country', name: 'India' }, { '@type': 'Place', name: 'Online' }], audience: { '@type': 'Audience', audienceType: 'Adults seeking personalised fitness coaching, sustainable weight loss or muscle building' }, offers: { '@type': 'OfferCatalog', name: 'FitWithNash coaching offers', itemListElement: packages.map((item, position) => ({ '@type': 'Offer', position: position + 1, name: item.title, description: item.description, url: 'https://consult.fitwithnash.com/' })) } },
+    { '@type': 'Person', '@id': 'https://www.fitwithnash.com/#avinash', name: 'Avinash Sharma', jobTitle: 'Fitness Coach', worksFor: { '@id': 'https://www.fitwithnash.com/#business' }, sameAs: ['https://www.instagram.com/fitwithnash/'] },
+    { '@type': 'FAQPage', '@id': 'https://consult.fitwithnash.com/#faq', mainEntity: consultationFaqs.map(([question, answer]) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })) },
   ],
 };
 ---
@@ -54,12 +61,25 @@ const consultSchema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>FitWithNash Consultation | Personal Fitness Coaching</title>
-    <meta name="description" content="Book a FitWithNash coaching clarity call. Personalised training, practical nutrition and accountability for ambitious people with real schedules." />
+    <title>Online Fitness Coach & Weight-Loss Consultation | FitWithNash</title>
+    <meta name="description" content="Work with Avinash Sharma at FitWithNash: personalised online fitness coaching, practical nutrition guidance and accountability for sustainable weight loss, strength and muscle building." />
+    <meta name="keywords" content="online fitness coach, personal fitness coaching, weight loss coach, fitness consultation, nutrition guidance, muscle building coach, FitWithNash, Avinash Sharma" />
     <meta name="robots" content="index,follow" />
-    <link rel="icon" type="image/png" href={avinashProfile.src} />
+    <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#f03212" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href={avinashProfile.src} />
     <link rel="canonical" href="https://consult.fitwithnash.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="FitWithNash" />
+    <meta property="og:title" content="Online Fitness Coach & Weight-Loss Consultation | FitWithNash" />
+    <meta property="og:description" content="Personalised online fitness coaching, practical nutrition guidance and accountability with Avinash Sharma." />
+    <meta property="og:url" content="https://consult.fitwithnash.com/" />
+    <meta property="og:image" content={portrait} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FitWithNash | Personal Fitness Coaching" />
+    <meta name="twitter:description" content="Personalised online fitness coaching, practical nutrition guidance and accountability." />
+    <meta name="twitter:image" content={portrait} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600;1,700&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -136,6 +156,12 @@ const consultSchema = {
         <div class="fit-grid"><article><h3>This is for you if:</h3><ul><li>You want a clear fitness direction instead of saving more random workouts.</li><li>You want to get stronger, leaner and more confident without extreme rules.</li><li>You have a busy schedule and need coaching that adapts to it.</li><li>You are ready to show up consistently, not perfectly.</li></ul></article><article><h3>This is not for you if:</h3><ul><li>You are looking for overnight results or a crash diet.</li><li>You want a plan without the responsibility to follow it.</li><li>You want to train like someone else instead of around your own life.</li></ul></article></div>
       </section>
 
+      <section class="faq section" id="faq">
+        <p class="kicker">— Coaching questions</p>
+        <h2>Clear answers before<br />you <em>start.</em></h2>
+        <div class="faq__list">{consultationFaqs.map(([question, answer]) => <details><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div>
+      </section>
+
       <section class="final section"><p class="kicker">Your next chapter</p><h2>A stronger standard<br />starts with one <em>honest</em> conversation.</h2><p>Tell Avinash where you are now and where you want to be. You will leave with more clarity on whether FitWithNash coaching is the right fit.</p><a class="cta" href={whatsapp} target="_blank" rel="noreferrer">Start on WhatsApp <span>→</span></a><small>Results depend on individual effort, consistency and circumstances. No specific outcome is guaranteed.</small></section>
     </main>
     <nav class="social-float" aria-label="Contact FitWithNash">
@@ -172,7 +198,7 @@ const consultSchema = {
     .hero { min-height:700px; padding-top:124px; padding-bottom:96px; align-content:start; }
     .hero h1 { font-size:clamp(2.8rem,14vw,4.15rem); line-height:.94; }
     .hero-copy { font-size:15px; line-height:1.65; }
-    .hero-wordmark { top:22px; left:50%; font-size:16px; letter-spacing:.1em; transform:translateX(-50%); }
+    .hero-wordmark { top:22px; left:50%; font-size:18px; letter-spacing:.1em; transform:translateX(-50%); }
     .brand-logo { top:8px; right:auto; left:10px; width:52px; height:52px; }
     .coach-ring { margin:10px 0 20px; }
     .hero-actions { gap:3px; }
@@ -200,7 +226,7 @@ const consultSchema = {
   @media (max-width:360px) {
     .section { padding-inline:14px; }
     .hero { min-height:660px; padding-top:110px; }
-    .hero-wordmark { top:20px; left:50%; font-size:12px; letter-spacing:.075em; transform:translateX(-50%); }
+    .hero-wordmark { top:20px; left:50%; font-size:13px; letter-spacing:.075em; transform:translateX(-50%); }
     .hero-wordmark span { margin-inline:.05em; letter-spacing:.1em; }
     .brand-logo { top:7px; right:auto; left:7px; width:42px; height:42px; }
     .hero-signals span { font-size:7px; }
@@ -215,11 +241,11 @@ const consultSchema = {
 
 <style>
   .brand-logo { position:absolute; z-index:4; top:14px; right:auto; left:clamp(14px,3vw,46px); display:flex; width:clamp(70px,6vw,88px); height:clamp(70px,6vw,88px); align-items:center; justify-content:center; border-radius:50%; background:transparent; box-shadow:none; transition:transform .35s cubic-bezier(.22,1,.36,1),filter .35s ease; }
-  .hero-wordmark { position:absolute; z-index:4; top:clamp(20px,2.4vw,34px); left:50%; color:#f5efe5; font:600 clamp(24px,2.8vw,40px)/1 "Cormorant Garamond",Didot,"Bodoni MT",serif; letter-spacing:.16em; text-decoration:none; transform:translateX(-50%); white-space:nowrap; }.hero-wordmark span { margin:0 .16em; color:#d4b47e; font-size:.52em; letter-spacing:.28em; vertical-align:middle; }
+  .hero-wordmark { position:absolute; z-index:4; top:clamp(20px,2.4vw,34px); left:50%; color:#f5efe5; font:600 clamp(27px,3vw,45px)/1 "Cormorant Garamond",Didot,"Bodoni MT",serif; letter-spacing:.16em; text-decoration:none; transform:translateX(-50%); white-space:nowrap; }.hero-wordmark span { margin:0 .16em; color:#d4b47e; font-size:.52em; letter-spacing:.28em; vertical-align:middle; }
   .brand-logo img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(0,0,0,.3)); }
   .brand-logo span { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
   .brand-logo:hover { filter:drop-shadow(0 12px 20px rgba(0,0,0,.28)); transform:scale(1.06) rotate(-3deg); }
-  @media(max-width:800px) { .brand-logo { top:9px; right:auto; left:12px; width:56px; height:56px; box-shadow:none; }.hero-wordmark { top:22px; left:50%; font-size:18px; letter-spacing:.1em; transform:translateX(-50%); }.hero-wordmark span { margin:0 .08em; letter-spacing:.17em; }.brand-logo:hover { transform:scale(1.04) rotate(-3deg); } }
+  @media(max-width:800px) { .brand-logo { top:9px; right:auto; left:12px; width:56px; height:56px; box-shadow:none; }.hero-wordmark { top:22px; left:50%; font-size:20px; letter-spacing:.1em; transform:translateX(-50%); }.hero-wordmark span { margin:0 .08em; letter-spacing:.17em; }.brand-logo:hover { transform:scale(1.04) rotate(-3deg); } }
 </style>
 
 <style>
@@ -307,6 +333,7 @@ const consultSchema = {
   .method { background:#d9c8b5; color:#241d19; }.method .kicker,.phase-grid b,.steps b { color:#6d332c; }.accountability-phase { background:rgba(90,38,35,.09); }
   .how,.packages { background:#f7f1e7; color:#241d19; }.how .kicker,.packages .kicker,.fit .kicker { color:#6d332c; }.package-grid article { background:#2b211d; }.package-grid article>p,.package-grid strong,.package-grid a:hover { color:#d4b47e; }
   .fit { background:#26201c; }.fit-grid article { background:#312721; }.fit-grid article:last-child { background:#492a27; }.fit-grid li:before { color:#d4b47e; }
+  .faq { background:#f7f1e7; color:#241d19; }.faq .kicker { color:#6d332c; }.faq h2 { max-width:760px; margin:17px 0 44px; font:600 clamp(2.7rem,6vw,6.1rem)/.92 "Cormorant Garamond",Georgia,serif; letter-spacing:-.055em; }.faq h2 em { color:#6d332c; font-style:normal; }.faq__list { max-width:920px; border-top:1px solid rgba(91,38,35,.26); }.faq details { border-bottom:1px solid rgba(91,38,35,.26); }.faq summary { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:23px 0; color:#2e211c; cursor:pointer; font:600 clamp(1.25rem,2vw,1.65rem)/1.15 "Cormorant Garamond",Georgia,serif; list-style:none; }.faq summary::-webkit-details-marker { display:none; }.faq summary span { color:#a35428; font:500 1.7rem/1 Manrope,sans-serif; transition:transform .25s ease; }.faq details[open] summary span { transform:rotate(45deg); }.faq details p { max-width:720px; margin:0 0 24px; color:#5d4f44; line-height:1.75; }
   .final { background:radial-gradient(circle at 50% 0,rgba(184,147,97,.2),transparent 33%),#211a17; }.final .kicker { color:#d4b47e; }
   .social-float__instagram { background:#3b2b24; }.social-float__whatsapp { position:relative; isolation:isolate; overflow:visible; border:1px solid rgba(245,239,229,.78); background:#b89361; }.social-float__whatsapp::before { position:absolute; z-index:-1; inset:-5px; border:1px solid rgba(184,147,97,.5); border-radius:999px; content:''; animation:whatsapp-border 2.4s ease-out infinite; }.mobile-cta { position:relative; isolation:isolate; overflow:visible; border:1px solid rgba(245,239,229,.78); background:#b89361; }.mobile-cta::before { position:absolute; z-index:-1; inset:-5px; border:1px solid rgba(184,147,97,.35); border-radius:2px; content:''; animation:whatsapp-border 2.4s ease-out infinite; }
   @keyframes whatsapp-border { 0% { opacity:0; transform:scale(.94); } 24% { opacity:.85; } 100% { opacity:0; transform:scale(1.12); } }
