@@ -102,7 +102,8 @@ const proofType = (item: Testimonial) => {
       if (!card) return;
       // Keep carousel movement inside its horizontal track; scrollIntoView() can also move the full page.
       const left = card.offsetLeft - (track.clientWidth - card.clientWidth) / 2;
-      track.scrollTo({ left, behavior });
+      if (behavior === 'auto') track.scrollLeft = left;
+      else track.scrollTo({ left, behavior });
     };
     const show = (index, behavior = 'smooth') => {
       previousIndex = activeIndex;
@@ -157,7 +158,13 @@ const proofType = (item: Testimonial) => {
     track.addEventListener('scrollend', normalize);
     let scrollTimer;
     track.addEventListener('scroll', () => { window.clearTimeout(scrollTimer); scrollTimer = window.setTimeout(normalize, 120); }, { passive: true });
+    // Font and image layout can settle after this inline script runs. Recenter once those
+    // dimensions are stable so the first card never opens partially off-screen.
+    const centerActive = () => position(activeIndex, 'auto');
     show(activeIndex, 'auto');
+    requestAnimationFrame(() => requestAnimationFrame(centerActive));
+    window.addEventListener('load', centerActive, { once: true });
+    if ('ResizeObserver' in window) new ResizeObserver(centerActive).observe(track);
     restart();
   });
 </script>
