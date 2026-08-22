@@ -25,6 +25,7 @@ if (base && key) {
   if (testimonialsResponse.ok) cmsTestimonials = await testimonialsResponse.json();
 }
 const portrait = media.consult_coach_portrait || media.hero_portrait || avinashProfile.src;
+const portraitUrl = /^https?:\/\//.test(portrait) ? portrait : new URL(portrait, 'https://consult.fitwithnash.com').href;
 const journeys = [
   { image: media.consult_journey_arun || media.home_journey_arun || arunJourney.src, name: 'Arun', result: 'A phased transformation built through patient work.' },
   { image: media.consult_journey_krisham || media.home_journey_krisham || krishamJourney.src, name: 'Krisham', result: 'Consistency and a stronger routine, made visible.' },
@@ -53,9 +54,9 @@ const consultSchema = {
   '@context': 'https://schema.org', '@graph': [
     { '@type': 'WebSite', '@id': 'https://consult.fitwithnash.com/#website', url: 'https://consult.fitwithnash.com/', name: 'FitWithNash', inLanguage: 'en-IN', publisher: { '@id': 'https://consult.fitwithnash.com/#business' } },
     { '@type': 'WebPage', '@id': 'https://consult.fitwithnash.com/#webpage', url: 'https://consult.fitwithnash.com/', name: 'Avinash Sharma | Online Fitness Coach | FitWithNash', description: 'Personal fitness coaching with Avinash Sharma: strength training, practical nutrition guidance and accountability for adults with demanding schedules.', inLanguage: 'en-IN', isPartOf: { '@id': 'https://consult.fitwithnash.com/#website' }, about: [{ '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, { '@id': 'https://consult.fitwithnash.com/#service' }], mainEntity: { '@id': 'https://consult.fitwithnash.com/#service' } },
-    { '@type': 'ProfessionalService', '@id': 'https://consult.fitwithnash.com/#business', name: 'FitWithNash', url: 'https://consult.fitwithnash.com/', logo: 'https://consult.fitwithnash.com/favicon.svg', image: portrait, description: 'Personalised online fitness coaching, practical nutrition guidance and accountability with Avinash Sharma.', founder: { '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, sameAs: ['https://www.instagram.com/fitwithnash/'] },
+    { '@type': 'ProfessionalService', '@id': 'https://consult.fitwithnash.com/#business', name: 'FitWithNash', alternateName: 'Fit With Nash', url: 'https://consult.fitwithnash.com/', logo: 'https://consult.fitwithnash.com/favicon.svg', image: portraitUrl, description: 'Personalised online fitness coaching, practical nutrition guidance and accountability with Avinash Sharma.', founder: { '@id': 'https://consult.fitwithnash.com/#avinash-sharma' }, sameAs: ['https://www.instagram.com/fitwithnash/'] },
     { '@type': 'Service', '@id': 'https://consult.fitwithnash.com/#service', name: 'FitWithNash Online Fitness Coaching', serviceType: 'Personal training, strength coaching and practical nutrition guidance', provider: { '@id': 'https://consult.fitwithnash.com/#business' }, areaServed: [{ '@type': 'Country', name: 'India' }, { '@type': 'Place', name: 'Online' }], audience: { '@type': 'Audience', audienceType: 'Adults seeking personalised fitness coaching, sustainable weight loss or muscle building' }, offers: { '@type': 'OfferCatalog', name: 'FitWithNash coaching offers', itemListElement: packages.map((item, position) => ({ '@type': 'Offer', position: position + 1, name: item.title, description: item.description, url: 'https://consult.fitwithnash.com/' })) } },
-    { '@type': 'Person', '@id': 'https://consult.fitwithnash.com/#avinash-sharma', name: 'Avinash Sharma', url: 'https://consult.fitwithnash.com/#avinash-sharma', image: portrait, jobTitle: 'Online Fitness Coach', description: 'Avinash Sharma is the fitness coach behind FitWithNash, providing personalised strength training, practical nutrition guidance and accountability.', worksFor: { '@id': 'https://consult.fitwithnash.com/#business' }, knowsAbout: ['Strength training', 'Online personal training', 'Fitness coaching', 'Sustainable weight management', 'Practical nutrition habits', 'Accountability coaching'], sameAs: ['https://www.instagram.com/fitwithnash/'] },
+    { '@type': 'Person', '@id': 'https://consult.fitwithnash.com/#avinash-sharma', name: 'Avinash Sharma', url: 'https://consult.fitwithnash.com/#avinash-sharma', image: portraitUrl, jobTitle: 'Online Fitness Coach', description: 'Avinash Sharma is the fitness coach behind FitWithNash, providing personalised strength training, practical nutrition guidance and accountability.', worksFor: { '@id': 'https://consult.fitwithnash.com/#business' }, knowsAbout: ['Strength training', 'Online personal training', 'Fitness coaching', 'Sustainable weight management', 'Practical nutrition habits', 'Accountability coaching'], sameAs: ['https://www.instagram.com/fitwithnash/'] },
     { '@type': 'FAQPage', '@id': 'https://consult.fitwithnash.com/#faq', mainEntity: consultationFaqs.map(([question, answer]) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })) },
   ],
 };
@@ -265,12 +266,12 @@ const consultSchema = {
 </style>
 
 <style>
-  .brand-logo { position:absolute; z-index:4; top:12px; right:auto; left:clamp(14px,3vw,46px); display:flex; width:clamp(82px,6.8vw,104px); height:clamp(82px,6.8vw,104px); align-items:center; justify-content:center; border-radius:50%; background:transparent; box-shadow:none; transition:transform .35s cubic-bezier(.22,1,.36,1),filter .35s ease; }
-  .hero-wordmark { position:absolute; z-index:4; top:clamp(23px,2.65vw,38px); left:50%; color:#f5efe5; font:600 clamp(39px,4.05vw,64px)/1 "Cormorant Garamond",Didot,"Bodoni MT",serif; letter-spacing:.16em; text-decoration:none; transform:translateX(-50%); white-space:nowrap; }.hero-wordmark span { margin:0 .16em; color:#d4b47e; font-size:.52em; letter-spacing:.28em; vertical-align:middle; }
+  .brand-logo { position:absolute; z-index:4; top:8px; right:auto; left:clamp(14px,3vw,46px); display:flex; width:clamp(94px,7.6vw,118px); height:clamp(94px,7.6vw,118px); align-items:center; justify-content:center; border-radius:50%; background:transparent; box-shadow:none; transition:transform .35s cubic-bezier(.22,1,.36,1),filter .35s ease; }
+  .hero-wordmark { position:absolute; z-index:4; top:clamp(25px,2.8vw,40px); left:50%; color:#f5efe5; font:600 clamp(44px,4.45vw,70px)/1 "Cormorant Garamond",Didot,"Bodoni MT",serif; letter-spacing:.16em; text-decoration:none; transform:translateX(-50%); white-space:nowrap; }.hero-wordmark span { margin:0 .16em; color:#d4b47e; font-size:.52em; letter-spacing:.28em; vertical-align:middle; }
   .brand-logo img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(0,0,0,.3)); }
   .brand-logo span { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
   .brand-logo:hover { filter:drop-shadow(0 12px 20px rgba(0,0,0,.28)); transform:scale(1.06) rotate(-3deg); }
-  @media(max-width:800px) { .brand-logo { top:7px; right:auto; left:10px; width:64px; height:64px; box-shadow:none; }.hero-wordmark { top:24px; left:50%; font-size:27px; letter-spacing:.1em; transform:translateX(-50%); }.hero-wordmark span { margin:0 .08em; letter-spacing:.17em; }.brand-logo:hover { transform:scale(1.04) rotate(-3deg); } }
+  @media(max-width:800px) { .brand-logo { top:5px; right:auto; left:9px; width:72px; height:72px; box-shadow:none; }.hero-wordmark { top:25px; left:50%; font-size:30px; letter-spacing:.1em; transform:translateX(-50%); }.hero-wordmark span { margin:0 .08em; letter-spacing:.17em; }.brand-logo:hover { transform:scale(1.04) rotate(-3deg); } }
 </style>
 
 <style>
@@ -417,3 +418,4 @@ const consultSchema = {
   @media(max-width:390px) { .private-call-float { bottom:136px; min-height:47px; padding-inline:12px; font-size:8px; }.private-call-float__spark { font-size:14px; }.private-call-float strong { font-size:16px; } }
   @media(prefers-reduced-motion:reduce) { .private-call-float::before,.private-call-float::after,.private-call-float__spark { animation:none; } }
 </style>
+
