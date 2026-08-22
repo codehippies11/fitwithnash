@@ -201,6 +201,28 @@ const consultSchema = {
           floatingCall.classList.toggle('is-hidden', entry.isIntersecting);
         }, { threshold: 0.12 }).observe(finalChapter);
       }
+
+      // Keep motion understated: each editorial section enters once as it earns attention.
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const motionSections = [...document.querySelectorAll('main > .section:not(.hero)')];
+      const motionTargets = 'p.kicker, h2, h3, .proof-lead, .hero-copy, .story-grid article, .decision-grid article, .concierge__grid article, .coach-image, .coach-profile__copy, .coach-profile__topics article, .phase-grid article, .package-grid article, .steps article, .fit-grid article, .faq details, .proof-cta, .cta';
+      motionSections.forEach((section) => {
+        section.classList.add('motion-section');
+        [...section.querySelectorAll(motionTargets)].forEach((item, index) => {
+          item.classList.add('motion-item');
+          item.style.setProperty('--motion-delay', `${Math.min(index, 7) * 55}ms`);
+        });
+      });
+      if (reducedMotion || !('IntersectionObserver' in window)) {
+        motionSections.forEach((section) => section.classList.add('is-revealed'));
+      } else {
+        const reveal = new IntersectionObserver((entries) => entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-revealed');
+          reveal.unobserve(entry.target);
+        }), { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+        motionSections.forEach((section) => reveal.observe(section));
+      }
     </script>
   </body>
 </html>
@@ -424,4 +446,38 @@ const consultSchema = {
   @media(max-width:800px) { .private-call-float { right:13px; bottom:144px; left:auto; min-height:50px; padding:0 16px 0 13px; font-size:9px; letter-spacing:.065em; transform:none; }.private-call-float:hover { transform:translateY(-3px) scale(1.02); }.private-call-float.is-hidden { transform:translateY(15px) scale(.96); }.mobile-cta { display:none; } }
   @media(max-width:390px) { .private-call-float { bottom:136px; min-height:47px; padding-inline:12px; font-size:8px; }.private-call-float__spark { font-size:14px; }.private-call-float strong { font-size:16px; } }
   @media(prefers-reduced-motion:reduce) { .private-call-float::before,.private-call-float::after,.private-call-float__spark { animation:none; } }
+</style>
+
+<style>
+  /* Quiet editorial motion: depth and pacing without a "template" feel. */
+  .hero > .coach-ring { animation:hero-portrait-in .9s cubic-bezier(.22,1,.36,1) both .12s; }
+  .hero > .kicker { animation:hero-copy-in .72s cubic-bezier(.22,1,.36,1) both .25s; }
+  .hero > h1 { animation:hero-copy-in .9s cubic-bezier(.22,1,.36,1) both .34s; }
+  .hero > .hero-copy { animation:hero-copy-in .8s cubic-bezier(.22,1,.36,1) both .46s; }
+  .hero > .hero-actions { animation:hero-copy-in .78s cubic-bezier(.22,1,.36,1) both .58s; }
+  .hero > .hero-signals,.hero > .micro { animation:hero-copy-in .72s cubic-bezier(.22,1,.36,1) both .7s; }
+  .hero-wordmark { animation:wordmark-in 1s cubic-bezier(.22,1,.36,1) both; }
+  .brand-logo { animation:brand-mark-in .85s cubic-bezier(.22,1,.36,1) both .12s; }
+  .motion-item { opacity:0; transform:translateY(22px); transition:opacity .72s ease,transform .82s cubic-bezier(.22,1,.36,1); transition-delay:var(--motion-delay,0ms); }
+  .motion-section.is-revealed .motion-item { opacity:1; transform:translateY(0); }
+  .motion-section .story-grid article,.motion-section .concierge__grid article,.motion-section .phase-grid article,.motion-section .package-grid article,.motion-section .coach-profile__topics article { transform:translateY(26px) scale(.985); }
+  .motion-section.is-revealed .story-grid article,.motion-section.is-revealed .concierge__grid article,.motion-section.is-revealed .phase-grid article,.motion-section.is-revealed .package-grid article,.motion-section.is-revealed .coach-profile__topics article { transform:translateY(0) scale(1); }
+  .story-grid article { transition:transform .55s cubic-bezier(.22,1,.36,1),box-shadow .55s ease; }
+  .story-grid article:hover { box-shadow:0 20px 38px rgba(54,35,27,.16); transform:translateY(-6px); }
+  .story-grid article img { transition:transform .8s cubic-bezier(.22,1,.36,1),filter .55s ease; }
+  .story-grid article:hover img { filter:saturate(1.07) contrast(1.03); transform:scale(1.025); }
+  .package-grid article { transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s ease; }
+  .package-grid article:hover { box-shadow:0 24px 45px rgba(42,25,19,.22); transform:translateY(-7px); }
+  .faq details { transition:background .3s ease,padding .3s ease; }
+  .faq details[open] { background:rgba(169,129,79,.08); padding-inline:18px; }
+  @keyframes hero-portrait-in { from { opacity:0; transform:scale(.82); } to { opacity:1; transform:scale(1); } }
+  @keyframes hero-copy-in { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes wordmark-in { from { opacity:0; filter:blur(6px); transform:translateX(-50%) translateY(-9px); letter-spacing:.27em; } to { opacity:1; filter:blur(0); transform:translateX(-50%) translateY(0); } }
+  @keyframes brand-mark-in { from { opacity:0; transform:translateY(-10px) scale(.88) rotate(5deg); } to { opacity:1; transform:translateY(0) scale(1) rotate(0); } }
+  @media(prefers-reduced-motion:reduce) {
+    html { scroll-behavior:auto; }
+    .hero > .coach-ring,.hero > .kicker,.hero > h1,.hero > .hero-copy,.hero > .hero-actions,.hero > .hero-signals,.hero > .micro,.hero-wordmark,.brand-logo { animation:none; }
+    .motion-item,.motion-section .story-grid article,.motion-section .concierge__grid article,.motion-section .phase-grid article,.motion-section .package-grid article,.motion-section .coach-profile__topics article { opacity:1; transform:none; transition:none; }
+    .story-grid article,.story-grid article img,.package-grid article,.faq details { transition:none; }
+  }
 </style>
