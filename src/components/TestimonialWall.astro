@@ -100,7 +100,9 @@ const proofType = (item: Testimonial) => {
     const position = (index, behavior = 'smooth') => {
       const card = carouselCards[index];
       if (!card) return;
-      card.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
+      // Keep carousel movement inside its horizontal track; scrollIntoView() can also move the full page.
+      const left = card.offsetLeft - (track.clientWidth - card.clientWidth) / 2;
+      track.scrollTo({ left, behavior });
     };
     const show = (index, behavior = 'smooth') => {
       previousIndex = activeIndex;
