@@ -1,5 +1,6 @@
 ---
 import avinashProfile from '../assets/images/avinash-profile-real.png';
+import avinashCoaching from '../assets/images/avinash-coaching.png';
 import arunJourney from '../assets/images/journeys/arun-journey.png';
 import krishamJourney from '../assets/images/journeys/krisham-journey.png';
 import farbeenaJourney from '../assets/images/journeys/farbeena-journey.png';
@@ -26,6 +27,7 @@ if (base && key) {
 }
 const portrait = media.consult_coach_portrait || media.hero_portrait || avinashProfile.src;
 const portraitUrl = /^https?:\/\//.test(portrait) ? portrait : new URL(portrait, 'https://consult.fitwithnash.com').href;
+const socialPreview = new URL(avinashCoaching.src, 'https://consult.fitwithnash.com').href;
 const journeys = [
   { image: media.consult_journey_arun || media.home_journey_arun || arunJourney.src, name: 'Arun', result: 'A phased transformation built through patient work.' },
   { image: media.consult_journey_krisham || media.home_journey_krisham || krishamJourney.src, name: 'Krisham', result: 'Consistency and a stronger routine, made visible.' },
@@ -82,11 +84,15 @@ const consultSchema = {
     <meta property="og:title" content="Avinash Sharma | Private Dietitian & Nutritionist" />
     <meta property="og:description" content="Private nutrition and body-composition coaching built around real schedules, familiar food and durable standards." />
     <meta property="og:url" content="https://consult.fitwithnash.com/" />
-    <meta property="og:image" content={portrait} />
+    <meta property="og:image" content={socialPreview} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="FitWithNash private nutrition and body-composition coaching with Avinash Sharma" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Avinash Sharma | Private Dietitian & Nutritionist" />
     <meta name="twitter:description" content="Private nutrition and body-composition coaching built around real schedules, familiar food and durable standards." />
-    <meta name="twitter:image" content={portrait} />
+    <meta name="twitter:image" content={socialPreview} />
+    <meta name="twitter:image:alt" content="FitWithNash private nutrition and body-composition coaching with Avinash Sharma" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600;1,700&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
