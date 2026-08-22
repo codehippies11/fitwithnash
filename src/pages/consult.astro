@@ -14,16 +14,19 @@ const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 let media: Record<string, string> = {};
 let cmsPrograms: any[] = [];
 let cmsTestimonials: any[] = [];
+let cmsTransformations: any[] = [];
 if (base && key) {
   const headers = { apikey: key, Authorization: `Bearer ${key}` };
-  const [mediaResponse, programsResponse, testimonialsResponse] = await Promise.all([
+  const [mediaResponse, programsResponse, testimonialsResponse, transformationsResponse] = await Promise.all([
     fetch(`${base}/rest/v1/site_media?select=key,image_url`, { headers }),
     fetch(`${base}/rest/v1/programs?is_published=eq.true&select=*&order=sort_order.asc,created_at.asc`, { headers }),
     fetch(`${base}/rest/v1/testimonials?is_published=eq.true&select=*&order=sort_order.asc,created_at.asc`, { headers }),
+    fetch(`${base}/rest/v1/transformations?is_published=eq.true&select=*&order=created_at.desc`, { headers }),
   ]);
   if (mediaResponse.ok) media = Object.fromEntries((await mediaResponse.json()).map((item: { key: string; image_url: string }) => [item.key, item.image_url]));
   if (programsResponse.ok) cmsPrograms = await programsResponse.json();
   if (testimonialsResponse.ok) cmsTestimonials = await testimonialsResponse.json();
+  if (transformationsResponse.ok) cmsTransformations = await transformationsResponse.json();
 }
 const portrait = media.consult_coach_portrait || media.hero_portrait || avinashProfile.src;
 const portraitUrl = /^https?:\/\//.test(portrait) ? portrait : new URL(portrait, 'https://consult.fitwithnash.com').href;
@@ -33,6 +36,12 @@ const journeys = [
   { image: media.consult_journey_krisham || media.home_journey_krisham || krishamJourney.src, name: 'Krisham', result: 'Consistency and a stronger routine, made visible.' },
   { image: media.consult_journey_farbeena || media.home_journey_farbeena || farbeenaJourney.src, name: 'Farbeena', result: 'Strength, energy and confidence back in the picture.' },
 ];
+const cmsTransformationGallery = cmsTransformations
+  .map((item) => ({ image: item.after_image_url || item.before_image_url, name: item.client_name, title: item.title || 'A personal transformation' }))
+  .filter((item) => item.image);
+const transformationGallery = cmsTransformationGallery.length
+  ? cmsTransformationGallery
+  : journeys.map((item) => ({ image: item.image, name: item.name, title: item.result }));
 const feedbackStories = [...verifiedTestimonials, ...cmsTestimonials];
 const featuredReviews = verifiedTestimonials.slice(0, 5);
 const packages = cmsPrograms.length ? cmsPrograms : [
@@ -117,6 +126,10 @@ const consultSchema = {
         <h2>What changes when<br />the plan finally <em>fits.</em></h2>
         <p class="proof-lead">There is no stock imagery here. These are original FitWithNash client journeys: real starting points, real consistency and outcomes built around real life.</p>
         <div class="story-grid">{journeys.map((journey) => <article><img src={journey.image} alt={`${journey.name}'s FitWithNash before-and-after journey`} loading="lazy" /><div><span>Original paired photo</span><h3>{journey.name}</h3><p>{journey.result}</p></div></article>)}</div>
+        {transformationGallery.length > 0 && <div class="transformation-carousel" aria-label="More FitWithNash transformation stories" data-transformation-carousel>
+          <div class="transformation-carousel__intro"><div><p class="kicker">— More client journeys</p><h3>Progress deserves a closer look.</h3></div><p>Each image is managed in the FitWithNash Studio. Add a new journey there and it will take its place here automatically.</p></div>
+          <div class="transformation-carousel__frame"><div class="transformation-carousel__track" data-transformation-track tabindex="0">{transformationGallery.map((journey) => <article class="transformation-slide" data-transformation-slide><div class="transformation-slide__image"><img src={journey.image} alt={`${journey.name}'s FitWithNash transformation`} loading="lazy" /></div><div class="transformation-slide__caption"><span>Client journey</span><h4>{journey.name}</h4><p>{journey.title}</p></div></article>)}</div><div class="transformation-carousel__controls" aria-label="Transformation carousel navigation"><button type="button" data-transformation-previous aria-label="Show previous transformation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" /></svg></button><button type="button" data-transformation-next aria-label="Show next transformation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></button></div></div>
+        </div>}
         <div class="proof-cta"><a class="cta light" href={whatsapp} target="_blank" rel="noreferrer">Talk through your starting point <span>→</span></a><small>Individual results vary. No specific outcome is guaranteed.</small></div>
       </section>
 
@@ -210,6 +223,45 @@ const consultSchema = {
         }, { threshold: 0.12 }).observe(finalChapter);
       }
 
+      document.querySelectorAll('[data-transformation-carousel]').forEach((carousel) => {
+        const track = carousel.querySelector('[data-transformation-track]');
+        const previous = carousel.querySelector('[data-transformation-previous]');
+        const next = carousel.querySelector('[data-transformation-next]');
+        if (!track) return;
+        const originals = [...track.querySelectorAll('[data-transformation-slide]')];
+        if (originals.length < 2) return;
+        const copySlides = () => originals.map((slide) => {
+          const copy = slide.cloneNode(true);
+          copy.setAttribute('aria-hidden', 'true');
+          return copy;
+        });
+        track.prepend(...copySlides());
+        track.append(...copySlides());
+        const slides = [...track.querySelectorAll('[data-transformation-slide]')];
+        const cycle = originals.length;
+        let active = cycle;
+        let timer;
+        const moveTo = (index, behavior = 'smooth') => {
+          const slide = slides[index];
+          if (!slide) return;
+          track.scrollTo({ left: slide.offsetLeft - (track.clientWidth - slide.clientWidth) / 2, behavior });
+          active = index;
+        };
+        const continueLoop = () => { clearInterval(timer); timer = setInterval(() => moveTo(active + 1), 7200); };
+        requestAnimationFrame(() => moveTo(active, 'auto'));
+        previous?.addEventListener('click', () => { moveTo(active - 1); continueLoop(); });
+        next?.addEventListener('click', () => { moveTo(active + 1); continueLoop(); });
+        track.addEventListener('scrollend', () => {
+          if (active <= 0) moveTo(active + cycle, 'auto');
+          if (active >= cycle * 2) moveTo(active - cycle, 'auto');
+        });
+        carousel.addEventListener('mouseenter', () => clearInterval(timer));
+        carousel.addEventListener('mouseleave', continueLoop);
+        carousel.addEventListener('focusin', () => clearInterval(timer));
+        carousel.addEventListener('focusout', continueLoop);
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) continueLoop();
+      });
+
       // Keep motion understated: each editorial section enters once as it earns attention.
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const motionSections = [...document.querySelectorAll('main > .section:not(.hero)')];
@@ -237,6 +289,34 @@ const consultSchema = {
 
 <style>
   :root{--ink:#11130f;--lime:#d9ff45;--paper:#f3f1e9;--muted:#a9ada2;--coral:#eb5e4f}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);font-family:Manrope,sans-serif;color:var(--paper)}.section{padding:clamp(72px,10vw,150px) clamp(20px,8vw,130px)}.kicker{margin:0;color:var(--lime);font:700 11px "DM Mono",monospace;letter-spacing:.1em;text-transform:uppercase}.brand{position:absolute;top:30px;left:clamp(20px,8vw,130px);color:#fff;font-weight:800;letter-spacing:-.07em;text-decoration:none}.brand span{color:var(--lime)}.hero{position:relative;min-height:100svh;display:grid;justify-items:center;align-content:center;text-align:center;background:radial-gradient(circle at 50% 23%,#2c3520,transparent 22%),var(--ink)}.coach-ring{width:clamp(110px,12vw,165px);aspect-ratio:1;overflow:hidden;margin:26px 0 23px;border:2px solid var(--coral);border-radius:50%;background:#343b2b}.coach-ring img{width:100%;height:100%;object-fit:cover;transform:scale(1.32) translateY(4%);transform-origin:50% 38%}.hero h1,.proof h2,.decision h2,.coach h2,.method h2,.how h2,.fit h2,.final h2{max-width:1100px;margin:17px 0;font:700 clamp(3rem,7vw,7.5rem)/.92 Manrope,sans-serif;letter-spacing:-.075em}.hero h1 em,.proof h2 em,.decision h2 em,.coach h2 em,.how h2 em,.final h2 em{color:var(--coral);font-style:normal}.hero-copy{max-width:760px;margin:0;color:#c7c9c1;font-size:clamp(15px,1.5vw,19px);line-height:1.7}.cta{display:inline-flex;align-items:center;justify-content:center;gap:22px;margin-top:29px;padding:17px 23px;background:var(--lime);color:var(--ink);font-size:12px;font-weight:800;letter-spacing:.03em;text-decoration:none;text-transform:uppercase;transition:transform .2s ease}.cta:hover{transform:translateY(-3px)}.hero-proof-link{display:inline-flex;align-items:center;gap:8px;margin-top:17px;color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em;text-decoration:none;text-transform:uppercase}.hero-proof-link span{color:var(--lime);font-size:17px}.micro{color:var(--muted);font-size:11px}.proof{background:var(--paper);color:var(--ink)}.proof .kicker{color:#657c13}.proof h2{max-width:760px;font-family:"Playfair Display",serif;font-weight:600;letter-spacing:-.055em}.proof h2 em{color:#61770f}.story-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}.story-grid article{background:#e6e4da}.story-grid img{display:block;width:100%;aspect-ratio:35/36;object-fit:contain;background:#252820}.story-grid div{padding:18px}.story-grid h3{margin:0;font:600 1.35rem/1.1 "Playfair Display",serif}.story-grid p,.proof-note{margin:10px 0 0;color:#55594f;font-size:13px;line-height:1.6}.proof-note{margin-top:24px}.light{background:var(--ink);color:#fff}.decision{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(40px,9vw,150px);background:#242820}.decision h2{font-family:"Playfair Display",serif;font-weight:600;letter-spacing:-.055em}.decision>div>p:not(.kicker){max-width:520px;color:#c7c9c1;line-height:1.75}.decision-grid{border-top:1px solid #5a5e54}.decision-grid article{display:grid;grid-template-columns:48px 1fr;column-gap:18px;padding:20px 0;border-bottom:1px solid #5a5e54}.decision-grid b{grid-row:span 2;color:var(--lime);font:700 12px "DM Mono",monospace}.decision-grid h3{margin:0;font:600 1.4rem/1 "Playfair Display",serif}.decision-grid p{grid-column:2;margin:7px 0 0;color:#c7c9c1;font-size:13px;line-height:1.65}.coach{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(32px,7vw,110px);align-items:center;background:#191c16}.coach-image{position:relative;width:clamp(150px,16vw,220px);aspect-ratio:1;overflow:hidden;border:1px solid rgba(217,255,69,.55);border-radius:50%;background:#30372b;box-shadow:0 0 0 9px #191c16,0 0 0 10px rgba(217,255,69,.22),0 26px 60px rgba(0,0,0,.38)}.coach-image:after{position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 32px rgba(0,0,0,.22);content:'';pointer-events:none}.coach-image img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.04);transform:scale(1.34) translateY(3%);transform-origin:50% 35%}.coach h2,.method h2,.how h2,.fit h2,.final h2{font-family:"Playfair Display",serif;font-weight:600;letter-spacing:-.055em}.role{color:var(--lime);font-weight:800}.coach p:not(.kicker):not(.role){max-width:640px;color:#c3c6be;line-height:1.8}.text-link{color:var(--lime);font-size:13px;font-weight:800;text-decoration:none;border-bottom:1px solid var(--lime)}.method{background:#d9ff45;color:var(--ink)}.method .kicker{color:#61770f}.method h2 em{font-style:italic}.method-intro{max-width:580px;line-height:1.7}.phase-grid{display:grid;grid-template-columns:repeat(5,1fr);margin-top:55px;border-top:1px solid rgba(17,19,15,.3)}.phase-grid article{min-height:255px;padding:22px;border-right:1px solid rgba(17,19,15,.3)}.phase-grid article:first-child{border-left:1px solid rgba(17,19,15,.3)}.phase-grid b,.steps b{color:#567100;font:700 12px "DM Mono",monospace}.phase-grid h3,.steps h3{font:600 1.55rem/1 "Playfair Display",serif}.phase-grid p,.steps p{font-size:13px;line-height:1.65}.how{background:#f5f3eb;color:var(--ink)}.how .kicker,.fit .kicker{color:#687a22}.how{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(38px,8vw,130px)}.how .cta{grid-column:1/-1;justify-self:start}.steps{display:grid;gap:28px}.steps article{display:grid;grid-template-columns:50px 1fr;column-gap:18px;padding-bottom:22px;border-bottom:1px solid #c6c7bc}.steps b{grid-row:span 2}.steps h3{margin:0}.steps p{grid-column:2;margin:6px 0 0;color:#565a50}.fit{background:#151714}.fit>div:first-child{max-width:750px}.fit>div:first-child>p:not(.kicker){color:#c1c3ba;line-height:1.7}.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:38px}.fit-grid article{padding:30px;background:#22261e}.fit-grid article:last-child{background:#2a2020}.fit-grid h3{margin:0;font:600 1.8rem "Playfair Display",serif}.fit-grid ul{display:grid;gap:14px;padding:0;list-style:none;color:#ced0c8;font-size:14px;line-height:1.55}.fit-grid li{padding-left:18px;position:relative}.fit-grid li:before{content:'+';position:absolute;left:0;color:var(--lime)}.final{text-align:center;background:radial-gradient(circle at 50% 0,#354521,transparent 34%),var(--ink)}.final h2{margin-inline:auto}.final p:not(.kicker){max-width:610px;margin:0 auto;color:#c7c9c1;line-height:1.75}.final small{display:block;max-width:700px;margin:35px auto 0;color:#858981;font-size:10px;line-height:1.5}.social-float{position:fixed;z-index:30;right:18px;bottom:20px;display:flex;flex-direction:column;gap:9px}.social-float__link{display:flex;align-items:center;gap:9px;min-width:48px;height:48px;padding:0 15px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-size:11px;font-weight:800;letter-spacing:.03em;text-decoration:none;transition:transform .2s ease}.social-float__link:hover{transform:translateY(-3px)}.social-float__link svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}.social-float__link .fill{fill:currentColor;stroke:none}.social-float__instagram{color:#fff;background:#292b27}.social-float__whatsapp{color:var(--ink);background:var(--lime)}.mobile-cta{display:none}@media(max-width:800px){body{padding-bottom:68px}.section{padding:78px 20px}.hero h1{font-size:clamp(2.9rem,12vw,4.8rem)}.story-grid,.decision,.coach,.how,.fit-grid{grid-template-columns:1fr}.story-grid{gap:25px}.phase-grid{grid-template-columns:1fr 1fr}.phase-grid article{min-height:auto;border-bottom:1px solid rgba(17,19,15,.3)}.phase-grid article:first-child{border-left:0}.phase-grid article:nth-child(odd){border-left:1px solid rgba(17,19,15,.3)}.coach-image{width:clamp(136px,42vw,178px);max-width:none}.how .cta{justify-self:stretch}.cta{width:100%}.social-float{right:13px;bottom:82px;gap:8px}.social-float__link{width:48px;min-width:48px;padding:0;justify-content:center}.social-float__link b{display:none}.mobile-cta{position:fixed;z-index:30;right:12px;bottom:12px;left:12px;display:flex;align-items:center;justify-content:center;gap:18px;padding:17px;background:var(--lime);color:var(--ink);box-shadow:0 12px 32px rgba(0,0,0,.35);font-size:12px;font-weight:800;letter-spacing:.03em;text-decoration:none;text-transform:uppercase}}
+</style>
+
+<style>
+  .transformation-carousel { margin-top:clamp(48px,7vw,88px); padding-top:clamp(34px,5vw,58px); border-top:1px solid rgba(109,51,44,.22); }
+  .transformation-carousel__intro { display:grid; grid-template-columns:minmax(0,1fr) minmax(220px,.62fr); gap:clamp(22px,6vw,100px); align-items:end; }
+  .transformation-carousel__intro h3 { margin:12px 0 0; font:600 clamp(2rem,4.4vw,4.35rem)/.94 "Playfair Display",serif; letter-spacing:-.055em; }
+  .transformation-carousel__intro>p { max-width:430px; margin:0; color:#66554b; font-size:14px; line-height:1.72; }
+  .transformation-carousel__frame { position:relative; margin-top:30px; }
+  .transformation-carousel__track { display:flex; gap:20px; overflow-x:auto; overscroll-behavior-x:contain; padding:12px max(0px,calc((100% - min(100%,620px))/2)) 26px; scroll-behavior:smooth; scroll-padding-inline:max(0px,calc((100% - min(100%,620px))/2)); scroll-snap-type:x mandatory; scrollbar-width:none; }
+  .transformation-carousel__track::-webkit-scrollbar { display:none; }
+  .transformation-slide { position:relative; display:grid; width:min(82vw,620px); min-width:min(82vw,620px); grid-template-columns:minmax(0,1.1fr) minmax(185px,.9fr); overflow:hidden; border:1px solid rgba(109,51,44,.25); border-radius:18px; background:#fbf6ee; box-shadow:0 18px 44px rgba(54,35,27,.14); scroll-snap-align:center; scroll-snap-stop:always; transition:transform .55s cubic-bezier(.22,1,.36,1),box-shadow .55s ease; }
+  .transformation-slide::after { position:absolute; inset:-1px; padding:1px; border-radius:19px; background:linear-gradient(112deg,transparent 38%,rgba(185,112,34,.18) 45%,#d69848 50%,rgba(185,112,34,.16) 57%,transparent 64%); background-size:280% 100%; background-position:155% 0; content:""; opacity:0; pointer-events:none; -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; animation:transformation-edge-glint 11s cubic-bezier(.22,1,.36,1) infinite; }
+  .transformation-slide:nth-child(2n)::after { animation-delay:-5.5s; }
+  .transformation-slide:hover { box-shadow:0 28px 60px rgba(54,35,27,.22); transform:translateY(-5px); }
+  .transformation-slide__image { min-height:360px; overflow:hidden; background:#30261f; }
+  .transformation-slide__image img { width:100%; height:100%; object-fit:contain; transition:transform .8s cubic-bezier(.22,1,.36,1),filter .55s ease; }
+  .transformation-slide:hover .transformation-slide__image img { filter:saturate(1.06) contrast(1.03); transform:scale(1.025); }
+  .transformation-slide__caption { display:flex; flex-direction:column; justify-content:end; padding:clamp(22px,4vw,38px); background:linear-gradient(145deg,#fcf9f3,#eadfce); }
+  .transformation-slide__caption span { color:#8c5b36; font:700 9px/1 "DM Mono",monospace; letter-spacing:.13em; text-transform:uppercase; }
+  .transformation-slide__caption h4 { margin:13px 0 10px; color:#38251e; font:600 clamp(2rem,4vw,3.25rem)/.9 "Playfair Display",serif; letter-spacing:-.055em; }
+  .transformation-slide__caption p { margin:0; color:#6f5d50; font-size:13px; line-height:1.68; }
+  .transformation-carousel__controls { position:absolute; z-index:2; top:50%; right:8px; left:8px; display:flex; justify-content:space-between; pointer-events:none; transform:translateY(-50%); }
+  .transformation-carousel__controls button { display:grid; width:50px; height:50px; place-items:center; border:1px solid rgba(83,65,53,.35); border-radius:50%; background:rgba(85,80,73,.47); color:#fff; cursor:pointer; opacity:.58; pointer-events:auto; backdrop-filter:blur(6px); transition:opacity .25s ease,background .25s ease,transform .3s cubic-bezier(.22,1,.36,1); }
+  .transformation-carousel__controls button:hover,.transformation-carousel__controls button:focus-visible { background:#6d332c; opacity:1; outline:none; transform:scale(1.08); }
+  .transformation-carousel__controls svg { width:23px; height:23px; fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; }
+  @keyframes transformation-edge-glint { 0%,67%,100% { background-position:155% 0; opacity:0; } 70% { opacity:.2; } 79% { background-position:-55% 0; opacity:.78; } 86% { opacity:0; } }
+  @media(max-width:800px) { .transformation-carousel__intro { grid-template-columns:1fr; }.transformation-carousel__track { padding-inline:8vw; }.transformation-slide { width:min(84vw,540px); min-width:min(84vw,540px); grid-template-columns:1fr; }.transformation-slide__image { min-height:min(104vw,460px); }.transformation-slide__caption { min-height:188px; }.transformation-carousel__controls { right:4px; left:4px; }.transformation-carousel__controls button { width:44px; height:44px; } }
+  @media(prefers-reduced-motion:reduce) { .transformation-carousel__track { scroll-behavior:auto; }.transformation-slide,.transformation-slide__image img { transition:none; }.transformation-slide::after { animation:none; } }
 </style>
 
 <style>
