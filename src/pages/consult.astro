@@ -3,9 +3,8 @@ import avinashProfile from '../assets/images/avinash-profile-real.png';
 import arunJourney from '../assets/images/journeys/arun-journey.png';
 import krishamJourney from '../assets/images/journeys/krisham-journey.png';
 import farbeenaJourney from '../assets/images/journeys/farbeena-journey.png';
-import krishamFeedback from '../assets/images/testimonials/krisham-feedback.jpg';
-import ishanaFeedback from '../assets/images/testimonials/ishana-feedback.jpg';
-import ankitaFeedback from '../assets/images/testimonials/ankita-feedback.jpg';
+import TestimonialWall from '../components/TestimonialWall.astro';
+import { verifiedTestimonials } from '../data/verifiedTestimonials';
 
 const whatsapp = 'https://wa.me/918360669905?text=Hi%20Avinash%2C%20I%20would%20like%20to%20book%20a%20FitWithNash%20coaching%20clarity%20call.';
 const base = import.meta.env.PUBLIC_SUPABASE_URL;
@@ -30,12 +29,7 @@ const journeys = [
   { image: media.consult_journey_krisham || media.home_journey_krisham || krishamJourney.src, name: 'Krisham', result: 'Consistency and a stronger routine, made visible.' },
   { image: media.consult_journey_farbeena || media.home_journey_farbeena || farbeenaJourney.src, name: 'Farbeena', result: 'Strength, energy and confidence back in the picture.' },
 ];
-const fallbackFeedbackStories = [
-  { image: krishamFeedback.src, name: 'Krisham Malhotra', label: 'Client testimonial' },
-  { image: ishanaFeedback.src, name: 'Ishana', label: 'Client feedback' },
-  { image: ankitaFeedback.src, name: 'Ankita Takkar', label: 'Client testimonial' },
-];
-const feedbackStories = cmsTestimonials.length ? cmsTestimonials.map((item) => ({ image: item.image_url, name: item.client_name, label: item.quote })) : fallbackFeedbackStories;
+const feedbackStories = [...verifiedTestimonials, ...cmsTestimonials];
 const packages = cmsPrograms.length ? cmsPrograms : [
   { label: 'Personal coaching', title: 'The Personal Standard.', description: 'Personalised training, practical nutrition and regular accountability around your real life.', price: 'Ask Avinash for the right fit' },
   { label: 'Focused transformation', title: '12 Weeks, Built Properly.', description: 'A focused block to build momentum with a structure you can understand and repeat.', price: 'Ask Avinash for the right fit' },
@@ -90,8 +84,9 @@ const consultSchema = {
       </section>
 
       <section class="feedback-proof section">
-        <div class="feedback-proof__intro"><p class="kicker">— In their own words</p><h2>The kind of support<br />people <em>feel.</em></h2><p>Proof is not only a photo. It is the confidence to ask questions, the support to keep going and a plan that can adapt when life does.</p></div>
-        <div class="feedback-proof__grid">{feedbackStories.map((story) => <article>{story.image && <div class="feedback-proof__image"><img src={story.image} alt={`Client testimonial from ${story.name}`} loading="lazy" /></div>}<p>{story.label} / {story.name}</p></article>)}</div>
+        <div class="feedback-proof__intro"><div><p class="kicker">— In their own words</p><h2>Proof that feels<br /><em>personal.</em></h2></div><p>Original client reviews, preserved as shared. The common thread is not a quick fix—it is coaching that adapts to real workdays, food preferences and life beyond the gym.</p></div>
+        <aside class="feedback-proof__signals" aria-label="FitWithNash coaching signals"><span><b>16</b> original reviews</span><span><b>1:1</b> coaching, built around you</span><span><b>Remote</b> support for wherever you live</span></aside>
+        <TestimonialWall testimonials={feedbackStories} tone="dark" layout="carousel" label="FitWithNash consultation client proof" />
       </section>
 
       <section class="decision section">
@@ -163,13 +158,10 @@ const consultSchema = {
   .feedback-proof h2 { max-width:790px; margin:17px 0 0; font:600 clamp(3rem,6.2vw,6.5rem)/.9 "Playfair Display",serif; letter-spacing:-.06em; }
   .feedback-proof h2 em { color:var(--lime); font-style:normal; }
   .feedback-proof__intro>p:not(.kicker) { margin:0; color:#c4c8be; line-height:1.75; }
-  .feedback-proof__grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:52px; }
-  .feedback-proof__grid article { min-width:0; }
-  .feedback-proof__image { overflow:hidden; aspect-ratio:9/12; background:#94b4d4; }
-  .feedback-proof__image img { display:block; width:100%; height:100%; object-fit:cover; object-position:center; filter:saturate(.94) contrast(1.04); transition:transform .45s ease; }
-  .feedback-proof__grid article:hover img { transform:scale(1.025); }
-  .feedback-proof__grid article>p { margin:13px 0 0; color:#c8cbc2; font:700 10px "DM Mono",monospace; letter-spacing:.07em; text-transform:uppercase; }
-  @media(max-width:800px) { .feedback-proof__intro,.feedback-proof__grid { grid-template-columns:1fr; }.feedback-proof__grid { gap:30px; margin-top:37px; }.feedback-proof__image { aspect-ratio:4/5; }.feedback-proof__image img { object-position:center 65%; }.proof-cta { display:grid; gap:15px; }.proof-cta .cta { width:100%; } }
+  .feedback-proof__signals { display:flex; flex-wrap:wrap; gap:8px; margin-top:34px; }
+  .feedback-proof__signals span { display:inline-flex; gap:7px; align-items:baseline; padding:10px 12px; border:1px solid rgba(217,255,69,.22); color:#bfc4b8; font:500 10px "DM Mono",monospace; letter-spacing:.04em; text-transform:uppercase; }
+  .feedback-proof__signals b { color:var(--lime); font-size:13px; }
+  @media(max-width:800px) { .feedback-proof__intro { grid-template-columns:1fr; }.proof-cta { display:grid; gap:15px; }.proof-cta .cta { width:100%; } }
 </style>
 
 <style>
