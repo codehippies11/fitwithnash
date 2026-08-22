@@ -27,11 +27,25 @@ export const getStaticPaths = async () => {
 };
 
 const { post } = Astro.props;
+const publishedAt = post.publishDate ? new Date(post.publishDate).toISOString() : undefined;
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.title,
+  description: post.excerpt,
+  datePublished: publishedAt,
+  dateModified: publishedAt,
+  mainEntityOfPage: `https://www.fitwithnash.com/blog/${post.slug}`,
+  author: { '@type': 'Person', name: 'Avinash Sharma', url: 'https://www.fitwithnash.com/#avinash' },
+  publisher: { '@type': 'Organization', name: 'FitWithNash', url: 'https://www.fitwithnash.com/' },
+  ...(post.image?.formats?.large?.thumbnailUrl ? { image: post.image.formats.large.thumbnailUrl } : {}),
+};
 ---
 
-<Layout>
+<Layout title={`${post.title} | FitWithNash`} description={post.excerpt || 'Practical fitness guidance from FitWithNash.'}>
   <main class="py-12 px-4 max-w-2xl mx-auto">
     <article>
+      <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
       <h1 class="text-4xl font-bold mb-4">{post.title}</h1>
       {post.image?.formats?.large?.thumbnailUrl && <img src={post.image.formats.large.thumbnailUrl} alt={post.title} class="w-full h-48 object-cover rounded mb-6" />}
       <div class="prose max-w-none">
