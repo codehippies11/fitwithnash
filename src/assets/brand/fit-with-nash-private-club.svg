@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title">
+  <title id="title">Fit With Nash</title>
+  <defs>
+    <radialGradient id="ivory" cx="36%" cy="28%" r="78%"><stop stop-color="#FFFDF9"/><stop offset="1" stop-color="#E9DDCF"/></radialGradient>
+    <pattern id="grain" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="2" cy="3" r=".55" fill="#7A6248" opacity=".12"/><circle cx="9" cy="8" r=".45" fill="#7A6248" opacity=".09"/></pattern>
+  </defs>
+  <circle cx="200" cy="200" r="198" fill="url(#ivory)"/>
+  <circle cx="200" cy="200" r="166" fill="url(#grain)" opacity=".42"/>
+  <circle cx="200" cy="200" r="185" fill="none" stroke="#211A17" stroke-width="2"/>
+  <circle cx="200" cy="200" r="173" fill="none" stroke="#B89361" stroke-width="1"/>
+  <path d="M108 144h184" stroke="#B89361" stroke-width="1.5"/>
+  <text x="200" y="194" fill="#211A17" text-anchor="middle" font-family="Didot, Bodoni MT, Georgia, serif" font-size="35" font-weight="700" letter-spacing="-2">FITWITH</text>
+  <text x="200" y="237" fill="#211A17" text-anchor="middle" font-family="Didot, Bodoni MT, Georgia, serif" font-size="47" font-weight="700" letter-spacing="1">NASH</text>
+  <path d="M130 266h140" stroke="#B89361" stroke-width="1.5"/>
+  <text x="200" y="298" fill="#B89361" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="700" letter-spacing="4">PRIVATE COACHING</text>
+</svg>
