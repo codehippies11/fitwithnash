@@ -68,6 +68,7 @@ const consultSchema = {
   <body>
     <main>
       <section class="hero section">
+        <a class="hero-wordmark" href="https://www.fitwithnash.com/" aria-label="FitWithNash home">FIT<span>WITH</span>NASH</a>
         <a class="brand-logo" href="https://www.fitwithnash.com/" aria-label="FitWithNash home"><img src={fitwithnashMark.src} alt="" /><span>FitWithNash</span></a>
         <div class="coach-ring"><img src={portrait} alt="Avinash Sharma, FitWithNash coach" /></div>
         <p class="kicker">Private 1:1 coaching / limited client roster</p>
@@ -151,10 +152,11 @@ const consultSchema = {
 
 <style>
   .brand-logo { position:absolute; z-index:3; top:18px; right:clamp(18px,5vw,70px); display:flex; width:clamp(70px,6vw,88px); height:clamp(70px,6vw,88px); align-items:center; justify-content:center; border-radius:50%; background:rgba(27,22,19,.62); box-shadow:0 18px 45px rgba(0,0,0,.35),0 0 0 7px rgba(184,147,97,.1); backdrop-filter:blur(10px); transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s ease; }
+  .hero-wordmark { position:absolute; z-index:3; top:clamp(30px,3.6vw,44px); left:50%; color:#f5efe5; font:600 clamp(18px,2vw,28px)/1 "Cormorant Garamond",Didot,"Bodoni MT",serif; letter-spacing:.16em; text-decoration:none; transform:translateX(-50%); white-space:nowrap; }.hero-wordmark span { margin:0 .16em; color:#d4b47e; font-size:.52em; letter-spacing:.28em; vertical-align:middle; }
   .brand-logo img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(0,0,0,.3)); }
   .brand-logo span { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
   .brand-logo:hover { box-shadow:0 22px 54px rgba(0,0,0,.45),0 0 0 11px rgba(217,255,69,.16); transform:scale(1.06) rotate(-3deg); }
-  @media(max-width:800px) { .brand-logo { top:12px; right:14px; width:60px; height:60px; box-shadow:0 10px 28px rgba(0,0,0,.28),0 0 0 5px rgba(184,147,97,.08); }.brand-logo:hover { transform:scale(1.04) rotate(-3deg); } }
+  @media(max-width:800px) { .brand-logo { top:12px; right:14px; width:60px; height:60px; box-shadow:0 10px 28px rgba(0,0,0,.28),0 0 0 5px rgba(184,147,97,.08); }.hero-wordmark { top:27px; left:20px; font-size:15px; letter-spacing:.1em; transform:none; }.hero-wordmark span { margin:0 .08em; letter-spacing:.17em; }.brand-logo:hover { transform:scale(1.04) rotate(-3deg); } }
 </style>
 
 <style>
