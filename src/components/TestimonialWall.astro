@@ -147,7 +147,7 @@ const proofType = (item: Testimonial) => {
     };
     const restart = () => {
       window.clearInterval(timer);
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) timer = window.setInterval(() => show(activeIndex + 1), 5600);
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) timer = window.setInterval(() => show(activeIndex + 1), 3000);
     };
     previous?.addEventListener('click', () => { show(activeIndex - 1); restart(); });
     next?.addEventListener('click', () => { show(activeIndex + 1); restart(); });
