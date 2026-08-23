@@ -383,13 +383,13 @@ const consultSchema = {
 </style>
 
 <style>
-  .brand-logo { position:absolute; z-index:4; top:8px; right:auto; left:clamp(14px,3vw,46px); display:flex; width:clamp(115px,9.4vw,146px); height:clamp(115px,9.4vw,146px); align-items:center; justify-content:center; border-radius:50%; background:transparent; box-shadow:none; transition:transform .35s cubic-bezier(.22,1,.36,1),filter .35s ease; }
-  .hero-wordmark { --wordmark-x:0%; position:absolute; z-index:4; top:clamp(25px,2.8vw,40px); right:clamp(24px,3vw,48px); left:auto; color:#f5efe5; font:600 clamp(69px,6.7vw,104px)/1 "Cormorant Garamond",Didot,"Bodoni MT",serif; letter-spacing:.19em; text-decoration:none; transform:translateX(var(--wordmark-x)); white-space:nowrap; }.hero-wordmark span { margin:0 .17em; color:#d4b47e; font-size:.52em; letter-spacing:.3em; vertical-align:middle; }
+  .brand-logo { position:absolute; z-index:4; top:clamp(14px,1.8vw,26px); left:50%; display:flex; width:clamp(92px,7vw,118px); height:clamp(92px,7vw,118px); align-items:center; justify-content:center; border-radius:50%; background:transparent; box-shadow:none; transition:transform .35s cubic-bezier(.22,1,.36,1),filter .35s ease; transform:translateX(-50%); }
+  .hero-wordmark { --wordmark-x:-50%; position:absolute; z-index:4; top:clamp(108px,9.3vw,148px); left:50%; right:auto; color:#f5efe5; font:600 clamp(44px,4.5vw,68px)/1 "Cormorant Garamond",Didot,"Bodoni MT",serif; letter-spacing:.19em; text-decoration:none; transform:translateX(var(--wordmark-x)); white-space:nowrap; }.hero-wordmark span { margin:0 .17em; color:#d4b47e; font-size:.52em; letter-spacing:.3em; vertical-align:middle; }
   .brand-logo img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(0,0,0,.3)); }
   .brand-logo span { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
-  .brand-logo:hover { filter:drop-shadow(0 12px 20px rgba(0,0,0,.28)); transform:scale(1.06) rotate(-3deg); }
-  @media(max-width:800px) { .brand-logo { top:5px; right:auto; left:9px; width:88px; height:88px; box-shadow:none; }.hero-wordmark { --wordmark-x:0%; top:24px; right:14px; left:auto; font-size:clamp(28px,8.8vw,49px); letter-spacing:.105em; transform:translateX(var(--wordmark-x)); text-align:right; }.hero-wordmark span { margin:0 .07em; letter-spacing:.16em; }.brand-logo:hover { transform:scale(1.04) rotate(-3deg); } }
-  @media(max-width:390px) { .brand-logo { width:77px; height:77px; }.hero-wordmark { top:22px; right:10px; font-size:clamp(24px,8.2vw,33px); letter-spacing:.085em; }.hero-wordmark span { margin:0 .05em; letter-spacing:.13em; } }
+  .brand-logo:hover { filter:drop-shadow(0 12px 20px rgba(0,0,0,.28)); transform:translateX(-50%) scale(1.06) rotate(-3deg); }
+  @media(max-width:800px) { .brand-logo { top:10px; left:50%; width:68px; height:68px; box-shadow:none; }.hero-wordmark { --wordmark-x:-50%; top:88px; left:50%; right:auto; font-size:clamp(24px,7vw,34px); letter-spacing:.105em; transform:translateX(var(--wordmark-x)); text-align:center; }.hero-wordmark span { margin:0 .07em; letter-spacing:.16em; }.brand-logo:hover { transform:translateX(-50%) scale(1.04) rotate(-3deg); } }
+  @media(max-width:390px) { .brand-logo { width:62px; height:62px; }.hero-wordmark { top:78px; font-size:clamp(21px,6.8vw,28px); letter-spacing:.085em; }.hero-wordmark span { margin:0 .05em; letter-spacing:.13em; } }
 </style>
 
 <style>
