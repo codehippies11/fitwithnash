@@ -562,7 +562,8 @@ const consultSchema = {
   @keyframes hero-portrait-in { from { opacity:0; transform:scale(.82); } to { opacity:1; transform:scale(1); } }
   @keyframes hero-copy-in { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
   @keyframes wordmark-in { from { opacity:0; filter:blur(6px); transform:translateX(var(--wordmark-x)) translateY(-9px); letter-spacing:.27em; } to { opacity:1; filter:blur(0); transform:translateX(var(--wordmark-x)) translateY(0); } }
-  @keyframes brand-mark-in { from { opacity:0; transform:translateY(-10px) scale(.88) rotate(5deg); } to { opacity:1; transform:translateY(0) scale(1) rotate(0); } }
+  /* Preserve the horizontal centering transform while the logo animates. */
+  @keyframes brand-mark-in { from { opacity:0; transform:translateX(-50%) translateY(-10px) scale(.88) rotate(5deg); } to { opacity:1; transform:translateX(-50%) translateY(0) scale(1) rotate(0); } }
   @media(prefers-reduced-motion:reduce) {
     html { scroll-behavior:auto; }
     .hero > .coach-ring,.hero > .kicker,.hero > h1,.hero > .hero-copy,.hero > .hero-actions,.hero > .hero-signals,.hero > .micro,.hero-wordmark,.brand-logo { animation:none; }
