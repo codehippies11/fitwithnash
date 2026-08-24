@@ -13,6 +13,8 @@ import transformation09 from '../assets/images/transformations/curated/transform
 import transformation10 from '../assets/images/transformations/curated/transformation-10.jpeg';
 import transformation11 from '../assets/images/transformations/curated/transformation-11.jpeg';
 import transformation12 from '../assets/images/transformations/curated/transformation-12.jpeg';
+import arunJourney from '../assets/images/journeys/arun-journey.png';
+import krishamJourney from '../assets/images/journeys/krisham-journey.png';
 import fitwithnashMark from '../assets/brand/fit-with-nash-header.svg';
 import TestimonialWall from '../components/TestimonialWall.astro';
 import { verifiedTestimonials } from '../data/verifiedTestimonials';
@@ -51,6 +53,8 @@ const transformations = [
   { image: transformation10, alt: 'FitWithNash client side-profile body transformation' },
   { image: transformation11, alt: 'FitWithNash client side-profile fitness transformation' },
   { image: transformation12, alt: 'FitWithNash client eight-week strength and physique transformation' },
+  { image: arunJourney, alt: "Arun's original paired before-and-after FitWithNash transformation", name: 'Arun' },
+  { image: krishamJourney, alt: "Krisham's original paired before-and-after FitWithNash transformation", name: 'Krisham' },
 ];
 const feedbackStories = [...verifiedTestimonials, ...cmsTestimonials];
 const featuredReviews = verifiedTestimonials.slice(0, 5);
@@ -141,7 +145,7 @@ const consultSchema = {
           <p class="transformation-showcase__lead">No stock bodies. No borrowed stories. A record of clients who trained, adapted and kept showing up—built through personal coaching that respects real life.</p>
         </div>
 
-        <div class="transformation-showcase__gallery" aria-label="Twelve original FitWithNash client transformations">
+        <div class="transformation-showcase__gallery" aria-label="Original FitWithNash client transformations">
           {transformations.map((transformation, index) => (
             <figure class:list={["transformation-art", `transformation-art--${index + 1}`, { "transformation-art--lifestyle": transformation.lifestyle }]} data-transformation-art>
               <div class="transformation-art__media">
@@ -155,7 +159,7 @@ const consultSchema = {
                   loading={index === 0 ? "eager" : "lazy"}
                 />
               </div>
-              <figcaption><span>FWN / {String(index + 1).padStart(2, '0')}</span><b>{transformation.lifestyle ? 'Built to live' : 'Client result'}</b></figcaption>
+              <figcaption><span>FWN / {String(index + 1).padStart(2, '0')}</span><b>{transformation.name || (transformation.lifestyle ? 'Built to live' : 'Client result')}</b></figcaption>
             </figure>
           ))}
         </div>
@@ -457,6 +461,14 @@ const consultSchema = {
     justify-self:center;
     margin-top:clamp(24px,5vw,76px);
   }
+  .transformation-art--13 {
+    grid-column:1/7;
+    margin-top:clamp(18px,3vw,44px);
+  }
+  .transformation-art--14 {
+    grid-column:7/-1;
+    margin-top:clamp(18px,3vw,44px);
+  }
   .transformation-art--lifestyle::before {
     position:absolute;
     z-index:2;
@@ -524,7 +536,7 @@ const consultSchema = {
     .transformation-showcase__lead { grid-column:auto; }
     .transformation-showcase__intro h2 { font-size:clamp(4rem,20vw,6.4rem); line-height:.78; }
     .transformation-showcase__gallery { grid-template-columns:1fr; gap:7px; padding-inline:6px; }
-    .transformation-art--1,.transformation-art--2,.transformation-art--3,.transformation-art--4,.transformation-art--5,.transformation-art--6,.transformation-art--7,.transformation-art--8,.transformation-art--9,.transformation-art--10,.transformation-art--11,.transformation-art--12 {
+    .transformation-art--1,.transformation-art--2,.transformation-art--3,.transformation-art--4,.transformation-art--5,.transformation-art--6,.transformation-art--7,.transformation-art--8,.transformation-art--9,.transformation-art--10,.transformation-art--11,.transformation-art--12,.transformation-art--13,.transformation-art--14 {
       grid-column:1;
       width:100%;
       margin-top:0;
