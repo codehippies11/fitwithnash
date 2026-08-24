@@ -56,8 +56,25 @@ const transformations = [
   { image: krishamJourney, alt: "Krisham's original paired before-and-after FitWithNash transformation", name: 'Krisham' },
   { image: transformation15, alt: 'Original paired before-and-after FitWithNash client transformation' },
 ];
-const feedbackStories = [...verifiedTestimonials, ...cmsTestimonials];
-const featuredReviews = verifiedTestimonials.slice(0, 5);
+const featuredTransformationIndices = new Set([0, 1, 13]);
+const transformationHeadlines = new Map([
+  [0, 'Strength, revealed.'],
+  [1, 'Consistency, made visible.'],
+  [13, 'A healthier standard.'],
+]);
+const transformationPortfolio = transformations.map((transformation, index) => ({
+  ...transformation,
+  position: index + 1,
+  headline: transformationHeadlines.get(index),
+}));
+const featuredTransformations = transformationPortfolio.filter((_, index) => featuredTransformationIndices.has(index));
+const transformationArchive = transformationPortfolio.filter((_, index) => index !== 0);
+const feedbackStories = Array.from(new Map(
+  [...verifiedTestimonials, ...cmsTestimonials].map((item) => {
+    const clientKey = String(item.client_name || '').trim().toLowerCase();
+    return [clientKey ? `client:${clientKey}` : item.id || `${item.image_url || ''}|${item.quote || ''}`, item];
+  }),
+).values());
 const packages = cmsPrograms.length ? cmsPrograms : [
   { label: 'Personal coaching', title: 'The Personal Standard.', description: 'Personalised training, practical nutrition and regular accountability around your real life.', price: 'Ask Avinash for the right fit' },
   { label: 'Focused transformation', title: '12 Weeks, Built Properly.', description: 'A focused block to build momentum with a structure you can understand and repeat.', price: 'Ask Avinash for the right fit' },
@@ -145,27 +162,74 @@ const consultSchema = {
           <p class="transformation-showcase__lead">No stock bodies. No borrowed stories. A record of clients who trained, adapted and kept showing up—built through personal coaching that respects real life.</p>
         </div>
 
-        <div class="transformation-showcase__gallery" aria-label="Original FitWithNash client transformations">
-          {transformations.map((transformation, index) => (
-            <figure class:list={["transformation-art", `transformation-art--${index + 1}`, { "transformation-art--lifestyle": transformation.lifestyle }]} data-transformation-art>
-              <div class="transformation-art__media">
-                <Image
-                  src={transformation.image}
-                  alt={transformation.alt}
-                  widths={[480, 768, 1080, 1440]}
-                  sizes={index === 0 || index === 13
-                    ? "100vw"
-                    : index === 1
-                      ? "(max-width: 1024px) 100vw, 66vw"
-                      : "(max-width: 560px) 100vw, (max-width: 1024px) 50vw, 58vw"}
-                  format="webp"
-                  quality={88}
-                  loading={index === 0 ? "eager" : "lazy"}
-                />
-              </div>
-              <figcaption><span>FWN / {String(index + 1).padStart(2, '0')}</span><b>{transformation.name || (transformation.lifestyle ? 'Built to live' : 'Client result')}</b></figcaption>
-            </figure>
-          ))}
+        <div class="transformation-showcase__portfolio">
+          <div class="transformation-featured" aria-label="Selected original FitWithNash client transformations">
+            {featuredTransformations.map((transformation, index) => (
+              <figure class:list={["result-feature", `result-feature--${index + 1}`]}>
+                <button
+                  class="result-feature__open"
+                  type="button"
+                  data-proof-view
+                  data-proof-src={transformation.image.src}
+                  data-proof-alt={transformation.alt}
+                  data-proof-label={transformation.name || 'Original client transformation'}
+                  aria-label={`View ${transformation.name || 'original client transformation'} in full`}
+                >
+                  <span class="result-feature__media">
+                    <Image
+                      src={transformation.image}
+                      alt={transformation.alt}
+                      widths={[480, 768, 1080, 1440]}
+                      sizes={index === 0 ? "(max-width: 800px) 82vw, 62vw" : "(max-width: 800px) 82vw, 38vw"}
+                      format="webp"
+                      quality={88}
+                      loading="lazy"
+                    />
+                  </span>
+                  <span class="result-feature__view">View full result <b aria-hidden="true">↗</b></span>
+                </button>
+                <figcaption>
+                  <span>Selected client journey</span>
+                  <strong>{transformation.headline}</strong>
+                  <small>{transformation.name || 'Original client transformation'}</small>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div class="transformation-archive" aria-labelledby="transformation-archive-title">
+            <div class="transformation-archive__header">
+              <div><p class="kicker">The result archive</p><h3 id="transformation-archive-title">Every journey remains visible.</h3></div>
+              <p>Swipe or drag through the complete client record. Tap any image to inspect the original.</p>
+            </div>
+            <div class="transformation-rail" aria-label="Scrollable archive of FitWithNash client transformations">
+              {transformationArchive.map((transformation) => (
+                <figure class:list={['result-thumb', featuredTransformationIndices.has(transformation.position - 1) && 'result-thumb--featured-copy']}>
+                  <button
+                    class="result-thumb__open"
+                    type="button"
+                    data-proof-view
+                    data-proof-src={transformation.image.src}
+                    data-proof-alt={transformation.alt}
+                    data-proof-label={transformation.name || 'Original client transformation'}
+                    aria-label={`View ${transformation.name || 'original client transformation'} in full`}
+                  >
+                    <Image
+                      src={transformation.image}
+                      alt={transformation.alt}
+                      widths={[320, 480, 768]}
+                      sizes="(max-width: 800px) 72vw, 330px"
+                      format="webp"
+                      quality={84}
+                      loading="lazy"
+                    />
+                    <span>Open result <b aria-hidden="true">↗</b></span>
+                  </button>
+                  <figcaption><span>FitWithNash result</span><b>{transformation.name || 'Client transformation'}</b></figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div class="transformation-showcase__close section">
@@ -175,12 +239,19 @@ const consultSchema = {
         </div>
       </section>
 
-      <section class="feedback-proof section">
-        <div class="feedback-proof__intro"><div><p class="kicker">— In their own words</p><h2>Proof that feels<br /><em>personal.</em></h2></div><p>Original client reviews, preserved as shared. The common thread is not a quick fix—it is coaching that adapts to real workdays, food preferences and life beyond the gym.</p></div>
-        <aside class="feedback-proof__signals" aria-label="FitWithNash coaching signals"><span><b>Real</b> client reviews</span><span><b>1:1</b> coaching, built around you</span><span><b>Remote</b> support for wherever you live</span></aside>
-        <div class="feedback-proof__featured"><p class="kicker">— Start here</p><h3>Client experiences, shown in full.</h3><p>Read the original words first. Then swipe through every review at your own pace.</p><TestimonialWall testimonials={featuredReviews} tone="dark" layout="stack" label="Featured FitWithNash client reviews" /></div>
-        <div class="feedback-proof__carousel"><div><p class="kicker">— Keep exploring</p><h3>Every story starts with a real person.</h3><p>Swipe, use the arrows, or let the carousel advance one review at a time.</p></div><TestimonialWall testimonials={feedbackStories} tone="dark" layout="carousel" label="All FitWithNash consultation client proof" /></div>
+      <section class="feedback-proof section" aria-labelledby="client-proof-heading">
+        <div class="feedback-proof__intro"><div><p class="kicker">Original client proof</p><h2 id="client-proof-heading">Real words.<br /><em>Real standards.</em></h2></div><p>Original reviews from people coached around real workdays, familiar food and life beyond the gym. Read the excerpt, then open the client’s original review.</p></div>
+        <p class="feedback-proof__assurance"><span>Original review screenshots</span> · tap any proof to inspect the full record.</p>
+        <div class="feedback-proof__stage"><TestimonialWall testimonials={feedbackStories} tone="dark" layout="carousel" label="Original FitWithNash client reviews" /></div>
+        <div class="feedback-proof__close"><p>Your context will be different. The coaching standard will not.</p><a class="cta cta--book" href={whatsapp} target="_blank" rel="noreferrer">Discuss your starting point <span>→</span></a></div>
       </section>
+
+      <dialog class="proof-viewer" data-proof-viewer aria-labelledby="proof-viewer-title">
+        <div class="proof-viewer__surface">
+          <div class="proof-viewer__bar"><p id="proof-viewer-title" data-proof-viewer-label>Original client proof</p><button type="button" data-proof-close aria-label="Close proof viewer">Close <span aria-hidden="true">×</span></button></div>
+          <div class="proof-viewer__canvas"><img data-proof-viewer-image alt="" /></div>
+        </div>
+      </dialog>
 
       <section class="decision section">
         <div><p class="kicker">A better first step</p><h2>You do not need to have it all figured out before you <em>start.</em></h2><p>Most people arrive with a goal and a lot of noise: conflicting advice, an inconsistent routine or the feeling that they should be further ahead. That is exactly where the conversation begins.</p></div>
@@ -261,13 +332,16 @@ const consultSchema = {
       const floatingSocial = document.querySelector('.social-float');
       const heroSection = document.querySelector('.hero');
       const finalChapter = document.querySelector('.final');
+      const proofStages = [...document.querySelectorAll('.transformation-showcase, .feedback-proof')];
       if ((floatingCall || floatingSocial) && heroSection && finalChapter && 'IntersectionObserver' in window) {
         let heroVisible = true;
         let finalVisible = false;
+        const visibleProofStages = new Set();
         const updateFloatingActions = () => {
-          const hidden = heroVisible || finalVisible;
-          floatingCall?.classList.toggle('is-hidden', hidden);
-          floatingSocial?.classList.toggle('is-hidden', hidden);
+          floatingCall?.classList.toggle('is-hidden', heroVisible || finalVisible || visibleProofStages.size > 0);
+          // Keep the client proof unobstructed on compact screens. Both actions
+          // return as soon as the visitor leaves the proof galleries.
+          floatingSocial?.classList.toggle('is-hidden', heroVisible || finalVisible || visibleProofStages.size > 0);
         };
         new IntersectionObserver(([entry]) => {
           heroVisible = entry.isIntersecting;
@@ -277,11 +351,52 @@ const consultSchema = {
           finalVisible = entry.isIntersecting;
           updateFloatingActions();
         }, { threshold: 0.08 }).observe(finalChapter);
+        if (proofStages.length) {
+          const proofStageObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) visibleProofStages.add(entry.target);
+              else visibleProofStages.delete(entry.target);
+            });
+            updateFloatingActions();
+          }, { threshold: 0.05 });
+          proofStages.forEach((stage) => proofStageObserver.observe(stage));
+        }
         updateFloatingActions();
       } else {
         floatingCall?.classList.remove('is-hidden');
         floatingSocial?.classList.remove('is-hidden');
       }
+
+      const proofViewer = document.querySelector('[data-proof-viewer]');
+      const proofViewerImage = proofViewer?.querySelector('[data-proof-viewer-image]');
+      const proofViewerLabel = proofViewer?.querySelector('[data-proof-viewer-label]');
+      const closeProofViewer = () => {
+        if (!proofViewer?.open) return;
+        proofViewer.close();
+      };
+      document.addEventListener('click', (event) => {
+        if (!(event.target instanceof Element)) return;
+        const trigger = event.target.closest('[data-proof-view]');
+        if (!trigger || !proofViewer || !proofViewerImage) return;
+        event.preventDefault();
+        const source = trigger.getAttribute('data-proof-src');
+        if (!source) return;
+        proofViewerImage.setAttribute('src', source);
+        proofViewerImage.setAttribute('alt', trigger.getAttribute('data-proof-alt') || 'Original FitWithNash client proof');
+        if (proofViewerLabel) proofViewerLabel.textContent = trigger.getAttribute('data-proof-label') || 'Original client proof';
+        if (typeof proofViewer.showModal === 'function') {
+          document.dispatchEvent(new CustomEvent('proofviewer:open'));
+          proofViewer.showModal();
+        } else window.open(source, '_blank', 'noopener,noreferrer');
+      });
+      proofViewer?.querySelector('[data-proof-close]')?.addEventListener('click', closeProofViewer);
+      proofViewer?.addEventListener('click', (event) => {
+        if (event.target === proofViewer) closeProofViewer();
+      });
+      proofViewer?.addEventListener('close', () => {
+        proofViewerImage?.removeAttribute('src');
+        document.dispatchEvent(new CustomEvent('proofviewer:close'));
+      });
 
       // Keep motion understated: each editorial section enters once as it earns attention.
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1128,5 +1243,462 @@ const consultSchema = {
   @media (hover:none) {
     .cta:hover,.story-grid article:hover,.package-grid article:hover,.phase-grid article:hover,
     .concierge__grid article:hover,.transformation-art:hover { transform:none; }
+  }
+</style>
+
+<style>
+  /* Premium proof edit: a concise results portfolio and one focused review stage. */
+  .transformation-showcase {
+    background:
+      radial-gradient(circle at 88% 9%,rgba(209,130,48,.13),transparent 22%),
+      radial-gradient(circle at 8% 58%,rgba(126,75,34,.08),transparent 25%),
+      #080908;
+  }
+  .transformation-showcase::before {
+    top:clamp(100px,12vw,190px);
+    right:-20vw;
+    width:58vw;
+    height:58vw;
+    opacity:.55;
+  }
+  .transformation-showcase__intro {
+    min-height:0;
+    grid-template-columns:minmax(88px,.25fr) minmax(360px,1.05fr) minmax(260px,.58fr);
+    gap:clamp(24px,4vw,70px);
+    padding-block:clamp(74px,7vw,100px);
+    background:linear-gradient(112deg,rgba(238,158,54,.055),transparent 34%);
+  }
+  .transformation-showcase__intro h2 {
+    font-size:clamp(4rem,6.8vw,7.4rem);
+    line-height:.79;
+  }
+  .transformation-showcase__intro::after {
+    right:var(--page-gutter);
+    left:var(--page-gutter);
+  }
+  .transformation-showcase__portfolio {
+    position:relative;
+    padding:clamp(30px,4vw,64px) var(--page-gutter) clamp(64px,8vw,112px);
+  }
+  .transformation-showcase__portfolio::before {
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(90deg,transparent 0 49.96%,rgba(225,154,75,.045) 50%,transparent 50.04%),
+      linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px);
+    background-size:100% 100%,100% 120px;
+    content:"";
+    pointer-events:none;
+  }
+  .transformation-featured {
+    position:relative;
+    display:grid;
+    max-width:1540px;
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    grid-template-rows:repeat(2,clamp(220px,18vw,320px));
+    gap:clamp(10px,1.2vw,18px);
+    margin:0 auto;
+  }
+  .result-feature {
+    position:relative;
+    display:grid;
+    min-width:0;
+    min-height:0;
+    margin:0;
+    isolation:isolate;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.12);
+    background:#0c0d0c;
+    box-shadow:0 24px 72px rgba(0,0,0,.26);
+  }
+  .result-feature--1 { grid-column:1/8; grid-row:1/3; }
+  .result-feature--2 { grid-column:8/-1; grid-row:1; }
+  .result-feature--3 { grid-column:8/-1; grid-row:2; }
+  .result-feature__open,
+  .result-thumb__open {
+    display:block;
+    width:100%;
+    min-width:0;
+    height:100%;
+    padding:0;
+    overflow:hidden;
+    border:0;
+    background:#0a0b0a;
+    color:inherit;
+    cursor:zoom-in;
+  }
+  .result-feature__media {
+    position:absolute;
+    inset:0;
+    display:block;
+    background:radial-gradient(circle at center,#1a1a18,#080908 76%);
+  }
+  .result-feature__media::after {
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,transparent 58%,rgba(3,3,3,.74));
+    content:"";
+    pointer-events:none;
+  }
+  .result-feature__media img {
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    filter:saturate(.93) contrast(1.02);
+    transition:filter .65s ease,transform .9s cubic-bezier(.22,1,.36,1);
+  }
+  .result-feature__view {
+    position:absolute;
+    z-index:3;
+    top:16px;
+    right:16px;
+    display:flex;
+    min-height:38px;
+    align-items:center;
+    gap:10px;
+    padding:0 13px;
+    border:1px solid rgba(255,255,255,.34);
+    border-radius:999px;
+    background:rgba(7,8,7,.55);
+    color:#f6efe6;
+    font:600 9px/1 "DM Mono",monospace;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    backdrop-filter:blur(12px);
+    transition:background .28s ease,border-color .28s ease,transform .35s cubic-bezier(.22,1,.36,1);
+  }
+  .result-feature figcaption {
+    position:absolute;
+    z-index:2;
+    right:0;
+    bottom:0;
+    left:0;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:5px 18px;
+    align-items:end;
+    padding:clamp(18px,2.5vw,34px);
+    pointer-events:none;
+  }
+  .result-feature figcaption span,
+  .result-feature figcaption small {
+    color:#df9a4b;
+    font:500 9px/1.2 "DM Mono",monospace;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+  .result-feature figcaption strong {
+    grid-column:1/-1;
+    color:#fff8ee;
+    font:600 clamp(1.7rem,2.8vw,3.25rem)/.95 "Cormorant Garamond",Georgia,serif;
+    letter-spacing:-.035em;
+  }
+  .result-feature figcaption small { grid-column:2; grid-row:1; color:#aaa197; text-align:right; }
+  .result-feature::after {
+    position:absolute;
+    z-index:5;
+    inset:-1px;
+    padding:1px;
+    background:linear-gradient(112deg,transparent 30%,rgba(230,141,48,.05) 41%,#df8a32 49%,#ffd19a 51%,rgba(230,141,48,.08) 59%,transparent 70%);
+    background-position:150% 0;
+    background-size:300% 100%;
+    content:"";
+    opacity:0;
+    pointer-events:none;
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+  }
+  .result-feature__open:hover .result-feature__media img,
+  .result-feature__open:focus-visible .result-feature__media img { filter:saturate(1.03) contrast(1.04); transform:scale(1.012); }
+  .result-feature__open:hover .result-feature__view,
+  .result-feature__open:focus-visible .result-feature__view { border-color:#e6a356; background:rgba(112,60,23,.74); transform:translateY(-2px); }
+  .result-feature:focus-within::after,
+  .result-feature:hover::after { animation:result-edge-pass 1.3s cubic-bezier(.22,1,.36,1) 1 both; }
+  @keyframes result-edge-pass {
+    0% { background-position:150% 0; opacity:0; }
+    18%,70% { opacity:.9; }
+    100% { background-position:-50% 0; opacity:0; }
+  }
+  .result-feature__open:focus-visible,
+  .result-thumb__open:focus-visible { outline:2px solid #e2a45f; outline-offset:-4px; }
+
+  .transformation-archive {
+    position:relative;
+    max-width:1540px;
+    margin:clamp(38px,5vw,70px) auto 0;
+    padding-top:clamp(28px,3.2vw,44px);
+    border-top:1px solid rgba(255,255,255,.12);
+  }
+  .transformation-archive__header {
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(260px,.55fr);
+    gap:clamp(24px,5vw,80px);
+    align-items:end;
+  }
+  .transformation-archive__header h3 {
+    margin:10px 0 0;
+    color:#f6f0e8;
+    font:600 clamp(2.1rem,4.2vw,4.5rem)/.92 "Cormorant Garamond",Georgia,serif;
+    letter-spacing:-.045em;
+  }
+  .transformation-archive__header > p {
+    max-width:440px;
+    margin:0;
+    color:#aaa197;
+    font-size:14px;
+    line-height:1.7;
+  }
+  .transformation-rail {
+    display:flex;
+    gap:clamp(12px,1.4vw,20px);
+    margin-top:clamp(26px,3vw,44px);
+    overflow-x:auto;
+    padding:4px clamp(24px,4vw,64px) 24px 0;
+    scroll-padding-inline:0;
+    scroll-snap-type:x proximity;
+    scrollbar-color:rgba(222,151,75,.42) rgba(255,255,255,.06);
+    scrollbar-width:thin;
+  }
+  .result-thumb {
+    width:clamp(230px,24vw,338px);
+    min-width:clamp(230px,24vw,338px);
+    margin:0;
+    scroll-snap-align:start;
+  }
+  .result-thumb--featured-copy { display:none; }
+  .result-thumb__open {
+    position:relative;
+    aspect-ratio:4/3;
+    border:1px solid rgba(255,255,255,.11);
+    background:#101110;
+  }
+  .result-thumb__open img {
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    filter:saturate(.9) contrast(1.02);
+    transition:filter .45s ease,transform .75s cubic-bezier(.22,1,.36,1);
+  }
+  .result-thumb__open > span {
+    position:absolute;
+    right:10px;
+    bottom:10px;
+    left:10px;
+    display:flex;
+    min-height:34px;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 11px;
+    border:1px solid rgba(255,255,255,.25);
+    border-radius:999px;
+    background:rgba(7,8,7,.66);
+    color:#f8f1e7;
+    font:500 8px/1 "DM Mono",monospace;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    backdrop-filter:blur(10px);
+  }
+  .result-thumb__open:hover img,
+  .result-thumb__open:focus-visible img { filter:saturate(1) contrast(1.04); transform:scale(1.018); }
+  .result-thumb figcaption { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 2px 0; }
+  .result-thumb figcaption span { color:#d49047; font:500 8px/1 "DM Mono",monospace; letter-spacing:.12em; }
+  .result-thumb figcaption b { overflow:hidden; color:#c4bbb1; font:600 10px/1.2 Manrope,sans-serif; letter-spacing:.04em; text-overflow:ellipsis; white-space:nowrap; }
+  .transformation-showcase__close {
+    grid-template-columns:minmax(0,1fr) auto;
+    padding-block:clamp(52px,6vw,84px);
+  }
+  .transformation-showcase__close::before { right:var(--page-gutter); left:var(--page-gutter); }
+
+  .feedback-proof.section {
+    position:relative;
+    overflow:hidden;
+    padding-block:clamp(78px,8vw,118px);
+    color:#2b211b;
+    background:
+      radial-gradient(circle at 89% 11%,rgba(178,126,70,.13),transparent 24%),
+      linear-gradient(145deg,#f5efe5,#ece3d6);
+  }
+  .feedback-proof.section::before {
+    position:absolute;
+    top:0;
+    right:var(--page-gutter);
+    left:var(--page-gutter);
+    height:1px;
+    background:linear-gradient(90deg,#ad7139 0 10%,rgba(44,32,23,.14) 10% 100%);
+    content:"";
+  }
+  .feedback-proof__intro {
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(280px,.58fr);
+    gap:clamp(28px,7vw,112px);
+    align-items:end;
+  }
+  .feedback-proof h2 {
+    max-width:780px;
+    margin:14px 0 0;
+    color:#2b211b;
+    font-size:clamp(3.6rem,6.4vw,7rem);
+    line-height:.82;
+  }
+  .feedback-proof h2 em { color:#9b6232; }
+  .feedback-proof__intro > p:not(.kicker) { max-width:500px; margin:0; color:#716256; line-height:1.75; }
+  .feedback-proof__signals {
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:28px;
+  }
+  .feedback-proof__signals span {
+    display:inline-flex;
+    width:auto;
+    min-height:34px;
+    align-items:center;
+    justify-content:flex-start;
+    gap:7px;
+    padding:0 11px;
+    border:1px solid rgba(117,76,41,.2);
+    border-radius:999px;
+    color:#79695c;
+    background:rgba(255,255,255,.28);
+    font:600 9px/1 "DM Mono",monospace;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+  }
+  .feedback-proof__signals b { color:#8d572b; font-size:10px; }
+  .feedback-proof__assurance {
+    display:inline-flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin:26px 0 0;
+    color:#7a695b;
+    font:600 9px/1.45 "DM Mono",monospace;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+  }
+  .feedback-proof__assurance span { color:#8d572b; }
+  .feedback-proof__stage { margin-top:clamp(36px,4.8vw,68px); }
+  .feedback-proof__close {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:28px;
+    margin-top:clamp(20px,3vw,40px);
+    padding-top:clamp(24px,3vw,38px);
+    border-top:1px solid rgba(44,32,23,.14);
+  }
+  .feedback-proof__close p { max-width:530px; margin:0; color:#6d5e52; font:600 clamp(1.2rem,2vw,1.8rem)/1.3 "Cormorant Garamond",Georgia,serif; }
+  .feedback-proof__close .cta { margin:0; white-space:nowrap; }
+
+  .proof-viewer {
+    width:min(94vw,1120px);
+    max-width:1120px;
+    height:min(92svh,920px);
+    max-height:92svh;
+    padding:0;
+    overflow:hidden;
+    border:1px solid rgba(231,172,104,.38);
+    border-radius:18px;
+    background:#12110f;
+    color:#f8f1e8;
+    box-shadow:0 44px 140px rgba(0,0,0,.55);
+  }
+  .proof-viewer::backdrop { background:rgba(9,8,7,.8); backdrop-filter:blur(12px); }
+  .proof-viewer__surface { display:grid; height:100%; grid-template-rows:auto minmax(0,1fr); }
+  .proof-viewer__bar {
+    display:flex;
+    min-height:60px;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:0 clamp(16px,3vw,30px);
+    border-bottom:1px solid rgba(255,255,255,.12);
+  }
+  .proof-viewer__bar p { overflow:hidden; margin:0; color:#c9b9aa; font:600 10px/1.2 "DM Mono",monospace; letter-spacing:.1em; text-overflow:ellipsis; text-transform:uppercase; white-space:nowrap; }
+  .proof-viewer__bar button {
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:8px 11px;
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:999px;
+    background:transparent;
+    color:#fff8ee;
+    font:600 9px/1 "DM Mono",monospace;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    cursor:pointer;
+  }
+  .proof-viewer__bar button span { font-size:18px; font-weight:400; }
+  .proof-viewer__canvas { display:grid; min-height:0; overflow:auto; place-items:center; padding:clamp(10px,2vw,22px); }
+  .proof-viewer__canvas img { display:block; width:auto; max-width:100%; height:auto; max-height:calc(92svh - 104px); object-fit:contain; }
+
+  @media (max-width:800px) {
+    .transformation-showcase__intro {
+      grid-template-columns:1fr;
+      gap:20px;
+      padding-block:clamp(70px,17vw,96px);
+    }
+    .transformation-showcase__index { align-self:auto; }
+    .transformation-showcase__intro h2 { font-size:clamp(3.8rem,17vw,6.3rem); }
+    .transformation-showcase__lead { max-width:600px; }
+    .transformation-showcase__portfolio { padding-top:28px; }
+    .transformation-featured {
+      display:block;
+      overflow:visible;
+      padding:2px var(--page-gutter) 10px 0;
+    }
+    .result-feature,
+    .result-feature--1 {
+      width:100%;
+      min-width:0;
+      height:clamp(340px,98vw,500px);
+      grid-column:auto;
+      grid-row:auto;
+    }
+    .result-feature--2,.result-feature--3 { display:none; }
+    .result-feature figcaption { padding:20px; }
+    .result-feature figcaption strong { font-size:clamp(1.8rem,8vw,2.65rem); }
+    .result-feature__view { top:12px; right:12px; }
+    .transformation-archive { margin-top:36px; padding-top:30px; }
+    .transformation-archive__header { grid-template-columns:1fr; gap:16px; }
+    .transformation-archive__header h3 { font-size:clamp(2.2rem,10vw,3.4rem); }
+    .transformation-rail { padding-right:14vw; }
+    .result-thumb { width:min(72vw,310px); min-width:min(72vw,310px); }
+    .result-thumb--featured-copy { display:block; }
+    .transformation-showcase__close { grid-template-columns:1fr; gap:24px; }
+    .transformation-showcase__close .cta { width:100%; white-space:normal; }
+    .feedback-proof__intro { grid-template-columns:1fr; gap:22px; }
+    .feedback-proof h2 { font-size:clamp(3.4rem,15vw,5.9rem); }
+    .feedback-proof__signals { display:flex; }
+    .feedback-proof__signals span { width:auto; min-height:32px; }
+    .feedback-proof__close { align-items:stretch; flex-direction:column; }
+    .feedback-proof__close .cta { width:100%; white-space:normal; }
+  }
+
+  @media (max-width:430px) {
+    .transformation-showcase__portfolio { padding-right:0; }
+    .transformation-showcase__intro { padding-inline:var(--page-gutter); }
+    .transformation-featured { padding-right:var(--page-gutter); }
+    .result-feature,
+    .result-feature--1 { width:100%; min-width:0; height:clamp(330px,100vw,430px); }
+    .transformation-archive { padding-right:var(--page-gutter); }
+    .transformation-rail { padding-right:18vw; }
+    .feedback-proof__signals span { flex:1 1 100%; }
+    .proof-viewer { width:96vw; height:88svh; border-radius:14px; }
+    .proof-viewer__bar { min-height:54px; }
+  }
+
+  @media (hover:none) {
+    .result-feature__open:hover .result-feature__media img,
+    .result-thumb__open:hover img { transform:none; }
+  }
+
+  @media (prefers-reduced-motion:reduce) {
+    .result-feature::after,
+    .result-feature__media img,
+    .result-thumb__open img { animation:none; transition:none; }
   }
 </style>
