@@ -210,9 +210,10 @@ const consultSchema = {
               <div><p class="kicker">The result archive</p><h3 id="transformation-archive-title">Every journey remains visible.</h3></div>
               <p>Swipe or drag through the complete client record. Tap any image to inspect the original.</p>
             </div>
-            <div class="transformation-rail" aria-label="Scrollable archive of FitWithNash client transformations">
-              {transformationArchive.map((transformation) => (
-                <figure class:list={['result-thumb', featuredTransformationIndices.has(transformation.position - 1) && 'result-thumb--featured-copy']}>
+            <div class="transformation-archive__stage" data-transformation-stage>
+              <div class="transformation-rail" aria-label="Scrollable archive of FitWithNash client transformations" data-transformation-track tabindex="0">
+                {transformationArchive.map((transformation, index) => (
+                <figure class:list={['result-thumb', featuredTransformationIndices.has(transformation.position - 1) && 'result-thumb--featured-copy']} role="group" aria-roledescription="slide" aria-label={`${transformation.name || 'Client transformation'}, result ${index + 1} of ${transformationArchive.length}`} data-transformation-card>
                   <button
                     class="result-thumb__open"
                     type="button"
@@ -236,6 +237,11 @@ const consultSchema = {
                   <figcaption><span>FitWithNash result</span><b>{transformation.name || 'Client transformation'}</b></figcaption>
                 </figure>
               ))}
+              </div>
+              <div class="transformation-rail__controls" aria-label="Transformation carousel navigation">
+                <button type="button" data-transformation-previous aria-label="Show previous transformation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" /></svg><span>Previous</span></button>
+                <button type="button" data-transformation-next aria-label="Show next transformation"><span>Next</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></button>
+              </div>
             </div>
           </div>
         </div>
@@ -426,6 +432,59 @@ const consultSchema = {
         }), { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
         transformationArt.forEach((item) => artReveal.observe(item));
       }
+
+      document.querySelectorAll('[data-transformation-stage]').forEach((stage) => {
+        const track = stage.querySelector('[data-transformation-track]');
+        const previous = stage.querySelector('[data-transformation-previous]');
+        const next = stage.querySelector('[data-transformation-next]');
+        const cards = [...(track?.querySelectorAll('[data-transformation-card]') || [])];
+        if (!track || cards.length < 2) return;
+
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let activeIndex = 0;
+
+        const cardLeft = (card) => card.offsetLeft - Math.max((track.clientWidth - card.clientWidth) / 2, 0);
+        const position = (index, behavior = 'smooth') => {
+          const card = cards[index];
+          if (!card) return;
+          const left = cardLeft(card);
+          if (behavior === 'auto' || reduced) track.scrollLeft = left;
+          else track.scrollTo({ left, behavior });
+        };
+        const syncCurrent = (index) => {
+          activeIndex = Math.max(0, Math.min(cards.length - 1, index));
+          cards.forEach((card, cardIndex) => card.classList.toggle('is-current', cardIndex === activeIndex));
+        };
+        const nearestIndex = () => {
+          const center = track.getBoundingClientRect().left + track.clientWidth / 2;
+          return cards.reduce((best, card, index) => {
+            const rect = card.getBoundingClientRect();
+            const distance = Math.abs(rect.left + rect.width / 2 - center);
+            return distance < best.distance ? { index, distance } : best;
+          }, { index: activeIndex, distance: Infinity }).index;
+        };
+        const updateFromScroll = () => syncCurrent(nearestIndex());
+        const move = (direction) => {
+          const target = Math.max(0, Math.min(cards.length - 1, activeIndex + direction));
+          syncCurrent(target);
+          position(target, 'smooth');
+        };
+        const centerCurrent = () => position(activeIndex, 'auto');
+
+        previous?.addEventListener('click', () => move(-1));
+        next?.addEventListener('click', () => move(1));
+        track.addEventListener('keydown', (event) => {
+          if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+          event.preventDefault();
+          move(event.key === 'ArrowRight' ? 1 : -1);
+        });
+        track.addEventListener('scroll', () => window.requestAnimationFrame(updateFromScroll), { passive: true });
+        syncCurrent(activeIndex);
+        window.addEventListener('load', centerCurrent, { once: true });
+        document.fonts?.ready?.then(centerCurrent);
+        window.setTimeout(centerCurrent, 220);
+        if ('ResizeObserver' in window) new ResizeObserver(centerCurrent).observe(track);
+      });
     </script>
   </body>
 </html>
@@ -1463,6 +1522,107 @@ const consultSchema = {
     scrollbar-color:rgba(222,151,75,.42) rgba(255,255,255,.06);
     scrollbar-width:thin;
   }
+  .transformation-archive__stage {
+    position:relative;
+    margin-top:clamp(26px,3vw,44px);
+  }
+  .transformation-archive__stage::before {
+    position:absolute;
+    inset:clamp(38px,5vw,62px) clamp(30px,4vw,52px) clamp(18px,3vw,28px);
+    border-radius:28px;
+    background:radial-gradient(circle at center,rgba(214,144,71,.1),rgba(214,144,71,0) 72%);
+    content:'';
+    opacity:.9;
+    pointer-events:none;
+  }
+  .transformation-archive__stage .transformation-rail {
+    margin-top:0;
+    padding-inline:clamp(58px,8vw,108px);
+    scroll-padding-inline:clamp(58px,8vw,108px);
+    scroll-snap-type:x mandatory;
+  }
+  .transformation-rail__controls {
+    position:absolute;
+    z-index:3;
+    top:50%;
+    right:clamp(6px,1vw,12px);
+    left:clamp(6px,1vw,12px);
+    display:flex;
+    justify-content:space-between;
+    pointer-events:none;
+    transform:translateY(-50%);
+  }
+  .transformation-rail__controls button {
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    min-width:56px;
+    height:56px;
+    padding:0 18px;
+    border:1px solid rgba(255,240,221,.24);
+    border-radius:999px;
+    background:rgba(46,36,31,.38);
+    color:#f6ede1;
+    cursor:pointer;
+    pointer-events:auto;
+    opacity:.82;
+    overflow:hidden;
+    backdrop-filter:blur(14px);
+    box-shadow:0 12px 34px rgba(0,0,0,.18);
+    transition:transform .35s cubic-bezier(.22,1,.36,1),background .35s ease,opacity .3s ease,border-color .35s ease,box-shadow .35s ease;
+  }
+  .transformation-rail__controls button::before {
+    position:absolute;
+    inset:1px;
+    border-radius:999px;
+    background:linear-gradient(115deg,rgba(255,255,255,0) 24%,rgba(236,173,93,.18) 46%,rgba(255,255,255,.24) 50%,rgba(236,173,93,.14) 55%,rgba(255,255,255,0) 74%);
+    background-size:220% 100%;
+    background-position:160% 0;
+    content:'';
+    opacity:.72;
+    pointer-events:none;
+    animation:transformation-control-sheen 8s cubic-bezier(.22,1,.36,1) infinite;
+  }
+  .transformation-rail__controls button:last-child::before { animation-delay:-4s; }
+  .transformation-rail__controls button:hover,
+  .transformation-rail__controls button:focus-visible {
+    border-color:rgba(236,173,93,.44);
+    background:rgba(76,57,47,.56);
+    box-shadow:0 18px 40px rgba(0,0,0,.24);
+    opacity:1;
+    outline:none;
+    transform:translateY(-2px) scale(1.02);
+  }
+  .transformation-rail__controls button:first-child:hover svg,
+  .transformation-rail__controls button:first-child:focus-visible svg { transform:translateX(-4px); }
+  .transformation-rail__controls button:last-child:hover svg,
+  .transformation-rail__controls button:last-child:focus-visible svg { transform:translateX(4px); }
+  .transformation-rail__controls span {
+    position:relative;
+    z-index:1;
+    font:600 10px/1 "DM Mono",monospace;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .transformation-rail__controls svg {
+    position:relative;
+    z-index:1;
+    width:20px;
+    height:20px;
+    fill:none;
+    stroke:currentColor;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-width:2;
+    transition:transform .3s cubic-bezier(.22,1,.36,1);
+  }
+  @keyframes transformation-control-sheen {
+    0%,14% { background-position:160% 0; opacity:.08; }
+    20%,44% { background-position:-45% 0; opacity:.82; }
+    100% { background-position:-45% 0; opacity:.08; }
+  }
   .result-thumb {
     width:clamp(230px,24vw,338px);
     min-width:clamp(230px,24vw,338px);
@@ -1505,6 +1665,26 @@ const consultSchema = {
   }
   .result-thumb__open:hover img,
   .result-thumb__open:focus-visible img { filter:saturate(1) contrast(1.04); transform:scale(1.018); }
+  .result-thumb.is-current .result-thumb__open {
+    border-color:rgba(236,173,93,.28);
+    box-shadow:0 20px 50px rgba(0,0,0,.18);
+  }
+  .result-thumb.is-current .result-thumb__open::after {
+    position:absolute;
+    inset:-1px;
+    border-radius:inherit;
+    background:linear-gradient(118deg,rgba(255,255,255,0) 24%,rgba(236,173,93,.12) 44%,rgba(255,233,204,.3) 50%,rgba(236,173,93,.12) 56%,rgba(255,255,255,0) 76%);
+    background-size:240% 100%;
+    background-position:150% 0;
+    content:'';
+    pointer-events:none;
+    animation:result-current-pass 7s cubic-bezier(.22,1,.36,1) infinite;
+  }
+  @keyframes result-current-pass {
+    0%,12% { background-position:150% 0; opacity:0; }
+    20%,42% { background-position:-35% 0; opacity:.9; }
+    100% { background-position:-35% 0; opacity:0; }
+  }
   .result-thumb figcaption { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 2px 0; }
   .result-thumb figcaption span { color:#d49047; font:500 8px/1 "DM Mono",monospace; letter-spacing:.12em; }
   .result-thumb figcaption b { overflow:hidden; color:#c4bbb1; font:600 10px/1.2 Manrope,sans-serif; letter-spacing:.04em; text-overflow:ellipsis; white-space:nowrap; }
@@ -1667,7 +1847,26 @@ const consultSchema = {
     .transformation-archive { margin-top:36px; padding-top:30px; }
     .transformation-archive__header { grid-template-columns:1fr; gap:16px; }
     .transformation-archive__header h3 { font-size:clamp(2.2rem,10vw,3.4rem); }
-    .transformation-rail { padding-right:14vw; }
+    .transformation-archive__stage .transformation-rail { padding-inline:16vw; }
+    .transformation-rail__controls { right:4px; left:4px; }
+    .transformation-rail__controls button {
+      width:46px;
+      min-width:46px;
+      height:46px;
+      padding:0;
+      justify-content:center;
+    }
+    .transformation-rail__controls span {
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
     .result-thumb { width:min(72vw,310px); min-width:min(72vw,310px); }
     .result-thumb--featured-copy { display:block; }
     .transformation-showcase__close { grid-template-columns:1fr; gap:24px; }
@@ -1687,7 +1886,7 @@ const consultSchema = {
     .result-feature,
     .result-feature--1 { width:100%; min-width:0; height:clamp(330px,100vw,430px); }
     .transformation-archive { padding-right:var(--page-gutter); }
-    .transformation-rail { padding-right:18vw; }
+    .transformation-archive__stage .transformation-rail { padding-inline:18vw; }
     .feedback-proof__signals span { flex:1 1 100%; }
     .proof-viewer { width:96vw; height:88svh; border-radius:14px; }
     .proof-viewer__bar { min-height:54px; }
