@@ -397,15 +397,15 @@ const proofType = (item: Testimonial) => {
     max-width:940px;
     height:clamp(370px,36vw,470px);
     min-height:0;
-    grid-template-columns:minmax(0,1.08fr) minmax(280px,.92fr);
+    grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);
     grid-column:auto;
     isolation:isolate;
     overflow:hidden;
     padding:0;
     border:1px solid rgba(142,95,51,.28);
     border-radius:18px;
-    background:#fffaf2;
-    color:#241d19;
+    background:#fffdf8;
+    color:#17110d;
     opacity:1;
     filter:saturate(.9);
     scroll-snap-align:center;
@@ -464,8 +464,8 @@ const proofType = (item: Testimonial) => {
     justify-content:space-between;
     padding:clamp(28px,4.2vw,58px);
     background:
-      radial-gradient(circle at 8% 4%,rgba(200,159,103,.13),transparent 38%),
-      #fffaf2;
+      radial-gradient(circle at 8% 4%,rgba(200,159,103,.1),transparent 36%),
+      #fffdf8;
   }
   .proof-card__rating { display:flex; min-height:20px; align-items:center; justify-content:space-between; gap:16px; }
   .proof-card__rating > span { display:inline-flex; gap:0; font-size:12px; letter-spacing:.14em; }
@@ -473,7 +473,7 @@ const proofType = (item: Testimonial) => {
   .proof-card__rating i { color:#d8cfc4; font-style:normal; }
   .proof-card__rating small {
     overflow:hidden;
-    color:#8c7b6d;
+    color:#625449;
     font:600 9px/1.2 "DM Mono",ui-monospace,monospace;
     letter-spacing:.1em;
     text-overflow:ellipsis;
@@ -484,22 +484,22 @@ const proofType = (item: Testimonial) => {
   .proof-card__summary {
     margin:auto 0;
     padding:clamp(24px,3vw,38px) 0;
-    color:#2b211b;
-    font:600 clamp(1.75rem,2.7vw,3rem)/1.02 "Cormorant Garamond",Georgia,serif;
-    letter-spacing:-.035em;
+    color:#17100c;
+    font:700 clamp(1.65rem,2.35vw,2.55rem)/1.12 "Cormorant Garamond",Georgia,serif;
+    letter-spacing:-.025em;
     text-wrap:balance;
   }
   .proof-card__summary { color:#6c5d51; }
   .proof-card__identity { display:grid; gap:5px; }
-  .proof-card__identity strong { font:700 clamp(.82rem,1.1vw,.96rem)/1.2 Manrope,system-ui,sans-serif; letter-spacing:.02em; }
-  .proof-card__identity span { color:#8c7b6d; font:600 9px/1.2 "DM Mono",ui-monospace,monospace; letter-spacing:.1em; text-transform:uppercase; }
+  .proof-card__identity strong { color:#17100c; font:800 clamp(.86rem,1.1vw,1rem)/1.2 Manrope,system-ui,sans-serif; letter-spacing:.015em; }
+  .proof-card__identity span { color:#625449; font:600 9px/1.2 "DM Mono",ui-monospace,monospace; letter-spacing:.1em; text-transform:uppercase; }
   .proof-card__evidence {
     position:relative;
     display:block;
     min-width:0;
     overflow:hidden;
     border-left:1px solid rgba(142,95,51,.16);
-    background:#eee7dd;
+    background:#eee8de;
   }
   .proof-card__evidence::after { position:absolute; inset:0; content:""; background:linear-gradient(180deg,transparent 58%,rgba(25,18,14,.36)); pointer-events:none; }
   .proof-card__evidence img {
@@ -507,7 +507,7 @@ const proofType = (item: Testimonial) => {
     height:100%;
     object-fit:cover;
     object-position:top center;
-    filter:saturate(.86) contrast(.98);
+    filter:saturate(.78) contrast(.94) brightness(.94);
     transition:filter .45s ease,transform .8s cubic-bezier(.22,1,.36,1);
   }
   .proof-card__evidence > span {
@@ -533,6 +533,7 @@ const proofType = (item: Testimonial) => {
   }
   .proof-card__evidence:hover img,
   .proof-card__evidence:focus-visible img { filter:saturate(1) contrast(1); transform:scale(1.025); }
+  .proof-wall--carousel .proof-card.is-current .proof-card__evidence img { filter:saturate(.9) contrast(.98) brightness(.97); }
   .proof-card__evidence:focus-visible { outline:2px solid #b37c45; outline-offset:-4px; }
   .proof-wall--carousel .proof-wall__carousel-nav { top:calc(50% + 26px); right:clamp(4px,1.3vw,18px); left:clamp(4px,1.3vw,18px); }
   .proof-wall--carousel .proof-wall__controls button {
@@ -575,7 +576,7 @@ const proofType = (item: Testimonial) => {
     .proof-card__copy { min-height:clamp(280px,82vw,360px); padding:clamp(24px,7vw,34px); }
     .proof-wall--carousel .proof-card--no-image .proof-card__copy { min-height:300px; }
     .proof-wall--carousel .proof-card__quote,
-    .proof-card__summary { padding:24px 0; font-size:clamp(1.65rem,7.8vw,2.35rem); }
+    .proof-card__summary { padding:24px 0; font-size:clamp(1.55rem,7vw,2.05rem); line-height:1.15; letter-spacing:-.018em; }
     .proof-card__evidence { aspect-ratio:16/8.6; max-height:210px; border-top:1px solid rgba(142,95,51,.16); border-left:0; }
     .proof-card__evidence img { object-position:top center; }
     .proof-wall--carousel .proof-wall__carousel-nav { top:calc(50% + 18px); right:2px; left:2px; }
