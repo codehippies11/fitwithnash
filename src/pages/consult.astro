@@ -13,6 +13,7 @@ import transformation09 from '../assets/images/transformations/curated/transform
 import transformation10 from '../assets/images/transformations/curated/transformation-10.jpeg';
 import transformation11 from '../assets/images/transformations/curated/transformation-11.jpeg';
 import transformation12 from '../assets/images/transformations/curated/transformation-12.jpeg';
+import transformation15 from '../assets/images/transformations/curated/transformation-15.jpeg';
 import arunJourney from '../assets/images/journeys/arun-journey.png';
 import krishamJourney from '../assets/images/journeys/krisham-journey.png';
 import fitwithnashMark from '../assets/brand/fit-with-nash-header.svg';
@@ -55,6 +56,7 @@ const transformations = [
   { image: transformation12, alt: 'FitWithNash client eight-week strength and physique transformation' },
   { image: arunJourney, alt: "Arun's original paired before-and-after FitWithNash transformation", name: 'Arun' },
   { image: krishamJourney, alt: "Krisham's original paired before-and-after FitWithNash transformation", name: 'Krisham' },
+  { image: transformation15, alt: 'Original paired before-and-after FitWithNash client transformation' },
 ];
 const feedbackStories = [...verifiedTestimonials, ...cmsTestimonials];
 const featuredReviews = verifiedTestimonials.slice(0, 5);
@@ -469,6 +471,12 @@ const consultSchema = {
     grid-column:7/-1;
     margin-top:clamp(18px,3vw,44px);
   }
+  .transformation-art--15 {
+    grid-column:1/-1;
+    width:min(100%,1080px);
+    justify-self:center;
+    margin-top:clamp(28px,5vw,78px);
+  }
   .transformation-art--lifestyle::before {
     position:absolute;
     z-index:2;
@@ -536,7 +544,7 @@ const consultSchema = {
     .transformation-showcase__lead { grid-column:auto; }
     .transformation-showcase__intro h2 { font-size:clamp(4rem,20vw,6.4rem); line-height:.78; }
     .transformation-showcase__gallery { grid-template-columns:1fr; gap:7px; padding-inline:6px; }
-    .transformation-art--1,.transformation-art--2,.transformation-art--3,.transformation-art--4,.transformation-art--5,.transformation-art--6,.transformation-art--7,.transformation-art--8,.transformation-art--9,.transformation-art--10,.transformation-art--11,.transformation-art--12,.transformation-art--13,.transformation-art--14 {
+    .transformation-art--1,.transformation-art--2,.transformation-art--3,.transformation-art--4,.transformation-art--5,.transformation-art--6,.transformation-art--7,.transformation-art--8,.transformation-art--9,.transformation-art--10,.transformation-art--11,.transformation-art--12,.transformation-art--13,.transformation-art--14,.transformation-art--15 {
       grid-column:1;
       width:100%;
       margin-top:0;
