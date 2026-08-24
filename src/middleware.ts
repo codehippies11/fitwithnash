@@ -19,6 +19,9 @@ export const onRequest = defineMiddleware((context, next) => {
   if (hostname === 'consult.fitwithnash.com' && context.url.pathname === '/robots.txt') {
     return context.rewrite('/consult-robots.txt');
   }
+  if (hostname === 'consult.fitwithnash.com' && context.url.pathname === '/transformations') {
+    return Response.redirect(new URL('/#proof', context.url), 308);
+  }
 
   return next();
 });
