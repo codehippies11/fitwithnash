@@ -1,12 +1,22 @@
 ---
 import avinashProfile from '../assets/images/avinash-profile-real.png';
 import avinashCoaching from '../assets/images/avinash-coaching.png';
-import arunJourney from '../assets/images/journeys/arun-journey.png';
-import krishamJourney from '../assets/images/journeys/krisham-journey.png';
-import farbeenaJourney from '../assets/images/journeys/farbeena-journey.png';
+import transformation01 from '../assets/images/transformations/curated/transformation-01.jpeg';
+import transformation02 from '../assets/images/transformations/curated/transformation-02.jpeg';
+import transformation03 from '../assets/images/transformations/curated/transformation-03.jpeg';
+import transformation04 from '../assets/images/transformations/curated/transformation-04.jpeg';
+import transformation05 from '../assets/images/transformations/curated/transformation-05.jpeg';
+import transformation06 from '../assets/images/transformations/curated/transformation-06.jpeg';
+import transformation07 from '../assets/images/transformations/curated/transformation-07.jpeg';
+import transformation08 from '../assets/images/transformations/curated/transformation-08.jpeg';
+import transformation09 from '../assets/images/transformations/curated/transformation-09.jpeg';
+import transformation10 from '../assets/images/transformations/curated/transformation-10.jpeg';
+import transformation11 from '../assets/images/transformations/curated/transformation-11.jpeg';
+import transformation12 from '../assets/images/transformations/curated/transformation-12.jpeg';
 import fitwithnashMark from '../assets/brand/fit-with-nash-header.svg';
 import TestimonialWall from '../components/TestimonialWall.astro';
 import { verifiedTestimonials } from '../data/verifiedTestimonials';
+import { Image } from 'astro:assets';
 
 const whatsapp = 'https://wa.me/918360669905?text=Hi%20Avinash%2C%20I%20would%20like%20to%20book%20a%20FitWithNash%20coaching%20clarity%20call.';
 const base = import.meta.env.PUBLIC_SUPABASE_URL;
@@ -14,34 +24,34 @@ const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 let media: Record<string, string> = {};
 let cmsPrograms: any[] = [];
 let cmsTestimonials: any[] = [];
-let cmsTransformations: any[] = [];
 if (base && key) {
   const headers = { apikey: key, Authorization: `Bearer ${key}` };
-  const [mediaResponse, programsResponse, testimonialsResponse, transformationsResponse] = await Promise.all([
+  const [mediaResponse, programsResponse, testimonialsResponse] = await Promise.all([
     fetch(`${base}/rest/v1/site_media?select=key,image_url`, { headers }),
     fetch(`${base}/rest/v1/programs?is_published=eq.true&select=*&order=sort_order.asc,created_at.asc`, { headers }),
     fetch(`${base}/rest/v1/testimonials?is_published=eq.true&select=*&order=sort_order.asc,created_at.asc`, { headers }),
-    fetch(`${base}/rest/v1/transformations?is_published=eq.true&select=*&order=created_at.desc`, { headers }),
   ]);
   if (mediaResponse.ok) media = Object.fromEntries((await mediaResponse.json()).map((item: { key: string; image_url: string }) => [item.key, item.image_url]));
   if (programsResponse.ok) cmsPrograms = await programsResponse.json();
   if (testimonialsResponse.ok) cmsTestimonials = await testimonialsResponse.json();
-  if (transformationsResponse.ok) cmsTransformations = await transformationsResponse.json();
 }
 const portrait = media.consult_coach_portrait || media.hero_portrait || avinashProfile.src;
 const portraitUrl = /^https?:\/\//.test(portrait) ? portrait : new URL(portrait, 'https://consult.fitwithnash.com').href;
 const socialPreview = new URL(avinashCoaching.src, 'https://consult.fitwithnash.com').href;
-const journeys = [
-  { image: media.consult_journey_arun || media.home_journey_arun || arunJourney.src, name: 'Arun', result: 'A phased transformation built through patient work.' },
-  { image: media.consult_journey_krisham || media.home_journey_krisham || krishamJourney.src, name: 'Krisham', result: 'Consistency and a stronger routine, made visible.' },
-  { image: media.consult_journey_farbeena || media.home_journey_farbeena || farbeenaJourney.src, name: 'Farbeena', result: 'Strength, energy and confidence back in the picture.' },
+const transformations = [
+  { image: transformation01, alt: 'FitWithNash client before and after body recomposition' },
+  { image: transformation02, alt: 'FitWithNash client before and after strength transformation' },
+  { image: transformation03, alt: 'FitWithNash client enjoying an active life after building sustainable fitness', lifestyle: true },
+  { image: transformation04, alt: 'FitWithNash client before and after physique transformation' },
+  { image: transformation05, alt: 'FitWithNash client before and after muscle-building journey' },
+  { image: transformation06, alt: 'FitWithNash client before and after lean strength journey' },
+  { image: transformation07, alt: 'FitWithNash client before and after body-composition progress' },
+  { image: transformation08, alt: 'FitWithNash client before and after muscular development' },
+  { image: transformation09, alt: 'FitWithNash client before and after sustainable fat-loss journey' },
+  { image: transformation10, alt: 'FitWithNash client side-profile body transformation' },
+  { image: transformation11, alt: 'FitWithNash client side-profile fitness transformation' },
+  { image: transformation12, alt: 'FitWithNash client eight-week strength and physique transformation' },
 ];
-const cmsTransformationGallery = cmsTransformations
-  .map((item) => ({ image: item.after_image_url || item.before_image_url, name: item.client_name, title: item.title || 'A personal transformation' }))
-  .filter((item) => item.image);
-const transformationGallery = cmsTransformationGallery.length
-  ? cmsTransformationGallery
-  : journeys.map((item) => ({ image: item.image, name: item.name, title: item.result }));
 const feedbackStories = [...verifiedTestimonials, ...cmsTestimonials];
 const featuredReviews = verifiedTestimonials.slice(0, 5);
 const packages = cmsPrograms.length ? cmsPrograms : [
@@ -121,16 +131,40 @@ const consultSchema = {
         <p class="micro">A focused conversation. No pressure. We begin with your real context.</p>
       </section>
 
-      <section class="proof section" id="proof">
-        <p class="kicker">— Real client proof</p>
-        <h2>What changes when<br />the plan finally <em>fits.</em></h2>
-        <p class="proof-lead">There is no stock imagery here. These are original FitWithNash client journeys: real starting points, real consistency and outcomes built around real life.</p>
-        <div class="story-grid">{journeys.map((journey) => <article><img src={journey.image} alt={`${journey.name}'s FitWithNash before-and-after journey`} loading="lazy" /><div><span>Original paired photo</span><h3>{journey.name}</h3><p>{journey.result}</p></div></article>)}</div>
-        {transformationGallery.length > 0 && <div class="transformation-carousel" aria-label="More FitWithNash transformation stories" data-transformation-carousel>
-          <div class="transformation-carousel__intro"><div><p class="kicker">— More client journeys</p><h3>Progress deserves a closer look.</h3></div><p>Each image is managed in the FitWithNash Studio. Add a new journey there and it will take its place here automatically.</p></div>
-          <div class="transformation-carousel__frame"><div class="transformation-carousel__track" data-transformation-track tabindex="0">{transformationGallery.map((journey) => <article class="transformation-slide" data-transformation-slide aria-label={`${journey.name}: ${journey.title}`}><div class="transformation-slide__image"><img src={journey.image} alt={`${journey.name}'s FitWithNash transformation`} loading="lazy" /></div></article>)}</div><div class="transformation-carousel__controls" aria-label="Transformation carousel navigation"><button type="button" data-transformation-previous aria-label="Show previous transformation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" /></svg></button><button type="button" data-transformation-next aria-label="Show next transformation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></button></div></div>
-        </div>}
-        <div class="proof-cta"><a class="cta light" href={whatsapp} target="_blank" rel="noreferrer">Talk through your starting point <span>→</span></a><small>Individual results vary. No specific outcome is guaranteed.</small></div>
+      <section class="transformation-showcase" id="proof" aria-labelledby="transformation-heading">
+        <div class="transformation-showcase__intro section">
+          <p class="transformation-showcase__index" aria-hidden="true">FWN / RESULTS</p>
+          <div>
+            <p class="kicker">Real client transformations</p>
+            <h2 id="transformation-heading">The work.<br /><em>Made visible.</em></h2>
+          </div>
+          <p class="transformation-showcase__lead">No stock bodies. No borrowed stories. A record of clients who trained, adapted and kept showing up—built through personal coaching that respects real life.</p>
+        </div>
+
+        <div class="transformation-showcase__gallery" aria-label="Twelve original FitWithNash client transformations">
+          {transformations.map((transformation, index) => (
+            <figure class:list={["transformation-art", `transformation-art--${index + 1}`, { "transformation-art--lifestyle": transformation.lifestyle }]} data-transformation-art>
+              <div class="transformation-art__media">
+                <Image
+                  src={transformation.image}
+                  alt={transformation.alt}
+                  widths={[480, 768, 1080, 1440]}
+                  sizes={index === 0 || index === 11 ? "100vw" : "(max-width: 800px) 100vw, 58vw"}
+                  format="webp"
+                  quality={88}
+                  loading={index === 0 ? "eager" : "lazy"}
+                />
+              </div>
+              <figcaption><span>FWN / {String(index + 1).padStart(2, '0')}</span><b>{transformation.lifestyle ? 'Built to live' : 'Client result'}</b></figcaption>
+            </figure>
+          ))}
+        </div>
+
+        <div class="transformation-showcase__close section">
+          <div><span>Discipline changes shape.</span><strong>Your starting point can, too.</strong></div>
+          <a class="cta cta--book" href={whatsapp} target="_blank" rel="noreferrer">Discuss your starting point <span>→</span></a>
+          <small>Individual results vary. No specific outcome is guaranteed.</small>
+        </div>
       </section>
 
       <section class="feedback-proof section">
@@ -223,45 +257,6 @@ const consultSchema = {
         }, { threshold: 0.12 }).observe(finalChapter);
       }
 
-      document.querySelectorAll('[data-transformation-carousel]').forEach((carousel) => {
-        const track = carousel.querySelector('[data-transformation-track]');
-        const previous = carousel.querySelector('[data-transformation-previous]');
-        const next = carousel.querySelector('[data-transformation-next]');
-        if (!track) return;
-        const originals = [...track.querySelectorAll('[data-transformation-slide]')];
-        if (originals.length < 2) return;
-        const copySlides = () => originals.map((slide) => {
-          const copy = slide.cloneNode(true);
-          copy.setAttribute('aria-hidden', 'true');
-          return copy;
-        });
-        track.prepend(...copySlides());
-        track.append(...copySlides());
-        const slides = [...track.querySelectorAll('[data-transformation-slide]')];
-        const cycle = originals.length;
-        let active = cycle;
-        let timer;
-        const moveTo = (index, behavior = 'smooth') => {
-          const slide = slides[index];
-          if (!slide) return;
-          track.scrollTo({ left: slide.offsetLeft - (track.clientWidth - slide.clientWidth) / 2, behavior });
-          active = index;
-        };
-        const continueLoop = () => { clearInterval(timer); timer = setInterval(() => moveTo(active + 1), 7200); };
-        requestAnimationFrame(() => moveTo(active, 'auto'));
-        previous?.addEventListener('click', () => { moveTo(active - 1); continueLoop(); });
-        next?.addEventListener('click', () => { moveTo(active + 1); continueLoop(); });
-        track.addEventListener('scrollend', () => {
-          if (active <= 0) moveTo(active + cycle, 'auto');
-          if (active >= cycle * 2) moveTo(active - cycle, 'auto');
-        });
-        carousel.addEventListener('mouseenter', () => clearInterval(timer));
-        carousel.addEventListener('mouseleave', continueLoop);
-        carousel.addEventListener('focusin', () => clearInterval(timer));
-        carousel.addEventListener('focusout', continueLoop);
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) continueLoop();
-      });
-
       // Keep motion understated: each editorial section enters once as it earns attention.
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const motionSections = [...document.querySelectorAll('main > .section:not(.hero)')];
@@ -283,12 +278,265 @@ const consultSchema = {
         }), { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
         motionSections.forEach((section) => reveal.observe(section));
       }
+
+      const transformationArt = [...document.querySelectorAll('[data-transformation-art]')];
+      if (reducedMotion || !('IntersectionObserver' in window)) {
+        transformationArt.forEach((item) => item.classList.add('is-visible'));
+      } else {
+        const artReveal = new IntersectionObserver((entries) => entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          artReveal.unobserve(entry.target);
+        }), { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+        transformationArt.forEach((item) => artReveal.observe(item));
+      }
     </script>
   </body>
 </html>
 
 <style>
   :root{--ink:#11130f;--lime:#d9ff45;--paper:#f3f1e9;--muted:#a9ada2;--coral:#eb5e4f}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);font-family:Manrope,sans-serif;color:var(--paper)}.section{padding:clamp(72px,10vw,150px) clamp(20px,8vw,130px)}.kicker{margin:0;color:var(--lime);font:700 11px "DM Mono",monospace;letter-spacing:.1em;text-transform:uppercase}.brand{position:absolute;top:30px;left:clamp(20px,8vw,130px);color:#fff;font-weight:800;letter-spacing:-.07em;text-decoration:none}.brand span{color:var(--lime)}.hero{position:relative;min-height:100svh;display:grid;justify-items:center;align-content:center;text-align:center;background:radial-gradient(circle at 50% 23%,#2c3520,transparent 22%),var(--ink)}.coach-ring{width:clamp(110px,12vw,165px);aspect-ratio:1;overflow:hidden;margin:26px 0 23px;border:2px solid var(--coral);border-radius:50%;background:#343b2b}.coach-ring img{width:100%;height:100%;object-fit:cover;transform:scale(1.32) translateY(4%);transform-origin:50% 38%}.hero h1,.proof h2,.decision h2,.coach h2,.method h2,.how h2,.fit h2,.final h2{max-width:1100px;margin:17px 0;font:700 clamp(3rem,7vw,7.5rem)/.92 Manrope,sans-serif;letter-spacing:-.075em}.hero h1 em,.proof h2 em,.decision h2 em,.coach h2 em,.how h2 em,.final h2 em{color:var(--coral);font-style:normal}.hero-copy{max-width:760px;margin:0;color:#c7c9c1;font-size:clamp(15px,1.5vw,19px);line-height:1.7}.cta{display:inline-flex;align-items:center;justify-content:center;gap:22px;margin-top:29px;padding:17px 23px;background:var(--lime);color:var(--ink);font-size:12px;font-weight:800;letter-spacing:.03em;text-decoration:none;text-transform:uppercase;transition:transform .2s ease}.cta:hover{transform:translateY(-3px)}.hero-proof-link{display:inline-flex;align-items:center;gap:8px;margin-top:17px;color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em;text-decoration:none;text-transform:uppercase}.hero-proof-link span{color:var(--lime);font-size:17px}.micro{color:var(--muted);font-size:11px}.proof{background:var(--paper);color:var(--ink)}.proof .kicker{color:#657c13}.proof h2{max-width:760px;font-family:"Playfair Display",serif;font-weight:600;letter-spacing:-.055em}.proof h2 em{color:#61770f}.story-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}.story-grid article{background:#e6e4da}.story-grid img{display:block;width:100%;aspect-ratio:35/36;object-fit:contain;background:#252820}.story-grid div{padding:18px}.story-grid h3{margin:0;font:600 1.35rem/1.1 "Playfair Display",serif}.story-grid p,.proof-note{margin:10px 0 0;color:#55594f;font-size:13px;line-height:1.6}.proof-note{margin-top:24px}.light{background:var(--ink);color:#fff}.decision{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(40px,9vw,150px);background:#242820}.decision h2{font-family:"Playfair Display",serif;font-weight:600;letter-spacing:-.055em}.decision>div>p:not(.kicker){max-width:520px;color:#c7c9c1;line-height:1.75}.decision-grid{border-top:1px solid #5a5e54}.decision-grid article{display:grid;grid-template-columns:48px 1fr;column-gap:18px;padding:20px 0;border-bottom:1px solid #5a5e54}.decision-grid b{grid-row:span 2;color:var(--lime);font:700 12px "DM Mono",monospace}.decision-grid h3{margin:0;font:600 1.4rem/1 "Playfair Display",serif}.decision-grid p{grid-column:2;margin:7px 0 0;color:#c7c9c1;font-size:13px;line-height:1.65}.coach{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(32px,7vw,110px);align-items:center;background:#191c16}.coach-image{position:relative;width:clamp(150px,16vw,220px);aspect-ratio:1;overflow:hidden;border:1px solid rgba(217,255,69,.55);border-radius:50%;background:#30372b;box-shadow:0 0 0 9px #191c16,0 0 0 10px rgba(217,255,69,.22),0 26px 60px rgba(0,0,0,.38)}.coach-image:after{position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 32px rgba(0,0,0,.22);content:'';pointer-events:none}.coach-image img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.04);transform:scale(1.34) translateY(3%);transform-origin:50% 35%}.coach h2,.method h2,.how h2,.fit h2,.final h2{font-family:"Playfair Display",serif;font-weight:600;letter-spacing:-.055em}.role{color:var(--lime);font-weight:800}.coach p:not(.kicker):not(.role){max-width:640px;color:#c3c6be;line-height:1.8}.text-link{color:var(--lime);font-size:13px;font-weight:800;text-decoration:none;border-bottom:1px solid var(--lime)}.method{background:#d9ff45;color:var(--ink)}.method .kicker{color:#61770f}.method h2 em{font-style:italic}.method-intro{max-width:580px;line-height:1.7}.phase-grid{display:grid;grid-template-columns:repeat(5,1fr);margin-top:55px;border-top:1px solid rgba(17,19,15,.3)}.phase-grid article{min-height:255px;padding:22px;border-right:1px solid rgba(17,19,15,.3)}.phase-grid article:first-child{border-left:1px solid rgba(17,19,15,.3)}.phase-grid b,.steps b{color:#567100;font:700 12px "DM Mono",monospace}.phase-grid h3,.steps h3{font:600 1.55rem/1 "Playfair Display",serif}.phase-grid p,.steps p{font-size:13px;line-height:1.65}.how{background:#f5f3eb;color:var(--ink)}.how .kicker,.fit .kicker{color:#687a22}.how{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(38px,8vw,130px)}.how .cta{grid-column:1/-1;justify-self:start}.steps{display:grid;gap:28px}.steps article{display:grid;grid-template-columns:50px 1fr;column-gap:18px;padding-bottom:22px;border-bottom:1px solid #c6c7bc}.steps b{grid-row:span 2}.steps h3{margin:0}.steps p{grid-column:2;margin:6px 0 0;color:#565a50}.fit{background:#151714}.fit>div:first-child{max-width:750px}.fit>div:first-child>p:not(.kicker){color:#c1c3ba;line-height:1.7}.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:38px}.fit-grid article{padding:30px;background:#22261e}.fit-grid article:last-child{background:#2a2020}.fit-grid h3{margin:0;font:600 1.8rem "Playfair Display",serif}.fit-grid ul{display:grid;gap:14px;padding:0;list-style:none;color:#ced0c8;font-size:14px;line-height:1.55}.fit-grid li{padding-left:18px;position:relative}.fit-grid li:before{content:'+';position:absolute;left:0;color:var(--lime)}.final{text-align:center;background:radial-gradient(circle at 50% 0,#354521,transparent 34%),var(--ink)}.final h2{margin-inline:auto}.final p:not(.kicker){max-width:610px;margin:0 auto;color:#c7c9c1;line-height:1.75}.final small{display:block;max-width:700px;margin:35px auto 0;color:#858981;font-size:10px;line-height:1.5}.social-float{position:fixed;z-index:30;right:18px;bottom:20px;display:flex;flex-direction:column;gap:9px}.social-float__link{display:flex;align-items:center;gap:9px;min-width:48px;height:48px;padding:0 15px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-size:11px;font-weight:800;letter-spacing:.03em;text-decoration:none;transition:transform .2s ease}.social-float__link:hover{transform:translateY(-3px)}.social-float__link svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}.social-float__link .fill{fill:currentColor;stroke:none}.social-float__instagram{color:#fff;background:#292b27}.social-float__whatsapp{color:var(--ink);background:var(--lime)}.mobile-cta{display:none}@media(max-width:800px){body{padding-bottom:68px}.section{padding:78px 20px}.hero h1{font-size:clamp(2.9rem,12vw,4.8rem)}.story-grid,.decision,.coach,.how,.fit-grid{grid-template-columns:1fr}.story-grid{gap:25px}.phase-grid{grid-template-columns:1fr 1fr}.phase-grid article{min-height:auto;border-bottom:1px solid rgba(17,19,15,.3)}.phase-grid article:first-child{border-left:0}.phase-grid article:nth-child(odd){border-left:1px solid rgba(17,19,15,.3)}.coach-image{width:clamp(136px,42vw,178px);max-width:none}.how .cta{justify-self:stretch}.cta{width:100%}.social-float{right:13px;bottom:82px;gap:8px}.social-float__link{width:48px;min-width:48px;padding:0;justify-content:center}.social-float__link b{display:none}.mobile-cta{position:fixed;z-index:30;right:12px;bottom:12px;left:12px;display:flex;align-items:center;justify-content:center;gap:18px;padding:17px;background:var(--lime);color:var(--ink);box-shadow:0 12px 32px rgba(0,0,0,.35);font-size:12px;font-weight:800;letter-spacing:.03em;text-decoration:none;text-transform:uppercase}}
+</style>
+
+<style>
+  /* Curated results: a full-bleed editorial gallery, never a generic card carousel. */
+  .transformation-showcase {
+    position:relative;
+    isolation:isolate;
+    overflow:clip;
+    background:#070807;
+    color:#f4efe7;
+  }
+  .transformation-showcase::before {
+    position:absolute;
+    z-index:-1;
+    top:2.5%;
+    right:-18%;
+    width:62vw;
+    height:62vw;
+    border:1px solid rgba(235,146,42,.12);
+    border-radius:50%;
+    box-shadow:0 0 120px rgba(235,146,42,.055);
+    content:'';
+    pointer-events:none;
+  }
+  .transformation-showcase__intro {
+    position:relative;
+    display:grid;
+    grid-template-columns:minmax(110px,.36fr) minmax(420px,1.15fr) minmax(280px,.7fr);
+    gap:clamp(28px,5vw,88px);
+    align-items:end;
+    min-height:min(760px,82svh);
+    border-top:1px solid rgba(255,255,255,.12);
+    background:
+      linear-gradient(112deg,rgba(238,158,54,.09),transparent 32%),
+      radial-gradient(circle at 78% 14%,rgba(238,158,54,.09),transparent 25%);
+  }
+  .transformation-showcase__intro::after {
+    position:absolute;
+    right:clamp(20px,8vw,130px);
+    bottom:0;
+    left:clamp(20px,8vw,130px);
+    height:1px;
+    background:linear-gradient(90deg,#ee9a35 0 11%,rgba(255,255,255,.17) 11% 100%);
+    content:'';
+  }
+  .transformation-showcase__index {
+    align-self:start;
+    margin:3px 0 0;
+    color:#eea44b;
+    font:500 10px/1.2 "DM Mono",monospace;
+    letter-spacing:.16em;
+  }
+  .transformation-showcase__intro .kicker { color:#eea44b; }
+  .transformation-showcase__intro h2 {
+    max-width:760px;
+    margin:17px 0 0;
+    color:#f8f3eb;
+    font:600 clamp(4.6rem,9.4vw,10.4rem)/.75 "Cormorant Garamond",Georgia,serif;
+    letter-spacing:-.065em;
+  }
+  .transformation-showcase__intro h2 em {
+    display:inline-block;
+    color:#eea44b;
+    font-weight:600;
+  }
+  .transformation-showcase__lead {
+    max-width:470px;
+    margin:0;
+    padding-bottom:8px;
+    color:#b7afa5;
+    font-size:clamp(14px,1.2vw,17px);
+    line-height:1.8;
+  }
+  .transformation-showcase__gallery {
+    position:relative;
+    display:grid;
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    gap:clamp(8px,1vw,15px);
+    padding:clamp(12px,1.2vw,18px) clamp(8px,1.1vw,18px) clamp(70px,9vw,138px);
+    background:
+      linear-gradient(90deg,transparent 0 49.94%,rgba(238,164,75,.055) 50%,transparent 50.06%),
+      #070807;
+  }
+  .transformation-art {
+    position:relative;
+    align-self:center;
+    overflow:hidden;
+    margin:0;
+    border:1px solid rgba(255,255,255,.095);
+    background:#0c0d0c;
+    box-shadow:0 28px 64px rgba(0,0,0,.3);
+    opacity:.18;
+    clip-path:inset(4% 0 4% 0);
+    transform:translateY(38px);
+    transition:opacity .9s ease,transform 1.05s cubic-bezier(.16,1,.3,1),clip-path 1.05s cubic-bezier(.16,1,.3,1),border-color .45s ease,box-shadow .45s ease;
+  }
+  .transformation-art.is-visible {
+    opacity:1;
+    clip-path:inset(0 0 0 0);
+    transform:translateY(0);
+  }
+  .transformation-art:hover {
+    z-index:2;
+    border-color:rgba(238,164,75,.55);
+    box-shadow:0 34px 82px rgba(0,0,0,.5),0 0 0 1px rgba(238,164,75,.1);
+  }
+  .transformation-art__media { position:relative; width:100%; background:#090a09; }
+  .transformation-art__media::after {
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,transparent 68%,rgba(3,4,3,.56));
+    content:'';
+    pointer-events:none;
+  }
+  .transformation-art__media img {
+    display:block;
+    width:100%;
+    height:auto;
+    filter:saturate(.94) contrast(1.035);
+    transition:filter .7s ease,transform 1s cubic-bezier(.16,1,.3,1);
+  }
+  .transformation-art:hover .transformation-art__media img {
+    filter:saturate(1.04) contrast(1.045);
+    transform:scale(1.012);
+  }
+  .transformation-art figcaption {
+    position:absolute;
+    z-index:2;
+    right:clamp(13px,1.5vw,24px);
+    bottom:clamp(12px,1.4vw,22px);
+    left:clamp(13px,1.5vw,24px);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    color:#fffaf1;
+    text-transform:uppercase;
+  }
+  .transformation-art figcaption span {
+    color:#f1ac59;
+    font:500 9px/1 "DM Mono",monospace;
+    letter-spacing:.15em;
+  }
+  .transformation-art figcaption b {
+    font:700 9px/1 Manrope,sans-serif;
+    letter-spacing:.13em;
+  }
+  .transformation-art--1 { grid-column:1/-1; }
+  .transformation-art--2 { grid-column:1/9; }
+  .transformation-art--3 { grid-column:9/-1; }
+  .transformation-art--4,.transformation-art--9 { grid-column:1/5; }
+  .transformation-art--5,.transformation-art--10 { grid-column:5/9; }
+  .transformation-art--6,.transformation-art--11 { grid-column:9/-1; }
+  .transformation-art--7 { grid-column:1/8; }
+  .transformation-art--8 { grid-column:8/-1; }
+  .transformation-art--12 {
+    grid-column:1/-1;
+    width:min(100%,1080px);
+    justify-self:center;
+    margin-top:clamp(24px,5vw,76px);
+  }
+  .transformation-art--lifestyle::before {
+    position:absolute;
+    z-index:2;
+    top:16px;
+    right:16px;
+    width:8px;
+    height:8px;
+    border:1px solid #f4b463;
+    border-radius:50%;
+    box-shadow:0 0 0 5px rgba(244,180,99,.1);
+    content:'';
+  }
+  .transformation-showcase__close {
+    position:relative;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:34px 48px;
+    align-items:end;
+    background:linear-gradient(150deg,#15130f,#080908 65%);
+  }
+  .transformation-showcase__close::before {
+    position:absolute;
+    top:0;
+    right:clamp(20px,8vw,130px);
+    left:clamp(20px,8vw,130px);
+    height:1px;
+    background:linear-gradient(90deg,rgba(255,255,255,.16),rgba(238,164,75,.7),rgba(255,255,255,.06));
+    content:'';
+  }
+  .transformation-showcase__close div { display:grid; gap:9px; }
+  .transformation-showcase__close div span {
+    color:#eea44b;
+    font:500 10px "DM Mono",monospace;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+  }
+  .transformation-showcase__close div strong {
+    max-width:830px;
+    color:#f4efe7;
+    font:600 clamp(3.2rem,6vw,7rem)/.84 "Cormorant Garamond",Georgia,serif;
+    letter-spacing:-.055em;
+  }
+  .transformation-showcase__close .cta { margin:0; white-space:nowrap; }
+  .transformation-showcase__close small {
+    grid-column:1/-1;
+    color:#77736d;
+    font-size:10px;
+    line-height:1.6;
+  }
+  @media (max-width:1100px) {
+    .transformation-showcase__intro { grid-template-columns:90px minmax(0,1fr); }
+    .transformation-showcase__lead { grid-column:2; }
+    .transformation-art--2 { grid-column:1/8; }
+    .transformation-art--3 { grid-column:8/-1; }
+  }
+  @media (max-width:800px) {
+    .transformation-showcase__intro {
+      grid-template-columns:1fr;
+      gap:24px;
+      min-height:76svh;
+      align-content:end;
+      padding-top:110px;
+    }
+    .transformation-showcase__index { align-self:auto; }
+    .transformation-showcase__lead { grid-column:auto; }
+    .transformation-showcase__intro h2 { font-size:clamp(4rem,20vw,6.4rem); line-height:.78; }
+    .transformation-showcase__gallery { grid-template-columns:1fr; gap:7px; padding-inline:6px; }
+    .transformation-art--1,.transformation-art--2,.transformation-art--3,.transformation-art--4,.transformation-art--5,.transformation-art--6,.transformation-art--7,.transformation-art--8,.transformation-art--9,.transformation-art--10,.transformation-art--11,.transformation-art--12 {
+      grid-column:1;
+      width:100%;
+      margin-top:0;
+    }
+    .transformation-art figcaption b { font-size:8px; }
+    .transformation-showcase__close { grid-template-columns:1fr; }
+    .transformation-showcase__close .cta { width:100%; white-space:normal; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    .transformation-art { opacity:1; clip-path:none; transform:none; transition:none; }
+    .transformation-art__media img { transition:none; }
+  }
 </style>
 
 <style>
