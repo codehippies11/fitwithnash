@@ -3,7 +3,6 @@ import avinashProfile from '../assets/images/avinash-profile-real.png';
 import avinashCoaching from '../assets/images/avinash-coaching.png';
 import transformation01 from '../assets/images/transformations/curated/transformation-01.jpeg';
 import transformation02 from '../assets/images/transformations/curated/transformation-02.jpeg';
-import transformation03 from '../assets/images/transformations/curated/transformation-03.jpeg';
 import transformation04 from '../assets/images/transformations/curated/transformation-04.jpeg';
 import transformation05 from '../assets/images/transformations/curated/transformation-05.jpeg';
 import transformation06 from '../assets/images/transformations/curated/transformation-06.jpeg';
@@ -44,7 +43,6 @@ const socialPreview = new URL(avinashCoaching.src, 'https://consult.fitwithnash.
 const transformations = [
   { image: transformation01, alt: 'FitWithNash client before and after body recomposition' },
   { image: transformation02, alt: 'FitWithNash client before and after strength transformation' },
-  { image: transformation03, alt: 'FitWithNash client enjoying an active life after building sustainable fitness', lifestyle: true },
   { image: transformation04, alt: 'FitWithNash client before and after physique transformation' },
   { image: transformation05, alt: 'FitWithNash client before and after muscle-building journey' },
   { image: transformation06, alt: 'FitWithNash client before and after lean strength journey' },
@@ -458,20 +456,14 @@ const consultSchema = {
   .transformation-art--7 { grid-column:1/8; }
   .transformation-art--8 { grid-column:8/-1; }
   .transformation-art--12 {
-    grid-column:1/-1;
-    width:min(100%,1080px);
-    justify-self:center;
-    margin-top:clamp(24px,5vw,76px);
-  }
-  .transformation-art--13 {
     grid-column:1/7;
     margin-top:clamp(18px,3vw,44px);
   }
-  .transformation-art--14 {
+  .transformation-art--13 {
     grid-column:7/-1;
     margin-top:clamp(18px,3vw,44px);
   }
-  .transformation-art--15 {
+  .transformation-art--14 {
     grid-column:1/-1;
     width:min(100%,1080px);
     justify-self:center;
@@ -544,7 +536,7 @@ const consultSchema = {
     .transformation-showcase__lead { grid-column:auto; }
     .transformation-showcase__intro h2 { font-size:clamp(4rem,20vw,6.4rem); line-height:.78; }
     .transformation-showcase__gallery { grid-template-columns:1fr; gap:7px; padding-inline:6px; }
-    .transformation-art--1,.transformation-art--2,.transformation-art--3,.transformation-art--4,.transformation-art--5,.transformation-art--6,.transformation-art--7,.transformation-art--8,.transformation-art--9,.transformation-art--10,.transformation-art--11,.transformation-art--12,.transformation-art--13,.transformation-art--14,.transformation-art--15 {
+    .transformation-art--1,.transformation-art--2,.transformation-art--3,.transformation-art--4,.transformation-art--5,.transformation-art--6,.transformation-art--7,.transformation-art--8,.transformation-art--9,.transformation-art--10,.transformation-art--11,.transformation-art--12,.transformation-art--13,.transformation-art--14 {
       grid-column:1;
       width:100%;
       margin-top:0;
