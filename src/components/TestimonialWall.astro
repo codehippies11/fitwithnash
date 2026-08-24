@@ -395,9 +395,9 @@ const proofType = (item: Testimonial) => {
     width:var(--carousel-card);
     min-width:var(--carousel-card);
     max-width:940px;
-    height:clamp(370px,36vw,470px);
+    height:clamp(500px,48vw,680px);
     min-height:0;
-    grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);
+    grid-template-columns:minmax(0,.88fr) minmax(320px,1.12fr);
     grid-column:auto;
     isolation:isolate;
     overflow:hidden;
@@ -442,7 +442,7 @@ const proofType = (item: Testimonial) => {
     display:-webkit-box;
     overflow:hidden;
     -webkit-box-orient:vertical;
-    -webkit-line-clamp:6;
+    -webkit-line-clamp:7;
   }
   .proof-wall--carousel .proof-card--no-image {
     height:auto;
@@ -462,7 +462,7 @@ const proofType = (item: Testimonial) => {
     min-width:0;
     flex-direction:column;
     justify-content:space-between;
-    padding:clamp(28px,4.2vw,58px);
+    padding:clamp(24px,3.4vw,42px);
     background:
       radial-gradient(circle at 8% 4%,rgba(200,159,103,.1),transparent 36%),
       #fffdf8;
@@ -483,9 +483,9 @@ const proofType = (item: Testimonial) => {
   .proof-wall--carousel .proof-card__quote,
   .proof-card__summary {
     margin:auto 0;
-    padding:clamp(24px,3vw,38px) 0;
+    padding:clamp(18px,2.2vw,28px) 0;
     color:#17100c;
-    font:700 clamp(1.65rem,2.35vw,2.55rem)/1.12 "Cormorant Garamond",Georgia,serif;
+    font:700 clamp(1.52rem,2vw,2.22rem)/1.12 "Cormorant Garamond",Georgia,serif;
     letter-spacing:-.025em;
     text-wrap:balance;
   }
@@ -499,15 +499,17 @@ const proofType = (item: Testimonial) => {
     min-width:0;
     overflow:hidden;
     border-left:1px solid rgba(142,95,51,.16);
-    background:#eee8de;
+    background:
+      linear-gradient(180deg,rgba(255,255,255,.98),rgba(246,238,228,.94));
   }
-  .proof-card__evidence::after { position:absolute; inset:0; content:""; background:linear-gradient(180deg,transparent 58%,rgba(25,18,14,.36)); pointer-events:none; }
+  .proof-card__evidence::after { position:absolute; inset:0; content:""; background:linear-gradient(180deg,rgba(255,255,255,.06),transparent 22%,transparent 72%,rgba(25,18,14,.14)); pointer-events:none; }
   .proof-card__evidence img {
     width:100%;
     height:100%;
-    object-fit:cover;
-    object-position:top center;
-    filter:saturate(.78) contrast(.94) brightness(.94);
+    object-fit:contain;
+    object-position:center top;
+    padding:18px 18px 74px;
+    filter:saturate(.95) contrast(.98) brightness(.99);
     transition:filter .45s ease,transform .8s cubic-bezier(.22,1,.36,1);
   }
   .proof-card__evidence > span {
@@ -532,8 +534,8 @@ const proofType = (item: Testimonial) => {
     backdrop-filter:blur(12px);
   }
   .proof-card__evidence:hover img,
-  .proof-card__evidence:focus-visible img { filter:saturate(1) contrast(1); transform:scale(1.025); }
-  .proof-wall--carousel .proof-card.is-current .proof-card__evidence img { filter:saturate(.9) contrast(.98) brightness(.97); }
+  .proof-card__evidence:focus-visible img { filter:saturate(1) contrast(1); transform:scale(1.015); }
+  .proof-wall--carousel .proof-card.is-current .proof-card__evidence img { filter:saturate(1) contrast(1) brightness(1); }
   .proof-card__evidence:focus-visible { outline:2px solid #b37c45; outline-offset:-4px; }
   .proof-wall--carousel .proof-wall__carousel-nav { top:calc(50% + 26px); right:clamp(4px,1.3vw,18px); left:clamp(4px,1.3vw,18px); }
   .proof-wall--carousel .proof-wall__controls button {
@@ -577,8 +579,8 @@ const proofType = (item: Testimonial) => {
     .proof-wall--carousel .proof-card--no-image .proof-card__copy { min-height:300px; }
     .proof-wall--carousel .proof-card__quote,
     .proof-card__summary { padding:24px 0; font-size:clamp(1.55rem,7vw,2.05rem); line-height:1.15; letter-spacing:-.018em; }
-    .proof-card__evidence { aspect-ratio:16/8.6; max-height:210px; border-top:1px solid rgba(142,95,51,.16); border-left:0; }
-    .proof-card__evidence img { object-position:top center; }
+    .proof-card__evidence { aspect-ratio:auto; min-height:340px; max-height:none; border-top:1px solid rgba(142,95,51,.16); border-left:0; }
+    .proof-card__evidence img { object-position:center top; padding:16px 16px 70px; }
     .proof-wall--carousel .proof-wall__carousel-nav { top:calc(50% + 18px); right:2px; left:2px; }
     .proof-wall--carousel .proof-wall__controls button { width:42px; height:42px; }
   }

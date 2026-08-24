@@ -75,6 +75,14 @@ const feedbackStories = Array.from(new Map(
     return [clientKey ? `client:${clientKey}` : item.id || `${item.image_url || ''}|${item.quote || ''}`, item];
   }),
 ).values());
+const feedbackPriority = ['prakhar', 'vipan kashyap'];
+const feedbackStoriesSorted = [
+  ...feedbackPriority
+    .map((name) => feedbackStories.find((item) => String(item.client_name || '').trim().toLowerCase() === name))
+    .filter(Boolean),
+  ...feedbackStories.filter((item) => !feedbackPriority.includes(String(item.client_name || '').trim().toLowerCase())),
+];
+const mobileLeadStories = feedbackStoriesSorted.slice(0, 2);
 const packages = cmsPrograms.length ? cmsPrograms : [
   { label: 'Personal coaching', title: 'The Personal Standard.', description: 'Personalised training, practical nutrition and regular accountability around your real life.', price: 'Ask Avinash for the right fit' },
   { label: 'Focused transformation', title: '12 Weeks, Built Properly.', description: 'A focused block to build momentum with a structure you can understand and repeat.', price: 'Ask Avinash for the right fit' },
@@ -242,7 +250,8 @@ const consultSchema = {
       <section class="feedback-proof section" aria-labelledby="client-proof-heading">
         <div class="feedback-proof__intro"><div><p class="kicker">Original client proof</p><h2 id="client-proof-heading">Real words.<br /><em>Real standards.</em></h2></div><p>Original reviews from people coached around real workdays, familiar food and life beyond the gym. Read the excerpt, then open the client’s original review.</p></div>
         <p class="feedback-proof__assurance"><span>Original review screenshots</span> · tap any proof to inspect the full record.</p>
-        <div class="feedback-proof__stage"><TestimonialWall testimonials={feedbackStories} tone="dark" layout="carousel" label="Original FitWithNash client reviews" /></div>
+        <div class="feedback-proof__lead"><TestimonialWall testimonials={mobileLeadStories} tone="dark" layout="stack" label="Featured original FitWithNash client reviews" /></div>
+        <div class="feedback-proof__stage"><TestimonialWall testimonials={feedbackStoriesSorted} tone="dark" layout="carousel" label="Original FitWithNash client reviews" /></div>
         <div class="feedback-proof__close"><p>Your context will be different. The coaching standard will not.</p><a class="cta cta--book" href={whatsapp} target="_blank" rel="noreferrer">Discuss your starting point <span>→</span></a></div>
       </section>
 
@@ -282,11 +291,11 @@ const consultSchema = {
       <section class="method section">
         <p class="kicker">— The framework</p><h2>The <em class="method-name">Avinash Method</em></h2><p class="method-intro">A practical coaching framework that builds a result your schedule can support.</p>
         <div class="phase-grid">
-          <article><h3>Foundation</h3><p>We establish your baseline: movement, routine, recovery and a starting point you can own.</p></article>
-          <article><h3>Strength</h3><p>Progressive training builds confidence, capability and a physique shaped by quality work.</p></article>
-          <article><h3>Nutrition</h3><p>Simple, flexible nutrition habits support your goal without turning food into another full-time job.</p></article>
-          <article><h3>Integration</h3><p>We adapt the plan around travel, long workdays and the routines that make results last.</p></article>
-          <article class="accountability-phase"><h3 class="accountability-title">Accountability</h3><p>Regular check-ins turn good intentions into measurable actions and honest progress.</p></article>
+          <article class="phase-card phase-card--foundation"><span class="phase-card__symbol" aria-hidden="true">◎</span><h3>Foundation</h3><p>We establish your baseline: movement, routine, recovery and a starting point you can own.</p></article>
+          <article class="phase-card phase-card--strength"><span class="phase-card__symbol" aria-hidden="true">▲</span><h3>Strength</h3><p>Progressive training builds confidence, capability and a physique shaped by quality work.</p></article>
+          <article class="phase-card phase-card--nutrition"><span class="phase-card__symbol" aria-hidden="true">✦</span><h3>Nutrition</h3><p>Simple, flexible nutrition habits support your goal without turning food into another full-time job.</p></article>
+          <article class="phase-card phase-card--integration"><span class="phase-card__symbol" aria-hidden="true">◌</span><h3>Integration</h3><p>We adapt the plan around travel, long workdays and the routines that make results last.</p></article>
+          <article class="phase-card accountability-phase"><span class="phase-card__symbol" aria-hidden="true">◆</span><h3 class="accountability-title">Accountability</h3><p>Regular check-ins turn good intentions into measurable actions and honest progress.</p></article>
         </div>
       </section>
 
@@ -332,16 +341,12 @@ const consultSchema = {
       const floatingSocial = document.querySelector('.social-float');
       const heroSection = document.querySelector('.hero');
       const finalChapter = document.querySelector('.final');
-      const proofStages = [...document.querySelectorAll('.transformation-showcase, .feedback-proof')];
       if ((floatingCall || floatingSocial) && heroSection && finalChapter && 'IntersectionObserver' in window) {
         let heroVisible = true;
         let finalVisible = false;
-        const visibleProofStages = new Set();
         const updateFloatingActions = () => {
-          floatingCall?.classList.toggle('is-hidden', heroVisible || finalVisible || visibleProofStages.size > 0);
-          // Keep the client proof unobstructed on compact screens. Both actions
-          // return as soon as the visitor leaves the proof galleries.
-          floatingSocial?.classList.toggle('is-hidden', heroVisible || finalVisible || visibleProofStages.size > 0);
+          floatingCall?.classList.toggle('is-hidden', heroVisible || finalVisible);
+          floatingSocial?.classList.toggle('is-hidden', heroVisible || finalVisible);
         };
         new IntersectionObserver(([entry]) => {
           heroVisible = entry.isIntersecting;
@@ -351,16 +356,6 @@ const consultSchema = {
           finalVisible = entry.isIntersecting;
           updateFloatingActions();
         }, { threshold: 0.08 }).observe(finalChapter);
-        if (proofStages.length) {
-          const proofStageObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) visibleProofStages.add(entry.target);
-              else visibleProofStages.delete(entry.target);
-            });
-            updateFloatingActions();
-          }, { threshold: 0.05 });
-          proofStages.forEach((stage) => proofStageObserver.observe(stage));
-        }
         updateFloatingActions();
       } else {
         floatingCall?.classList.remove('is-hidden');
@@ -904,11 +899,13 @@ const consultSchema = {
   .feedback-proof__signals { display:flex; flex-wrap:wrap; gap:8px; margin-top:34px; }
   .feedback-proof__signals span { display:inline-flex; gap:7px; align-items:baseline; padding:10px 12px; border:1px solid rgba(217,255,69,.22); color:#bfc4b8; font:500 10px "DM Mono",monospace; letter-spacing:.04em; text-transform:uppercase; }
   .feedback-proof__signals b { color:var(--lime); font-size:13px; }
+  .feedback-proof__lead { display:none; margin-top:28px; }
+  .feedback-proof__lead .proof-wall--stack { width:100%; }
   .feedback-proof__featured { margin-top:clamp(52px,8vw,105px); }
   .feedback-proof__carousel { margin-top:clamp(76px,11vw,150px); padding-top:clamp(52px,7vw,90px); border-top:1px solid rgba(217,255,69,.25); }
   .feedback-proof__featured h3,.feedback-proof__carousel h3 { max-width:700px; margin:13px 0 10px; font:600 clamp(2rem,4.6vw,4.7rem)/.94 "Playfair Display",serif; letter-spacing:-.06em; }
   .feedback-proof__featured>p:not(.kicker),.feedback-proof__carousel>div>p:not(.kicker) { max-width:580px; margin:0; color:#c4c8be; line-height:1.7; }
-  @media(max-width:800px) { .feedback-proof__intro { grid-template-columns:1fr; }.proof-cta { display:grid; gap:15px; }.proof-cta .cta { width:100%; } }
+  @media(max-width:800px) { .feedback-proof__intro { grid-template-columns:1fr; }.feedback-proof__lead { display:block; }.proof-cta { display:grid; gap:15px; }.proof-cta .cta { width:100%; } }
 </style>
 
 <style>
@@ -956,15 +953,21 @@ const consultSchema = {
   .phase-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; margin-top:48px; border:0; }
   .phase-grid article,.phase-grid article:first-child { display:flex; min-height:268px; flex-direction:column; justify-content:flex-end; padding:clamp(21px,2.2vw,31px); border:1px solid rgba(91,38,35,.24); border-radius:18px; background:linear-gradient(145deg,rgba(255,250,243,.78),rgba(255,250,243,.3)); box-shadow:0 14px 28px rgba(54,35,27,.06); transition:transform .35s cubic-bezier(.22,1,.36,1),background .35s ease,box-shadow .35s ease; }
   .phase-grid article:hover { background:linear-gradient(145deg,#fffaf3,rgba(247,232,212,.72)); box-shadow:0 20px 38px rgba(54,35,27,.13); transform:translateY(-6px); }
+  .phase-card { position:relative; isolation:isolate; }
+  .phase-card__symbol { position:absolute; top:clamp(18px,2vw,24px); left:clamp(21px,2.2vw,31px); display:inline-flex; align-items:center; justify-content:center; width:clamp(36px,3.2vw,42px); height:clamp(36px,3.2vw,42px); border:1px solid rgba(109,51,44,.18); border-radius:999px; background:linear-gradient(180deg,rgba(255,255,255,.68),rgba(236,220,196,.44)); box-shadow:0 8px 18px rgba(57,39,31,.08); color:#6d332c; font:700 clamp(15px,1.2vw,18px)/1 "Cormorant Garamond",Georgia,serif; letter-spacing:0; }
+  .phase-card__symbol::after { position:absolute; inset:-6px; border:1px solid rgba(109,51,44,.08); border-radius:inherit; content:''; }
+  .phase-card h3 { margin-top:clamp(42px,4.8vw,52px); }
   .phase-grid h3 { margin:0 0 15px; color:#2c211c; font:600 clamp(1.42rem,1.9vw,1.82rem)/.98 "Cormorant Garamond",Georgia,serif; letter-spacing:-.035em; }
   .phase-grid p { margin:0; color:#62544a; font-size:13px; line-height:1.72; }
   .phase-grid .accountability-phase { border-color:#5a2623; background:linear-gradient(145deg,#5a2623,#3d211e); box-shadow:0 18px 32px rgba(75,32,29,.19); }
+  .phase-grid .accountability-phase .phase-card__symbol { border-color:rgba(248,238,227,.24); background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.04)); box-shadow:0 8px 18px rgba(18,7,6,.18); color:#f8eee3; }
+  .phase-grid .accountability-phase .phase-card__symbol::after { border-color:rgba(248,238,227,.12); }
   .phase-grid .accountability-phase h3 { color:#f8eee3; }
   .phase-grid .accountability-phase p { color:#ecddd0; }
   .phase-grid .accountability-phase:hover { background:linear-gradient(145deg,#6c302b,#48211f); }
   @media(max-width:1100px) { .phase-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
   @media(max-width:800px) { .phase-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }.phase-grid article,.phase-grid article:first-child { min-height:228px; }.phase-grid .accountability-phase { grid-column:auto; } }
-  @media(max-width:560px) { .phase-grid { grid-template-columns:1fr; margin-top:34px; }.phase-grid article,.phase-grid article:first-child { min-height:0; padding:25px; }.phase-grid h3 { font-size:1.72rem; } }
+  @media(max-width:560px) { .phase-grid { grid-template-columns:1fr; margin-top:34px; }.phase-grid article,.phase-grid article:first-child { min-height:0; padding:25px; }.phase-card__symbol { top:20px; left:25px; width:38px; height:38px; font-size:16px; }.phase-card h3 { margin-top:50px; }.phase-grid h3 { font-size:1.72rem; } }
 </style>
 
 <style>
