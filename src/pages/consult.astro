@@ -1021,7 +1021,7 @@ const consultSchema = {
 </style>
 
 <style>
-  .private-call-float { position:fixed; z-index:35; bottom:26px; left:50%; display:inline-flex; align-items:center; gap:12px; min-height:56px; padding:0 21px 0 16px; border:1px solid rgba(255,246,234,.88); border-radius:999px; background:linear-gradient(135deg,#6a302c,#3c211e); box-shadow:0 16px 42px rgba(25,14,12,.4),0 0 0 5px rgba(184,147,97,.1); color:#fff7ed; font:700 11px/1 Manrope,sans-serif; letter-spacing:.095em; text-decoration:none; text-transform:uppercase; transform:translateX(-50%); transition:opacity .35s ease,transform .35s cubic-bezier(.22,1,.36,1),visibility .35s ease; }
+  .private-call-float { position:fixed; z-index:35; bottom:26px; left:50%; display:inline-flex; align-items:center; gap:12px; min-height:56px; padding:0 21px 0 16px; border:1px solid rgba(255,246,234,.88); border-radius:999px; background:linear-gradient(135deg,#6a302c,#3c211e); box-shadow:0 16px 42px rgba(25,14,12,.4),0 0 0 5px rgba(184,147,97,.1); color:#fff7ed; font:700 11px/1 Manrope,sans-serif; letter-spacing:.095em; text-decoration:none; text-transform:uppercase; transform:translateX(-50%); transition:opacity .35s ease,transform .35s cubic-bezier(.22,1,.36,1),visibility .35s ease; animation:private-call-glow 3.4s ease-in-out infinite; }
   .private-call-float::before { position:absolute; inset:-5px; z-index:-1; border:1px solid rgba(212,180,126,.65); border-radius:inherit; content:''; animation:private-call-pulse 2.6s ease-out infinite; }
   .private-call-float::after { position:absolute; inset:1px 46% 1px 2px; border-radius:inherit; background:linear-gradient(105deg,transparent 32%,rgba(255,255,255,.42) 50%,transparent 68%); content:''; pointer-events:none; animation:private-call-shine 4.8s ease-in-out infinite; }
   .private-call-float:hover { color:#fff; transform:translateX(-50%) translateY(-4px) scale(1.025); }
@@ -1032,9 +1032,10 @@ const consultSchema = {
   @keyframes private-call-pulse { 0% { opacity:0; transform:scale(.92); } 30% { opacity:.8; } 100% { opacity:0; transform:scale(1.12); } }
   @keyframes private-call-shine { 0%,58%,100% { opacity:0; transform:translateX(-45%); } 65% { opacity:1; } 82% { opacity:0; transform:translateX(120%); } }
   @keyframes private-call-spark { 0%,100% { opacity:.6; transform:scale(.85) rotate(0); } 50% { opacity:1; transform:scale(1.18) rotate(28deg); } }
-  @media(max-width:800px) { .private-call-float { right:13px; bottom:144px; left:auto; min-height:50px; padding:0 16px 0 13px; font-size:9px; letter-spacing:.065em; transform:none; }.private-call-float:hover { transform:translateY(-3px) scale(1.02); }.private-call-float.is-hidden { transform:translateY(15px) scale(.96); }.mobile-cta { display:none; } }
+  @keyframes private-call-glow { 0%,100% { box-shadow:0 16px 42px rgba(25,14,12,.4),0 0 0 5px rgba(184,147,97,.1); } 50% { box-shadow:0 18px 48px rgba(25,14,12,.44),0 0 0 8px rgba(212,180,126,.2); } }
+  @media(max-width:800px) { .private-call-float { bottom:144px; left:50%; min-height:50px; max-width:calc(100vw - 26px); padding:0 16px 0 13px; font-size:9px; letter-spacing:.065em; transform:translateX(-50%); }.private-call-float:hover { transform:translateX(-50%) translateY(-3px) scale(1.02); }.private-call-float.is-hidden { transform:translateX(-50%) translateY(15px) scale(.96); }.mobile-cta { display:none; } }
   @media(max-width:390px) { .private-call-float { bottom:136px; min-height:47px; padding-inline:12px; font-size:8px; }.private-call-float__spark { font-size:14px; }.private-call-float strong { font-size:16px; } }
-  @media(prefers-reduced-motion:reduce) { .private-call-float::before,.private-call-float::after,.private-call-float__spark { animation:none; } }
+  @media(prefers-reduced-motion:reduce) { .private-call-float,.private-call-float::before,.private-call-float::after,.private-call-float__spark { animation:none; } }
 </style>
 
 <style>
@@ -1205,14 +1206,13 @@ const consultSchema = {
     .final { padding-bottom:clamp(150px,34vw,190px); }
 
     .private-call-float {
-      right:12px;
       bottom:calc(82px + env(safe-area-inset-bottom));
-      left:auto;
-      max-width:calc(100vw - 78px);
+      left:50%;
+      max-width:calc(100vw - 24px);
       min-height:48px;
       padding:0 14px 0 12px;
       font-size:clamp(8px,2.2vw,10px);
-      transform:none;
+      transform:translateX(-50%);
     }
     .social-float { right:12px; bottom:calc(16px + env(safe-area-inset-bottom)); }
   }
