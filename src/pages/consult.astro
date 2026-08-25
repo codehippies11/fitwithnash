@@ -240,7 +240,6 @@ const consultSchema = {
           <div class="transformation-archive" aria-labelledby="transformation-archive-title">
             <div class="transformation-archive__header">
               <div><p class="kicker">The result archive</p><h3 id="transformation-archive-title">Every journey remains visible.</h3></div>
-              <p>Swipe or drag through the complete client record. Tap any image to inspect the original.</p>
             </div>
             <div class="transformation-archive__stage" data-transformation-stage>
               <div class="transformation-rail" aria-label="Scrollable archive of FitWithNash client transformations" data-transformation-track tabindex="0">
@@ -259,9 +258,9 @@ const consultSchema = {
                       src={transformation.image}
                       alt={transformation.alt}
                       widths={[320, 480, 768]}
-                      sizes="(max-width: 800px) 72vw, 330px"
+                      sizes="(max-width: 800px) 76vw, (max-width: 1200px) 32vw, 420px"
                       format="webp"
-                      quality={84}
+                      quality={88}
                       loading="lazy"
                     />
                     <span>Open result <b aria-hidden="true">↗</b></span>
@@ -271,8 +270,8 @@ const consultSchema = {
               ))}
               </div>
               <div class="transformation-rail__controls" aria-label="Transformation carousel navigation">
-                <button type="button" data-transformation-previous aria-label="Show previous transformation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" /></svg><span>Previous</span></button>
-                <button type="button" data-transformation-next aria-label="Show next transformation"><span>Next</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></button>
+                <button type="button" data-transformation-previous aria-label="Show previous transformation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" /></svg></button>
+                <button type="button" data-transformation-next aria-label="Show next transformation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></button>
               </div>
             </div>
           </div>
@@ -447,11 +446,34 @@ const consultSchema = {
         const track = stage.querySelector('[data-transformation-track]');
         const previous = stage.querySelector('[data-transformation-previous]');
         const next = stage.querySelector('[data-transformation-next]');
-        const cards = [...(track?.querySelectorAll('[data-transformation-card]') || [])];
-        if (!track || cards.length < 2) return;
+        // Some cards are hidden at this breakpoint; only laid-out ones can be positioned.
+        const originals = [...(track?.querySelectorAll('[data-transformation-card]') || [])]
+          .filter((card) => card.offsetParent !== null);
+        if (!track || originals.length < 2) return;
 
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        let activeIndex = 0;
+
+        // Clone the ends so the rail can wrap without ever showing an edge.
+        const makeClone = (card) => {
+          const clone = card.cloneNode(true);
+          clone.setAttribute('aria-hidden', 'true');
+          clone.setAttribute('inert', '');
+          clone.removeAttribute('aria-label');
+          clone.dataset.transformationClone = 'true';
+          return clone;
+        };
+        track.prepend(makeClone(originals.at(-1)));
+        track.append(makeClone(originals[0]));
+
+        const cards = [...track.querySelectorAll('[data-transformation-card]')]
+          .filter((card) => card.offsetParent !== null);
+        const total = originals.length;
+        let activeIndex = 1;
+        let timer = 0;
+        let resumeTimer = 0;
+        let scrollTimer = 0;
+        let inViewport = false;
+        let focusInside = false;
 
         const cardLeft = (card) => card.offsetLeft - Math.max((track.clientWidth - card.clientWidth) / 2, 0);
         const position = (index, behavior = 'smooth') => {
@@ -465,6 +487,19 @@ const consultSchema = {
           activeIndex = Math.max(0, Math.min(cards.length - 1, index));
           cards.forEach((card, cardIndex) => card.classList.toggle('is-current', cardIndex === activeIndex));
         };
+        const stop = () => { window.clearInterval(timer); timer = 0; };
+        const start = () => {
+          stop();
+          if (reduced || !inViewport || document.hidden || focusInside) return;
+          timer = window.setInterval(() => {
+            syncCurrent(activeIndex + 1);
+            position(activeIndex, 'smooth');
+          }, 1000);
+        };
+        const scheduleResume = () => {
+          window.clearTimeout(resumeTimer);
+          resumeTimer = window.setTimeout(start, 1600);
+        };
         const nearestIndex = () => {
           const center = track.getBoundingClientRect().left + track.clientWidth / 2;
           return cards.reduce((best, card, index) => {
@@ -473,11 +508,18 @@ const consultSchema = {
             return distance < best.distance ? { index, distance } : best;
           }, { index: activeIndex, distance: Infinity }).index;
         };
-        const updateFromScroll = () => syncCurrent(nearestIndex());
+        // Landing on a clone means jumping silently to its real counterpart.
+        const normalize = () => {
+          const nearest = nearestIndex();
+          if (nearest === 0) { syncCurrent(total); position(total, 'auto'); }
+          else if (nearest === total + 1) { syncCurrent(1); position(1, 'auto'); }
+          else syncCurrent(nearest);
+        };
         const move = (direction) => {
-          const target = Math.max(0, Math.min(cards.length - 1, activeIndex + direction));
-          syncCurrent(target);
-          position(target, 'smooth');
+          stop();
+          syncCurrent(activeIndex + direction);
+          position(activeIndex, 'smooth');
+          scheduleResume();
         };
         const centerCurrent = () => position(activeIndex, 'auto');
 
@@ -488,12 +530,34 @@ const consultSchema = {
           event.preventDefault();
           move(event.key === 'ArrowRight' ? 1 : -1);
         });
-        track.addEventListener('scroll', () => window.requestAnimationFrame(updateFromScroll), { passive: true });
+        track.addEventListener('focusin', () => { focusInside = true; stop(); });
+        track.addEventListener('focusout', (event) => {
+          if (stage.contains(event.relatedTarget)) return;
+          focusInside = false;
+          scheduleResume();
+        });
+        track.addEventListener('touchstart', () => { stop(); scheduleResume(); }, { passive: true });
+        track.addEventListener('scroll', () => {
+          window.clearTimeout(scrollTimer);
+          scrollTimer = window.setTimeout(normalize, 130);
+        }, { passive: true });
+        document.addEventListener('visibilitychange', start);
+        document.addEventListener('proofviewer:open', stop);
+        document.addEventListener('proofviewer:close', start);
+
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver(([entry]) => {
+            inViewport = entry.isIntersecting;
+            if (inViewport) start(); else stop();
+          }, { threshold: 0.2 }).observe(stage);
+        } else inViewport = true;
+
         syncCurrent(activeIndex);
         window.addEventListener('load', centerCurrent, { once: true });
         document.fonts?.ready?.then(centerCurrent);
         window.setTimeout(centerCurrent, 220);
         if ('ResizeObserver' in window) new ResizeObserver(centerCurrent).observe(track);
+        start();
       });
     </script>
   </body>
@@ -1543,9 +1607,13 @@ const consultSchema = {
     pointer-events:none;
   }
   .transformation-archive__stage .transformation-rail {
+    --rail-card:clamp(230px,24vw,338px);
+    /* Half a viewport minus half a card, so the first and last frames can each
+       reach dead centre — the wrap depends on the end clone being centreable. */
+    --rail-inset:max(clamp(58px,8vw,108px),calc((100% - var(--rail-card)) / 2));
     margin-top:0;
-    padding-inline:clamp(58px,8vw,108px);
-    scroll-padding-inline:clamp(58px,8vw,108px);
+    padding-inline:var(--rail-inset);
+    scroll-padding-inline:var(--rail-inset);
     scroll-snap-type:x mandatory;
   }
   .transformation-rail__controls {
@@ -1592,6 +1660,15 @@ const consultSchema = {
     animation:transformation-control-sheen 8s cubic-bezier(.22,1,.36,1) infinite;
   }
   .transformation-rail__controls button:last-child::before { animation-delay:-4s; }
+  .transformation-rail__controls button {
+    width:52px;
+    min-width:52px;
+    height:52px;
+    padding:0;
+    justify-content:center;
+    border-radius:50%;
+  }
+  .transformation-rail__controls button svg { width:20px; height:20px; }
   .transformation-rail__controls button:hover,
   .transformation-rail__controls button:focus-visible {
     border-color:rgba(236,173,93,.44);
@@ -1640,17 +1717,38 @@ const consultSchema = {
   .result-thumb__open {
     position:relative;
     aspect-ratio:4/3;
-    border:1px solid rgba(255,255,255,.11);
-    background:#101110;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:4px;
+    /* A lit stage rather than a flat card, so contained images sit in something. */
+    background:radial-gradient(ellipse 78% 68% at 50% 42%,#2a211c 0%,#141210 72%);
+    box-shadow:0 14px 34px rgba(0,0,0,.26);
+    transition:box-shadow .55s ease,border-color .55s ease;
   }
   .result-thumb__open img {
     display:block;
     width:100%;
     height:100%;
     object-fit:contain;
-    filter:saturate(.9) contrast(1.02);
+    filter:saturate(1.06) contrast(1.05);
     transition:filter .45s ease,transform .75s cubic-bezier(.22,1,.36,1);
   }
+  /* Depth of field: neighbours recede, the centre frame is the subject. */
+  .result-thumb {
+    opacity:.44;
+    transform:scale(.9);
+    transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1);
+  }
+  .result-thumb.is-current { opacity:1; transform:scale(1); }
+  .result-thumb.is-current .result-thumb__open {
+    border-color:rgba(236,173,93,.4);
+    box-shadow:0 30px 70px rgba(0,0,0,.4),0 0 0 1px rgba(236,173,93,.16);
+  }
+  .result-thumb.is-current .result-thumb__open img { filter:saturate(1.14) contrast(1.06); }
+  .result-thumb__open > span { opacity:0; transition:opacity .45s ease; }
+  .result-thumb.is-current .result-thumb__open > span,
+  .result-thumb__open:hover > span,
+  .result-thumb__open:focus-visible > span { opacity:1; }
   .result-thumb__open > span {
     position:absolute;
     right:10px;
@@ -1672,10 +1770,6 @@ const consultSchema = {
   }
   .result-thumb__open:hover img,
   .result-thumb__open:focus-visible img { filter:saturate(1) contrast(1.04); transform:scale(1.018); }
-  .result-thumb.is-current .result-thumb__open {
-    border-color:rgba(236,173,93,.28);
-    box-shadow:0 20px 50px rgba(0,0,0,.18);
-  }
   .result-thumb.is-current .result-thumb__open::after {
     position:absolute;
     inset:-1px;
@@ -1855,7 +1949,7 @@ const consultSchema = {
     .transformation-archive { margin-top:36px; padding-top:30px; }
     .transformation-archive__header { grid-template-columns:1fr; gap:16px; }
     .transformation-archive__header h3 { font-size:clamp(2.2rem,10vw,3.4rem); }
-    .transformation-archive__stage .transformation-rail { padding-inline:16vw; }
+    .transformation-archive__stage .transformation-rail { --rail-card:min(72vw,310px); padding-inline:var(--rail-inset); }
     .transformation-rail__controls { right:4px; left:4px; }
     .transformation-rail__controls button {
       width:46px;
@@ -1894,7 +1988,7 @@ const consultSchema = {
     .result-feature,
     .result-feature--1 { width:100%; min-width:0; height:clamp(330px,100vw,430px); }
     .transformation-archive { padding-right:var(--page-gutter); }
-    .transformation-archive__stage .transformation-rail { padding-inline:18vw; }
+    .transformation-archive__stage .transformation-rail { --rail-card:min(72vw,310px); padding-inline:var(--rail-inset); }
     .feedback-proof__signals span { flex:1 1 100%; }
     .proof-viewer { width:96vw; height:88svh; border-radius:14px; }
     .proof-viewer__bar { min-height:54px; }
@@ -1909,6 +2003,7 @@ const consultSchema = {
     .result-feature::after,
     .result-feature__media img,
     .result-thumb__open img { animation:none; transition:none; }
+  .result-thumb { opacity:1; transform:none; transition:none; }
   }
 </style>
 
