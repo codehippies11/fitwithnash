@@ -1814,7 +1814,7 @@ const consultSchema = {
     .transformation-archive { margin-top:36px; padding-top:30px; }
     .transformation-archive__header { grid-template-columns:1fr; gap:16px; }
     .transformation-archive__header h3 { font-size:clamp(2.2rem,10vw,3.4rem); }
-    .transformation-archive__stage .transformation-rail { --rail-card:min(82vw,420px); padding-inline:var(--rail-inset); }
+    .transformation-archive__stage .transformation-rail { --rail-card:min(88vw,460px); padding-inline:var(--rail-inset); }
     .transformation-rail__controls { right:4px; left:4px; }
     .transformation-rail__controls button {
       width:46px;
@@ -1834,7 +1834,14 @@ const consultSchema = {
       white-space:nowrap;
       border:0;
     }
-    .result-thumb { width:min(82vw,420px); min-width:min(82vw,420px); }
+    .result-thumb { width:min(88vw,460px); min-width:min(88vw,460px); }
+    /* Square on phones: more presence than 5:4 without letterboxing the
+       wider pairs the way a portrait frame would. */
+    .result-thumb__open { aspect-ratio:1/1; }
+    .result-thumb figcaption { padding-top:13px; }
+    .result-thumb figcaption b { font-size:clamp(14px,4vw,18px); }
+    .transformation-archive__stage .transformation-rail { padding-bottom:16px; }
+    .transformation-rail__progress { width:min(240px,58%); margin-top:18px; }
     .transformation-showcase__close { grid-template-columns:1fr; gap:24px; }
     .transformation-showcase__close .cta { width:100%; white-space:normal; }
     .feedback-proof__intro { grid-template-columns:1fr; gap:22px; }
@@ -1849,7 +1856,7 @@ const consultSchema = {
     .transformation-showcase__portfolio { padding-right:0; }
     .transformation-showcase__intro { padding-inline:var(--page-gutter); }
     .transformation-archive { padding-right:var(--page-gutter); }
-    .transformation-archive__stage .transformation-rail { --rail-card:min(82vw,420px); padding-inline:var(--rail-inset); }
+    .transformation-archive__stage .transformation-rail { --rail-card:min(88vw,460px); padding-inline:var(--rail-inset); }
     .feedback-proof__signals span { flex:1 1 100%; }
     .proof-viewer { width:96vw; height:88svh; border-radius:14px; }
     .proof-viewer__bar { min-height:54px; }
