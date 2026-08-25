@@ -82,7 +82,6 @@ const feedbackStoriesSorted = [
     .filter(Boolean),
   ...feedbackStories.filter((item) => !feedbackPriority.includes(String(item.client_name || '').trim().toLowerCase())),
 ];
-const mobileLeadStories = feedbackStoriesSorted.slice(0, 2);
 const packages = cmsPrograms.length ? cmsPrograms : [
   { label: 'Personal coaching', title: 'The Personal Standard.', description: 'Personalised training, practical nutrition and regular accountability around your real life.', price: 'Ask Avinash for the right fit' },
   { label: 'Focused transformation', title: '12 Weeks, Built Properly.', description: 'A focused block to build momentum with a structure you can understand and repeat.', price: 'Ask Avinash for the right fit' },
@@ -256,7 +255,6 @@ const consultSchema = {
       <section class="feedback-proof section" aria-labelledby="client-proof-heading">
         <div class="feedback-proof__intro"><div><p class="kicker">Original client proof</p><h2 id="client-proof-heading">Real words.<br /><em>Real standards.</em></h2></div><p>Original reviews from people coached around real workdays, familiar food and life beyond the gym. Read the excerpt, then open the client’s original review.</p></div>
         <p class="feedback-proof__assurance"><span>Original review screenshots</span> · tap any proof to inspect the full record.</p>
-        <div class="feedback-proof__lead"><TestimonialWall testimonials={mobileLeadStories} tone="dark" layout="stack" label="Featured original FitWithNash client reviews" /></div>
         <div class="feedback-proof__stage"><TestimonialWall testimonials={feedbackStoriesSorted} tone="dark" layout="carousel" label="Original FitWithNash client reviews" /></div>
         <div class="feedback-proof__close"><p>Your context will be different. The coaching standard will not.</p><a class="cta cta--book" href={whatsapp} target="_blank" rel="noreferrer">Discuss your starting point <span>→</span></a></div>
       </section>
@@ -937,13 +935,11 @@ const consultSchema = {
   .feedback-proof__signals { display:flex; flex-wrap:wrap; gap:8px; margin-top:34px; }
   .feedback-proof__signals span { display:inline-flex; gap:7px; align-items:baseline; padding:10px 12px; border:1px solid rgba(217,255,69,.22); color:#bfc4b8; font:500 10px "DM Mono",monospace; letter-spacing:.04em; text-transform:uppercase; }
   .feedback-proof__signals b { color:var(--lime); font-size:13px; }
-  .feedback-proof__lead { display:none; margin-top:28px; }
-  .feedback-proof__lead .proof-wall--stack { width:100%; }
   .feedback-proof__featured { margin-top:clamp(52px,8vw,105px); }
   .feedback-proof__carousel { margin-top:clamp(76px,11vw,150px); padding-top:clamp(52px,7vw,90px); border-top:1px solid rgba(217,255,69,.25); }
   .feedback-proof__featured h3,.feedback-proof__carousel h3 { max-width:700px; margin:13px 0 10px; font:600 clamp(2rem,4.6vw,4.7rem)/.94 "Playfair Display",serif; letter-spacing:-.06em; }
   .feedback-proof__featured>p:not(.kicker),.feedback-proof__carousel>div>p:not(.kicker) { max-width:580px; margin:0; color:#c4c8be; line-height:1.7; }
-  @media(max-width:800px) { .feedback-proof__intro { grid-template-columns:1fr; }.feedback-proof__lead { display:block; }.proof-cta { display:grid; gap:15px; }.proof-cta .cta { width:100%; } }
+  @media(max-width:800px) { .feedback-proof__intro { grid-template-columns:1fr; }.proof-cta { display:grid; gap:15px; }.proof-cta .cta { width:100%; } }
 </style>
 
 <style>
