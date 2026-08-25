@@ -150,7 +150,7 @@ const consultSchema = {
         <a class="hero-wordmark" href="https://www.fitwithnash.com/" aria-label="FitWithNash home">FIT<span>WITH</span>NASH</a>
         <a class="brand-logo" href="https://www.fitwithnash.com/" aria-label="FitWithNash home"><img src={fitwithnashMark.src} alt="" /><span>FitWithNash</span></a>
         <div class="coach-ring"><img src={portrait} alt="Avinash Sharma, FitWithNash coach" /></div>
-        <p class="kicker">Internationally trained dietitian & nutritionist / private 1:1 coaching</p>
+        <p class="kicker">Bodybuilding coach, nutritionist and dietitian / private 1:1 coaching</p>
         <h1>Build a stronger body<br />without putting your <em>life</em> on pause.</h1>
         <p class="hero-copy">I help ambitious professionals build strength, lose excess body fat and create a routine they can keep—even with demanding workdays, travel and family commitments.</p>
         <div class="hero-actions"><a class="cta cta--book" href={whatsapp} target="_blank" rel="noreferrer">Request a private clarity call <span>→</span></a><a class="hero-proof-link" href="#proof"><span>↓</span> See real client proof</a></div>
@@ -1940,6 +1940,7 @@ const consultSchema = {
       width:100%;
       height:100%;
       object-fit:cover;
+      object-position:50% 50%;
       filter:saturate(1.12) contrast(1.05);
       transition:transform .9s cubic-bezier(.22,1,.36,1),filter .5s ease;
     }
@@ -1996,6 +1997,10 @@ const consultSchema = {
     .result-collage__frame:hover img,
     .result-collage__frame:focus-visible img { filter:saturate(1.24) contrast(1.06) brightness(1.14); transform:scale(1.07); }
     .result-collage__frame:focus-visible { outline:2px solid #f2a03f; outline-offset:-3px; }
+    /* First two frames: the transformed body sits right of centre in these
+       pairs, so bias the crop towards it. */
+    .result-collage__frame:nth-child(1) img,
+    .result-collage__frame:nth-child(2) img { object-position:82% 50%; }
   }
 
   @media (prefers-reduced-motion:reduce) {
