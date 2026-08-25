@@ -204,6 +204,30 @@ const consultSchema = {
             ))}
           </div>
 
+          <aside class="result-collage" aria-labelledby="result-collage-title">
+            <div class="result-collage__header">
+              <p class="kicker">The private portfolio</p>
+              <h3 id="result-collage-title">A discreet record of <em>quiet</em> results.</h3>
+            </div>
+            <div class="result-collage__mosaic">
+              {transformationPortfolio.map((transformation, index) => (
+                <figure class={`result-collage__tile result-collage__tile--${index + 1}`}>
+                  <Image
+                    src={transformation.image}
+                    alt={transformation.alt}
+                    widths={[320, 480, 720]}
+                    sizes="(max-width: 1024px) 0px, 24vw"
+                    format="webp"
+                    quality={82}
+                    loading="lazy"
+                  />
+                  <figcaption><span>{String(index + 1).padStart(2, '0')}</span></figcaption>
+                </figure>
+              ))}
+            </div>
+            <p class="result-collage__footnote">Identities withheld by request. Every result shown is an original client record.</p>
+          </aside>
+
           <div class="transformation-archive" aria-labelledby="transformation-archive-title">
             <div class="transformation-archive__header">
               <div><p class="kicker">The result archive</p><h3 id="transformation-archive-title">Every journey remains visible.</h3></div>
@@ -1902,5 +1926,89 @@ const consultSchema = {
   }
   @media (max-height:500px) and (orientation:landscape) {
     .hero-wordmark { margin:4px 0 20px; }
+  }
+</style>
+
+<style>
+  /* The private portfolio: a gallery wall, desktop only. Hidden below 1025px
+     so phones and tablets keep the lighter featured + archive pairing. */
+  .result-collage { display:none; }
+
+  @media (min-width:1025px) {
+    .result-collage {
+      display:block;
+      margin-top:clamp(72px,8vw,124px);
+      padding-top:clamp(44px,5vw,72px);
+      border-top:1px solid rgba(109,51,44,.16);
+    }
+    .result-collage__header { max-width:640px; }
+    .result-collage__header .kicker { color:#a9814f; }
+    .result-collage__header h3 {
+      margin:14px 0 0;
+      color:#2b1f1a;
+      font:600 clamp(2rem,3.4vw,3.4rem)/.98 "Playfair Display",serif;
+      letter-spacing:-.05em;
+    }
+    .result-collage__header h3 em { color:#9b6232; font-style:italic; }
+
+    /* Column masonry: every frame keeps its own proportions and the wall packs
+       without holes, which a fixed grid of mixed spans cannot guarantee. */
+    .result-collage__mosaic {
+      column-count:4;
+      column-gap:10px;
+      margin-top:clamp(30px,3.4vw,52px);
+    }
+    .result-collage__tile {
+      position:relative;
+      margin:0 0 10px;
+      overflow:hidden;
+      border:1px solid rgba(109,51,44,.14);
+      border-radius:3px;
+      background:#241b16;
+      break-inside:avoid;
+    }
+    .result-collage__tile img {
+      display:block;
+      width:100%;
+      height:auto;
+      /* Restrained at rest; the colour arrives on approach. */
+      filter:grayscale(1) contrast(1.04) brightness(.94);
+      transform:scale(1.01);
+      transition:filter .55s ease,transform .75s cubic-bezier(.22,1,.36,1);
+    }
+    .result-collage__tile::after {
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg,rgba(36,27,22,0) 52%,rgba(36,27,22,.62) 100%);
+      content:'';
+      opacity:.8;
+      transition:opacity .55s ease;
+      pointer-events:none;
+    }
+    .result-collage__tile:hover img { filter:grayscale(0) contrast(1) brightness(1); transform:scale(1.045); }
+    .result-collage__tile:hover::after { opacity:.45; }
+
+    .result-collage__tile figcaption {
+      position:absolute;
+      z-index:2;
+      right:11px;
+      bottom:9px;
+      color:rgba(255,246,234,.62);
+      font:600 9px/1 "DM Mono",ui-monospace,monospace;
+      letter-spacing:.16em;
+    }
+
+    .result-collage__footnote {
+      max-width:520px;
+      margin:22px 0 0;
+      color:#7d6b5e;
+      font-size:12px;
+      line-height:1.7;
+    }
+  }
+
+  @media (prefers-reduced-motion:reduce) {
+    .result-collage__tile img { transition:none; transform:none; }
+    .result-collage__tile:hover img { transform:none; }
   }
 </style>
