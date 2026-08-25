@@ -216,7 +216,7 @@ const consultSchema = {
                     src={transformation.image}
                     alt={transformation.alt}
                     widths={[320, 480, 720]}
-                    sizes="(max-width: 1024px) 0px, 24vw"
+                    sizes="(max-width: 800px) 0px, (max-width: 1200px) 32vw, (max-width: 1600px) 24vw, 300px"
                     format="webp"
                     quality={82}
                     loading="lazy"
@@ -1930,11 +1930,12 @@ const consultSchema = {
 </style>
 
 <style>
-  /* The private portfolio: a gallery wall, desktop only. Hidden below 1025px
-     so phones and tablets keep the lighter featured + archive pairing. */
+  /* The private portfolio: a gallery wall for laptops, notebooks and larger.
+     Hidden below 801px — the breakpoint the rest of this page treats as mobile.
+     Column count follows the available width rather than being fixed. */
   .result-collage { display:none; }
 
-  @media (min-width:1025px) {
+  @media (min-width:801px) {
     .result-collage {
       display:block;
       margin-top:clamp(72px,8vw,124px);
@@ -1954,13 +1955,13 @@ const consultSchema = {
     /* Column masonry: every frame keeps its own proportions and the wall packs
        without holes, which a fixed grid of mixed spans cannot guarantee. */
     .result-collage__mosaic {
-      column-count:4;
-      column-gap:10px;
+      column-width:clamp(210px,20vw,300px);
+      column-gap:clamp(7px,.7vw,12px);
       margin-top:clamp(30px,3.4vw,52px);
     }
     .result-collage__tile {
       position:relative;
-      margin:0 0 10px;
+      margin:0 0 clamp(7px,.7vw,12px);
       overflow:hidden;
       border:1px solid rgba(109,51,44,.14);
       border-radius:3px;
