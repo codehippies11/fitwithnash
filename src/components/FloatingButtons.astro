@@ -61,13 +61,13 @@ const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     position: fixed;
     bottom: 24px;
     right: 24px;
-    z-index: 40;
+    z-index: 9999;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
   }
 
   /* WhatsApp Button */
@@ -190,7 +190,7 @@ const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     bottom: 28px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 39;
+    z-index: 9999;
     background: linear-gradient(135deg, var(--lime) 0%, #a8d400 100%);
     color: var(--ink);
     padding: 14px 28px;
@@ -206,10 +206,10 @@ const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     transition: all 0.3s ease;
     cursor: pointer;
     border: 2px solid rgba(16, 17, 15, 0.08);
-    opacity: 1;
-    visibility: visible;
+    opacity: 1 !important;
+    visibility: visible !important;
     white-space: nowrap;
-    pointer-events: auto;
+    pointer-events: auto !important;
   }
 
   .call-text {
@@ -299,30 +299,39 @@ const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
 </style>
 
 <script>
-  // Both button groups are always visible - no hiding on scroll
+  // Both button groups are always visible on every section - no hiding
   document.addEventListener('DOMContentLoaded', () => {
     const topGroup = document.querySelector('.floating-buttons-group');
     const centerBtn = document.querySelector('.floating-btn-center');
     
-    // Optional: Add entrance animation
+    // Ensure they stay visible
     if (topGroup) {
-      topGroup.style.opacity = '0';
-      topGroup.style.transform = 'translateY(20px)';
-      setTimeout(() => {
-        topGroup.style.transition = 'all 0.4s cubic-bezier(0.23, 1, 0.320, 1)';
-        topGroup.style.opacity = '1';
-        topGroup.style.transform = 'translateY(0)';
-      }, 100);
+      topGroup.style.opacity = '1';
+      topGroup.style.visibility = 'visible';
+      topGroup.style.pointerEvents = 'auto';
     }
 
     if (centerBtn) {
-      centerBtn.style.opacity = '0';
-      centerBtn.style.transform = 'translateX(-50%) translateY(20px)';
-      setTimeout(() => {
-        centerBtn.style.transition = 'all 0.5s cubic-bezier(0.23, 1, 0.320, 1)';
-        centerBtn.style.opacity = '1';
-        centerBtn.style.transform = 'translateX(-50%) translateY(0)';
-      }, 200);
+      centerBtn.style.opacity = '1';
+      centerBtn.style.visibility = 'visible';
+      centerBtn.style.pointerEvents = 'auto';
     }
+
+    // Prevent any CSS from hiding these buttons
+    const observer = new MutationObserver(() => {
+      if (topGroup) {
+        topGroup.classList.remove('is-hidden');
+        topGroup.style.opacity = '1 !important';
+        topGroup.style.visibility = 'visible !important';
+      }
+      if (centerBtn) {
+        centerBtn.classList.remove('is-hidden');
+        centerBtn.style.opacity = '1 !important';
+        centerBtn.style.visibility = 'visible !important';
+      }
+    });
+
+    if (topGroup) observer.observe(topGroup, { attributes: true });
+    if (centerBtn) observer.observe(centerBtn, { attributes: true });
   });
 </script>
