@@ -152,7 +152,7 @@ const proofType = (item: Testimonial) => {
     const start = () => {
       stop();
       if (!playing || !inViewport || document.hidden || focusInside || viewerOpen) return;
-      timer = window.setInterval(() => sync(activeIndex + 1, 'smooth'), 600);
+      timer = window.setInterval(() => sync(activeIndex + 1, 'smooth'), 790);
     };
     const scheduleResume = () => {
       window.clearTimeout(resumeTimer);
