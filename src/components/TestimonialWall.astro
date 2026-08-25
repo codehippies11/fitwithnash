@@ -34,7 +34,6 @@ const proofType = (item: Testimonial) => {
 <div class:list={['proof-wall', `proof-wall--${tone}`, `proof-wall--${layout}`]} role={layout === 'carousel' ? 'region' : undefined} aria-roledescription={layout === 'carousel' ? 'carousel' : undefined} aria-label={label} data-proof-wall data-layout={layout}>
   <div class="proof-wall__header" aria-hidden={layout !== 'carousel'}>
     <div><p>Original client reviews</p>{layout === 'carousel' && <span class="proof-wall__swipe-hint">Swipe through client stories</span>}</div>
-    {layout === 'carousel' && <div class="proof-wall__utility"><button type="button" data-proof-toggle aria-pressed="true"><span data-proof-toggle-label>Pause</span></button></div>}
   </div>
   <div class="proof-wall__grid" data-proof-track tabindex={layout === 'carousel' ? 0 : undefined} aria-label={layout === 'carousel' ? 'Scrollable client reviews' : undefined}>
     {testimonials.map((item, index) => {
@@ -95,8 +94,6 @@ const proofType = (item: Testimonial) => {
     const track = wall.querySelector('[data-proof-track]');
     const previous = wall.querySelector('[data-proof-previous]');
     const next = wall.querySelector('[data-proof-next]');
-    const toggle = wall.querySelector('[data-proof-toggle]');
-    const toggleLabel = wall.querySelector('[data-proof-toggle-label]');
     const announcer = wall.querySelector('[data-proof-announcer]');
     const originals = [...(track?.querySelectorAll('[data-proof-card]') || [])];
     if (!track || originals.length < 2) return;
@@ -121,7 +118,6 @@ const proofType = (item: Testimonial) => {
     let playing = !reducedMotion;
     let viewerOpen = false;
     let inViewport = false;
-    let pointerInside = false;
     let focusInside = false;
     let scrollTimer = 0;
     let restoreSnapFrame = 0;
@@ -155,8 +151,8 @@ const proofType = (item: Testimonial) => {
     };
     const start = () => {
       stop();
-      if (!playing || !inViewport || document.hidden || pointerInside || focusInside || viewerOpen) return;
-      timer = window.setInterval(() => sync(activeIndex + 1, 'smooth'), 3000);
+      if (!playing || !inViewport || document.hidden || focusInside || viewerOpen) return;
+      timer = window.setInterval(() => sync(activeIndex + 1, 'smooth'), 600);
     };
     const scheduleResume = () => {
       window.clearTimeout(resumeTimer);
@@ -191,19 +187,11 @@ const proofType = (item: Testimonial) => {
 
     previous?.addEventListener('click', () => manualMove(-1));
     next?.addEventListener('click', () => manualMove(1));
-    toggle?.addEventListener('click', () => {
-      playing = !playing;
-      toggle.setAttribute('aria-pressed', String(playing));
-      if (toggleLabel) toggleLabel.textContent = playing ? 'Pause' : 'Play';
-      if (playing) start(); else stop();
-    });
     track.addEventListener('keydown', (event) => {
       if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
       event.preventDefault();
       manualMove(event.key === 'ArrowRight' ? 1 : -1);
     });
-    track.addEventListener('pointerenter', () => { pointerInside = true; stop(); });
-    track.addEventListener('pointerleave', () => { pointerInside = false; scheduleResume(); });
     track.addEventListener('focusin', () => { focusInside = true; stop(); });
     track.addEventListener('focusout', (event) => {
       if (wall.contains(event.relatedTarget)) return;
@@ -227,8 +215,6 @@ const proofType = (item: Testimonial) => {
       }, { threshold: 0.22 }).observe(wall);
     } else inViewport = true;
 
-    toggle?.setAttribute('aria-pressed', String(playing));
-    if (toggleLabel) toggleLabel.textContent = playing ? 'Pause' : 'Play';
     sync(activeIndex, 'auto');
     requestAnimationFrame(() => requestAnimationFrame(centerActive));
     window.addEventListener('load', centerActive, { once: true });
@@ -339,8 +325,7 @@ const proofType = (item: Testimonial) => {
     gap:16px;
   }
   .proof-wall--carousel .proof-wall__header p,
-  .proof-wall--carousel .proof-wall__swipe-hint,
-  .proof-wall--carousel .proof-wall__utility {
+  .proof-wall--carousel .proof-wall__swipe-hint {
     color:#67594d;
     font:600 10px/1.2 "DM Mono",ui-monospace,monospace;
     letter-spacing:.12em;
@@ -351,23 +336,6 @@ const proofType = (item: Testimonial) => {
     border-left:1px solid rgba(36,29,25,.18);
     color:#938476;
   }
-  .proof-wall__utility { display:flex; align-items:center; gap:12px; }
-  .proof-wall__utility > span { min-width:52px; text-align:right; }
-  .proof-wall__utility button {
-    min-width:58px;
-    padding:7px 10px;
-    border:1px solid rgba(36,29,25,.18);
-    border-radius:999px;
-    background:rgba(255,255,255,.46);
-    color:#493a30;
-    font:600 9px/1 "DM Mono",ui-monospace,monospace;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    cursor:pointer;
-    transition:border-color .25s ease,background .25s ease;
-  }
-  .proof-wall__utility button:hover,
-  .proof-wall__utility button:focus-visible { border-color:#9b6738; background:#fffaf1; outline:none; }
   .proof-wall--carousel .proof-wall__grid {
     position:relative;
     display:flex;
@@ -588,8 +556,6 @@ const proofType = (item: Testimonial) => {
   @media (max-width:380px) {
     .proof-wall--carousel { --carousel-card:82vw; }
     .proof-wall--carousel .proof-wall__header p { font-size:9px; }
-    .proof-wall__utility { gap:7px; }
-    .proof-wall__utility button { min-width:50px; padding-inline:8px; }
     .proof-card__copy { min-height:260px; padding:22px; }
     .proof-wall--carousel .proof-card__quote,
     .proof-card__summary { font-size:1.55rem; }
