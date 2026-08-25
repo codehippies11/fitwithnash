@@ -329,10 +329,10 @@ const consultSchema = {
 
       <section class="final section"><p class="kicker">Your next chapter</p><h2>A stronger standard<br />starts with one <em>honest</em> conversation.</h2><p>Tell Avinash where you are now and where you want to be. You will leave with more clarity on whether FitWithNash coaching is the right fit.</p><a class="cta" href={whatsapp} target="_blank" rel="noreferrer">Start on WhatsApp <span>→</span></a><small>Results depend on individual effort, consistency and circumstances. No specific outcome is guaranteed.</small></section>
     </main>
-    <nav class="social-float is-hidden" aria-label="Contact FitWithNash">
+    <nav class="social-float" aria-label="Contact FitWithNash">
       <a class="social-float__link social-float__whatsapp" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Message Avinash on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2a9.96 9.96 0 0 0-8.48 15.2L2 22l4.95-1.49A9.98 9.98 0 1 0 12.04 2Zm0 18.16a8.13 8.13 0 0 1-4.14-1.13l-.3-.18-2.94.88.9-2.86-.2-.3a8.15 8.15 0 1 1 6.68 3.59Zm4.47-6.1c-.24-.12-1.43-.71-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06a6.66 6.66 0 0 1-1.95-1.2 7.32 7.32 0 0 1-1.35-1.68c-.14-.24-.02-.37.1-.49.1-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.19-.46-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.33.98 2.49.12.16 1.7 2.6 4.12 3.65.57.25 1.02.4 1.37.51.58.18 1.1.15 1.51.09.46-.07 1.43-.58 1.63-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28Z"></path></svg><b>WhatsApp</b></a>
     </nav>
-    <a class="private-call-float is-hidden" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Request a private coaching clarity call on WhatsApp"><span class="private-call-float__spark" aria-hidden="true">✦</span><span>Request a private call</span><strong aria-hidden="true">→</strong></a>
+    <a class="private-call-float" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Request a private coaching clarity call on WhatsApp"><span class="private-call-float__spark" aria-hidden="true">✦</span><span>Request a private call</span><strong aria-hidden="true">→</strong></a>
     <a class="mobile-cta" href={whatsapp} target="_blank" rel="noreferrer">Talk to Avinash on WhatsApp <span>→</span></a>
     <script is:inline>
       // A refresh should reopen the funnel at its beginning, while direct #section links still work.
@@ -343,30 +343,9 @@ const consultSchema = {
         window.addEventListener('pageshow', openAtHero);
       }
 
-      const floatingCall = document.querySelector('.private-call-float');
-      const floatingSocial = document.querySelector('.social-float');
-      const heroSection = document.querySelector('.hero');
-      const finalChapter = document.querySelector('.final');
-      if ((floatingCall || floatingSocial) && heroSection && finalChapter && 'IntersectionObserver' in window) {
-        let heroVisible = true;
-        let finalVisible = false;
-        const updateFloatingActions = () => {
-          floatingCall?.classList.toggle('is-hidden', heroVisible || finalVisible);
-          floatingSocial?.classList.toggle('is-hidden', heroVisible || finalVisible);
-        };
-        new IntersectionObserver(([entry]) => {
-          heroVisible = entry.isIntersecting;
-          updateFloatingActions();
-        }, { threshold: 0.01 }).observe(heroSection);
-        new IntersectionObserver(([entry]) => {
-          finalVisible = entry.isIntersecting;
-          updateFloatingActions();
-        }, { threshold: 0.08 }).observe(finalChapter);
-        updateFloatingActions();
-      } else {
-        floatingCall?.classList.remove('is-hidden');
-        floatingSocial?.classList.remove('is-hidden');
-      }
+      // Floating actions stay visible across every section, hero and closing chapter included.
+      document.querySelector('.private-call-float')?.classList.remove('is-hidden');
+      document.querySelector('.social-float')?.classList.remove('is-hidden');
 
       const proofViewer = document.querySelector('[data-proof-viewer]');
       const proofViewerImage = proofViewer?.querySelector('[data-proof-viewer-image]');
@@ -1239,7 +1218,6 @@ const consultSchema = {
       font-size:clamp(8px,2.2vw,10px);
       transform:none;
     }
-    .private-call-float { display:none; }
     .social-float { right:12px; bottom:calc(16px + env(safe-area-inset-bottom)); }
   }
 
@@ -1277,7 +1255,6 @@ const consultSchema = {
     .hero > .kicker { margin-bottom:10px; }
     .hero > h1 { font-size:clamp(3rem,6.2vw,4.9rem); }
     .hero > .hero-copy { margin-top:14px; }
-    .private-call-float { display:none; }
   }
 
   @media (max-height:500px) and (orientation:landscape) {
